@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACRP 영수증프린터 | 티아이티 이엔지 Product 발표자료</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <style>
+    body { word-break: keep-all; }
+    .glass { backdrop-filter: blur(16px); }
+    .section-card { border-radius: 1.5rem; border: 1px solid rgba(148, 163, 184, .35); background: rgba(255,255,255,.9); box-shadow: 0 16px 40px -24px rgba(15,23,42,.35); }
+    .dark .section-card { background: rgba(30,41,59,.9); }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 transition-colors dark:bg-slate-950 dark:text-slate-100">
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-white/85 glass dark:border-slate-800 dark:bg-slate-950/85">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
+    <a href="../topic/01-product.html" class="flex items-center gap-3">
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-700 to-sky-400 text-white shadow-lg"><i class="fa-solid fa-layer-group"></i></div>
+      <div>
+        <div class="text-sm font-black tracking-wider text-slate-950 dark:text-white">티아이티 이엔지 Seminar</div>
+        <div class="text-xs font-bold text-sky-600 dark:text-sky-300">Product Presentation</div>
+      </div>
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-bold text-slate-600 dark:text-slate-300 md:flex">
+      <a href="../topic/01-product.html" class="hover:text-sky-600 dark:hover:text-sky-300">Product</a>
+      <a href="../topic/02-github.html" class="hover:text-sky-600 dark:hover:text-sky-300">GitHub</a>
+      <a href="../topic/03-antigravity.html" class="hover:text-sky-600 dark:hover:text-sky-300">Antigravity</a>
+      <a href="../topic/04-codex.html" class="hover:text-sky-600 dark:hover:text-sky-300">Codex</a>
+    </nav>
+    <div class="flex items-center gap-2"><a href="../topic/01-product.html" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"><i class="fa-solid fa-arrow-up"></i><span>Product</span></a><button onclick="toggleTheme()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Theme</button></div>
+  </div>
+</header>
+
+<main>
+  <section class="relative overflow-hidden bg-gradient-to-b from-blue-50 to-slate-50 py-14 dark:from-slate-900 dark:to-slate-950 md:py-20">
+    <div class="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-xs font-black text-sky-700 shadow-sm dark:border-sky-900 dark:bg-slate-900 dark:text-sky-300">
+          <span>Product 04</span>
+          <span class="h-1 w-1 rounded-full bg-slate-300"></span>
+          <span>Canva 연동 예정</span>
+        </div>
+        <h1 class="mt-6 text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-6xl">ACRP 영수증프린터</h1>
+        <p class="mt-5 text-xl font-bold text-sky-700 dark:text-sky-300">카드 리더 기능과 영수증·저널 출력 기능을 결합한 금융자동화 장비</p>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300">ACRP400은 “2 Roll Card Reader And Receipt Printer”로 분류되는 금융자동화 제품입니다. 공개 자료상 IC/MS 카드 Read/Writer와 거래내역 출력 기능이 함께 언급되므로, 발표에서는 카드 처리와 영수증·저널 출력이 결합된 금융 업무용 모듈로 설명하면 됩니다.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="../topic/01-product.html" class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-black text-white shadow-lg hover:bg-sky-700">Product List</a>
+          <a href="#talk" class="rounded-xl border border-slate-300 px-5 py-3 text-sm font-black text-slate-700 hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">5분 발표 흐름</a>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-2xl dark:border-slate-700 dark:bg-slate-800">
+          <div class="flex h-56 items-center justify-center rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-sky-600 text-white">
+            <div class="text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-3xl"><i class="fa-solid fa-microchip"></i></div>
+              <div class="mt-4 text-3xl font-black">ACRP400</div>
+              <div class="mt-2 text-sm font-bold text-sky-100">금융자동화</div>
+            </div>
+          </div>
+          <ul class="mt-6 space-y-3 text-sm leading-6 text-slate-700 dark:text-slate-200"><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>카드 리더와 영수증 출력 기능 결합</span></li><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>금융자동화 장비 내부 모듈로 설명 가능</span></li><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>거래 처리 후 고객용 명세표와 내부 저널 출력 흐름에 적합</span></li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="canva" class="mx-auto mt-10 max-w-7xl px-5">
+    <div class="section-card p-6 dark:border-slate-700 md:p-8">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm font-black text-sky-700 dark:text-sky-300">Canva 연결 영역</p>
+          <h2 class="mt-2 text-2xl font-black text-slate-950 dark:text-white">세로형 Canva 페이지 삽입 예정</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">Canva에서 Website 또는 Scrolling 형식으로 제작한 뒤 embed 코드 또는 공유 링크를 이 영역에 넣으면 됩니다.</p>
+        </div>
+        <a href="#" class="inline-flex items-center justify-center rounded-xl bg-sky-600 px-5 py-3 text-sm font-black text-white hover:bg-sky-700">Canva 링크 삽입 예정</a>
+      </div>
+      <div class="mt-6 flex min-h-[280px] items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-center dark:border-slate-700 dark:bg-slate-900">
+        <div>
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300"><i class="fa-solid fa-object-group text-2xl"></i></div>
+          <p class="mt-4 font-black text-slate-800 dark:text-slate-100">Canva Embed Placeholder</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Canva 공유 메뉴에서 Embed 코드를 복사해 이 박스를 교체</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      <h2 class="text-3xl font-black text-slate-950 dark:text-white">핵심 특징</h2>
+      <div class="mt-6 grid gap-5 md:grid-cols-2"><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">IC 카드와 MS 카드 처리를 포함하는 금융자동화용 장비로 소개할 수 있다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">영수증 출력과 카드 리더 기능이 한 장비 안에 결합된 구조다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">금융권 창구, 자동화기기, 키오스크형 거래 장비와 연결해 설명하기 좋다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">2 Roll 구조는 고객용 명세표와 내부 기록용 저널을 나누어 출력하는 개념으로 설명할 수 있다.</p></div></div>
+    </div>
+    <aside class="section-card p-6 dark:border-slate-700">
+      <h2 class="text-xl font-black text-slate-950 dark:text-white">적용 분야</h2>
+      <ul class="mt-5 space-y-3"><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">금융자동화기기 거래내역 출력</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">카드 기반 업무 처리 장비</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">영수증·저널 동시 관리가 필요한 시스템</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">은행·공공·무인 서비스 단말</li></ul>
+    </aside>
+  </section>
+
+  <section id="talk" class="mx-auto max-w-7xl px-5 pb-12">
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-2xl font-black text-slate-950 dark:text-white">5분 발표 흐름</h2>
+        <div class="mt-6 space-y-4"><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">1</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">사용자 카드 투입 또는 인식</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">2</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">거래 데이터 처리</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">3</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">고객용 영수증 출력</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">4</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">필요 시 내부 저널 기록 출력</div></div></div>
+      </div>
+      <div class="section-card overflow-hidden p-0 dark:border-slate-700">
+        <div class="border-b border-slate-200 bg-slate-100 px-6 py-4 dark:border-slate-700 dark:bg-slate-800/80">
+          <h2 class="text-2xl font-black text-slate-950 dark:text-white">조사 기반 사양 요약</h2>
+        </div>
+        <table class="w-full text-left"><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">Product</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">금융자동화</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">대표 모델</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">ACRP400</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">제품명</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">2 Roll Card Reader And Receipt Printer</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">역할</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">카드 처리와 거래내역 출력 결합</td></tr></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-16">
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-xl font-black text-slate-950 dark:text-white">발표 시 주의할 점</h2>
+        <ul class="mt-4 list-disc space-y-2 pl-5"><li class="text-sm leading-6 text-slate-600 dark:text-slate-300">상세 인터페이스, 출력 방식, 카드 지원 범위는 제품 자료 확보 후 보강한다.</li><li class="text-sm leading-6 text-slate-600 dark:text-slate-300">Canva 구성은 “카드 처리부 + 영수증 출력부 + 적용 장비” 3단 분할이 적합하다.</li></ul>
+      </div>
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-xl font-black text-slate-950 dark:text-white">조사 기준 링크</h2>
+        <ul class="mt-4 space-y-2 text-sm"><li><a href="https://www.komachine.com/ko/companies/t-i-t-eng/products/102442-2-roll-card-reader-and-receipt-printer-card-laminator-series-acrp400" target="_blank" rel="noopener" class="break-all text-sky-700 hover:underline dark:text-sky-300">https://www.komachine.com/ko/companies/t-i-t-eng/products/102442-2-roll-card-reader-and-receipt-printer-card-laminator-series-acrp400</a></li><li><a href="https://www.titeng.co.kr/sub/sub02_01.php?cat_no=1&amp;idx=39&amp;offset=&amp;pmode=view" target="_blank" rel="noopener" class="break-all text-sky-700 hover:underline dark:text-sky-300">https://www.titeng.co.kr/sub/sub02_01.php?cat_no=1&amp;idx=39&amp;offset=&amp;pmode=view</a></li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  function toggleTheme() {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  }
+  if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+</script>
+</body>
+</html>

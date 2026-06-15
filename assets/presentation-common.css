@@ -1,0 +1,49 @@
+body {
+  word-break: keep-all;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.glass {
+  backdrop-filter: blur(16px);
+}
+
+.card-hover {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -8px rgba(2, 132, 199, 0.18);
+}
+
+.section-card {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 40px -24px rgba(15, 23, 42, 0.35);
+}
+
+.dark .section-card {
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.canva-slot {
+  min-height: clamp(260px, 42vw, 520px);
+}

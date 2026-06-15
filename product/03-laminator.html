@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>라미네이터 | 티아이티 이엔지 Product 발표자료</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <style>
+    body { word-break: keep-all; }
+    .glass { backdrop-filter: blur(16px); }
+    .section-card { border-radius: 1.5rem; border: 1px solid rgba(148, 163, 184, .35); background: rgba(255,255,255,.9); box-shadow: 0 16px 40px -24px rgba(15,23,42,.35); }
+    .dark .section-card { background: rgba(30,41,59,.9); }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 transition-colors dark:bg-slate-950 dark:text-slate-100">
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-white/85 glass dark:border-slate-800 dark:bg-slate-950/85">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
+    <a href="../topic/01-product.html" class="flex items-center gap-3">
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-700 to-sky-400 text-white shadow-lg"><i class="fa-solid fa-layer-group"></i></div>
+      <div>
+        <div class="text-sm font-black tracking-wider text-slate-950 dark:text-white">티아이티 이엔지 Seminar</div>
+        <div class="text-xs font-bold text-sky-600 dark:text-sky-300">Product Presentation</div>
+      </div>
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-bold text-slate-600 dark:text-slate-300 md:flex">
+      <a href="../topic/01-product.html" class="hover:text-sky-600 dark:hover:text-sky-300">Product</a>
+      <a href="../topic/02-github.html" class="hover:text-sky-600 dark:hover:text-sky-300">GitHub</a>
+      <a href="../topic/03-antigravity.html" class="hover:text-sky-600 dark:hover:text-sky-300">Antigravity</a>
+      <a href="../topic/04-codex.html" class="hover:text-sky-600 dark:hover:text-sky-300">Codex</a>
+    </nav>
+    <div class="flex items-center gap-2"><a href="../topic/01-product.html" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"><i class="fa-solid fa-arrow-up"></i><span>Product</span></a><button onclick="toggleTheme()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Theme</button></div>
+  </div>
+</header>
+
+<main>
+  <section class="relative overflow-hidden bg-gradient-to-b from-blue-50 to-slate-50 py-14 dark:from-slate-900 dark:to-slate-950 md:py-20">
+    <div class="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-xs font-black text-sky-700 shadow-sm dark:border-sky-900 dark:bg-slate-900 dark:text-sky-300">
+          <span>Product 03</span>
+          <span class="h-1 w-1 rounded-full bg-slate-300"></span>
+          <span>Canva 연동 예정</span>
+        </div>
+        <h1 class="mt-6 text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-6xl">라미네이터</h1>
+        <p class="mt-5 text-xl font-bold text-sky-700 dark:text-sky-300">인쇄된 카드 표면에 보호층을 입혀 내구성과 보안성을 높이는 장비</p>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300">라미네이터는 카드 프린터로 출력된 카드 위에 오버레이 또는 보호 필름을 입혀 카드의 내구성을 높이는 장비입니다. 장기간 사용되는 사원증, 출입증, 금융 카드처럼 마모나 위변조 방지가 중요한 카드 발급 프로세스에서 카드프린터와 함께 설명하면 좋습니다.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="../topic/01-product.html" class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-black text-white shadow-lg hover:bg-sky-700">Product List</a>
+          <a href="#talk" class="rounded-xl border border-slate-300 px-5 py-3 text-sm font-black text-slate-700 hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">5분 발표 흐름</a>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-2xl dark:border-slate-700 dark:bg-slate-800">
+          <div class="flex h-56 items-center justify-center rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-sky-600 text-white">
+            <div class="text-center">
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-3xl"><i class="fa-solid fa-microchip"></i></div>
+              <div class="mt-4 text-3xl font-black">NL-200 / NL200 Series</div>
+              <div class="mt-2 text-sm font-bold text-sky-100">카드프린터 &amp; 라미네이터</div>
+            </div>
+          </div>
+          <ul class="mt-6 space-y-3 text-sm leading-6 text-slate-700 dark:text-slate-200"><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>카드 표면 보호 및 장기 사용성 강화</span></li><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>카드프린터와 연동되는 후처리 장비</span></li><li class="flex gap-3"><span class="mt-2 h-2 w-2 flex-none rounded-full bg-sky-500"></span><span>보안 카드·출입 카드·금융 카드에 적용 가능</span></li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="canva" class="mx-auto mt-10 max-w-7xl px-5">
+    <div class="section-card p-6 dark:border-slate-700 md:p-8">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm font-black text-sky-700 dark:text-sky-300">Canva 연결 영역</p>
+          <h2 class="mt-2 text-2xl font-black text-slate-950 dark:text-white">세로형 Canva 페이지 삽입 예정</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">Canva에서 Website 또는 Scrolling 형식으로 제작한 뒤 embed 코드 또는 공유 링크를 이 영역에 넣으면 됩니다.</p>
+        </div>
+        <a href="#" class="inline-flex items-center justify-center rounded-xl bg-sky-600 px-5 py-3 text-sm font-black text-white hover:bg-sky-700">Canva 링크 삽입 예정</a>
+      </div>
+      <div class="mt-6 flex min-h-[280px] items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-center dark:border-slate-700 dark:bg-slate-900">
+        <div>
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300"><i class="fa-solid fa-object-group text-2xl"></i></div>
+          <p class="mt-4 font-black text-slate-800 dark:text-slate-100">Canva Embed Placeholder</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Canva 공유 메뉴에서 Embed 코드를 복사해 이 박스를 교체</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      <h2 class="text-3xl font-black text-slate-950 dark:text-white">핵심 특징</h2>
+      <div class="mt-6 grid gap-5 md:grid-cols-2"><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">카드 인쇄 후 표면에 보호 필름을 적용하는 후처리 장비다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">잦은 접촉과 마찰이 발생하는 카드의 표면 손상을 줄이는 역할을 한다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">홀로그램·보안 오버레이 같은 보안 요소와 연결해 설명할 수 있다.</p></div><div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"><div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"><i class="fa-solid fa-check"></i></div><p class="text-sm leading-6 text-slate-700 dark:text-slate-200">nuvia 같은 카드프린터와 묶어 카드 발급 전체 공정으로 소개하기 좋다.</p></div></div>
+    </div>
+    <aside class="section-card p-6 dark:border-slate-700">
+      <h2 class="text-xl font-black text-slate-950 dark:text-white">적용 분야</h2>
+      <ul class="mt-5 space-y-3"><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">장기간 사용하는 출입 카드</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">사원증·학생증 내구성 강화</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">금융 카드 및 멤버십 카드 보호</li><li class="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">보안 오버레이 적용 카드</li></ul>
+    </aside>
+  </section>
+
+  <section id="talk" class="mx-auto max-w-7xl px-5 pb-12">
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-2xl font-black text-slate-950 dark:text-white">5분 발표 흐름</h2>
+        <div class="mt-6 space-y-4"><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">1</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">카드 인쇄 완료</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">2</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">라미네이터로 카드 투입</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">3</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">보호 필름 또는 오버레이 적용</div></div><div class="flex items-center gap-4"><div class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-sky-600 text-sm font-black text-white">4</div><div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">완성 카드 배출 및 검수</div></div></div>
+      </div>
+      <div class="section-card overflow-hidden p-0 dark:border-slate-700">
+        <div class="border-b border-slate-200 bg-slate-100 px-6 py-4 dark:border-slate-700 dark:bg-slate-800/80">
+          <h2 class="text-2xl font-black text-slate-950 dark:text-white">조사 기반 사양 요약</h2>
+        </div>
+        <table class="w-full text-left"><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">Product</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">카드프린터 &amp; 라미네이터</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">대표 모델</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">NL-200 / NL200 Series</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">역할</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">카드 표면 보호 및 보안성 보강</td></tr><tr class="border-b border-slate-200 dark:border-slate-700"><th class="w-44 bg-slate-100 px-4 py-3 text-left text-sm font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">발표 포인트</th><td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">인쇄 품질을 오래 유지하기 위한 후처리 장비</td></tr></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-16">
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-xl font-black text-slate-950 dark:text-white">발표 시 주의할 점</h2>
+        <ul class="mt-4 list-disc space-y-2 pl-5"><li class="text-sm leading-6 text-slate-600 dark:text-slate-300">공개 자료상 NL-200 모델명이 확인된다. 세부 필름 종류, 처리 속도, 호환 모델은 추가 자료 확인 후 보강한다.</li><li class="text-sm leading-6 text-slate-600 dark:text-slate-300">Canva 페이지에는 “프린터 출력 → 라미네이팅 → 완성 카드” 흐름을 크게 배치하면 좋다.</li></ul>
+      </div>
+      <div class="section-card p-6 dark:border-slate-700 md:p-8">
+        <h2 class="text-xl font-black text-slate-950 dark:text-white">조사 기준 링크</h2>
+        <ul class="mt-4 space-y-2 text-sm"><li><a href="https://www.komachine.com/ko/companies/t-i-t-eng/products/102439-laminator-card-printer-nl-200" target="_blank" rel="noopener" class="break-all text-sky-700 hover:underline dark:text-sky-300">https://www.komachine.com/ko/companies/t-i-t-eng/products/102439-laminator-card-printer-nl-200</a></li><li><a href="https://www.komachine.com/ko/companies/t-i-t-eng/models" target="_blank" rel="noopener" class="break-all text-sky-700 hover:underline dark:text-sky-300">https://www.komachine.com/ko/companies/t-i-t-eng/models</a></li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  function toggleTheme() {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  }
+  if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+</script>
+</body>
+</html>
