@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITeng Tech Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="articles-data.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        #article-toc a.active {
+            color: #0284c7;
+            font-weight: 700;
+        }
+        .dark #article-toc a.active {
+            color: #38bdf8;
+        }
+
+        /* prose 스타일 */
+        #article-body h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .dark #article-body h3 { color: #f1f5f9; }
+        #article-body h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .dark #article-body h4 { color: #e2e8f0; }
+        #article-body p { margin-bottom: 1rem; line-height: 1.75; }
+        #article-body strong { font-weight: 700; }
+        #article-body code {
+            background: #f1f5f9;
+            padding: 0.1em 0.4em;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+        .dark #article-body code { background: #1e293b; }
+        #article-body pre { margin: 1rem 0; border-radius: 0.75rem; overflow-x: auto; }
+        #article-body pre code { background: transparent; padding: 0; font-size: inherit; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-slate-100 font-sans transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- 헤더 -->
+    <header class="sticky top-0 z-40 bg-white/85 dark:bg-darkBg/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <!-- 로고 + 뒤로가기 -->
+            <a href="../index.html#posts" class="flex items-center space-x-3 group">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-microchip text-white text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-black text-lg tracking-wider text-slate-900 dark:text-white">TITeng</span>
+                    <span class="text-xs block text-primary-600 dark:text-sky-400 font-bold -mt-1">TECH BLOG</span>
+                </div>
+            </a>
+
+            <!-- 브레드크럼 -->
+            <nav class="hidden sm:flex items-center space-x-2 text-xs text-slate-400 dark:text-slate-500 flex-1 min-w-0">
+                <a href="../index.html#posts" class="hover:text-primary-600 dark:hover:text-sky-400 transition whitespace-nowrap">기술 포스트</a>
+                <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                <span id="breadcrumb-title" class="truncate text-slate-600 dark:text-slate-300 font-medium"></span>
+            </nav>
+
+            <!-- 우측 액션 -->
+            <div class="flex items-center space-x-3 shrink-0">
+                <a href="../index.html#posts" class="hidden sm:inline-flex items-center space-x-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-sky-400 transition border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 hover:border-primary-300 dark:hover:border-sky-700">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>목록으로</span>
+                </a>
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition" aria-label="테마 변경">
+                    <i id="theme-icon" class="fa-solid fa-moon text-slate-600 dark:text-yellow-400 text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex gap-8 items-start">
+
+            <!-- 왼쪽 사이드바: TOC + 액션 -->
+            <aside class="hidden lg:flex flex-col w-64 xl:w-72 shrink-0 sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto space-y-6">
+
+                <!-- 뒤로가기 버튼 (사이드바) -->
+                <a href="../index.html#posts" class="flex items-center space-x-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 transition font-bold text-sm">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>목록으로 돌아가기</span>
+                </a>
+
+                <!-- TOC -->
+                <div class="space-y-3">
+                    <span class="text-[10px] font-bold text-primary-600 dark:text-sky-400 tracking-wider uppercase block">Index of Article</span>
+                    <nav class="space-y-1 text-xs" id="article-toc">
+                        <!-- JS에서 동적 생성 -->
+                    </nav>
+                </div>
+
+                <!-- 추천 / 공유 -->
+                <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <span class="text-[10px] text-slate-400 block mb-2 font-semibold">도움이 되셨나요?</span>
+                    <div class="flex space-x-2">
+                        <button onclick="likeArticle(this)" class="flex-1 py-1.5 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-1.5 text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span class="like-label">추천</span>
+                        </button>
+                        <button onclick="shareArticle()" class="flex-1 py-1.5 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-1.5 text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            <span>공유</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 오른쪽: 아티클 본문 -->
+            <div class="flex-grow min-w-0">
+
+                <!-- 아티클이 없을 때 -->
+                <div id="not-found" class="hidden text-center py-24">
+                    <i class="fa-solid fa-file-circle-xmark text-slate-300 dark:text-slate-700 text-6xl mb-6"></i>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium mb-4">요청하신 포스트를 찾을 수 없습니다.</p>
+                    <a href="../index.html#posts" class="text-sm font-bold text-primary-600 hover:underline">기술 포스트 목록으로 돌아가기</a>
+                </div>
+
+                <!-- 아티클 본문 -->
+                <article id="article-container" class="hidden bg-white dark:bg-darkCard rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+
+                    <!-- 아티클 헤더 -->
+                    <div class="px-6 sm:px-10 pt-10 pb-6 border-b border-slate-100 dark:border-slate-800 space-y-3">
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <span id="article-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold"></span>
+                            <span id="article-readtime" class="text-xs text-slate-400"></span>
+                        </div>
+                        <h1 id="article-title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-snug"></h1>
+                        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-1">
+                            <div class="flex items-center space-x-1">
+                                <i class="fa-solid fa-user-pen"></i>
+                                <span id="article-author" class="font-medium text-slate-700 dark:text-slate-300"></span>
+                            </div>
+                            <span>•</span>
+                            <span id="article-date"></span>
+                        </div>
+                        <!-- 태그 -->
+                        <div id="article-tags" class="flex flex-wrap gap-1.5 pt-1"></div>
+                    </div>
+
+                    <!-- 아티클 본문 -->
+                    <div id="article-body" class="px-6 sm:px-10 py-10 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base space-y-4">
+                    </div>
+
+                    <!-- 하단 SDK 다운로드 패널 -->
+                    <div class="mx-6 sm:mx-10 mb-10 p-6 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80">
+                        <h4 class="text-sm font-extrabold text-slate-900 dark:text-slate-100 flex items-center space-x-2 mb-3">
+                            <i class="fa-solid fa-boxes-stacked text-primary-600 dark:text-sky-400"></i>
+                            <span>본문 관련 드라이버 및 가이드</span>
+                        </h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                            이 아티클과 관련해 TITeng 하드웨어 혹은 소프트웨어 SDK를 직접 다운로드하여 프로젝트에 통합하실 수 있습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="downloadSDKFromArticle()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs rounded-lg transition flex items-center space-x-1.5">
+                                <i class="fa-solid fa-download"></i>
+                                <span>연관 SDK 자료 바로 받기</span>
+                            </button>
+                            <a href="../index.html#posts" class="px-4 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold text-xs rounded-lg transition flex items-center space-x-1.5 text-slate-600 dark:text-slate-300">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>기술 포스트 목록</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 모바일 추천/공유 (사이드바 없을 때) -->
+                    <div class="lg:hidden px-6 sm:px-10 pb-10 border-t border-slate-100 dark:border-slate-800 pt-6">
+                        <span class="text-[10px] text-slate-400 block mb-2 font-semibold">도움이 되셨나요?</span>
+                        <div class="flex space-x-2 max-w-xs">
+                            <button onclick="likeArticle(this)" class="flex-1 py-2 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-1.5 text-slate-600 dark:text-slate-300">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span class="like-label">추천</span>
+                            </button>
+                            <button onclick="shareArticle()" class="flex-1 py-2 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-1.5 text-slate-600 dark:text-slate-300">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span>공유</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- 토스트 -->
+    <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-2xl flex items-center space-x-3 border border-slate-800 dark:border-slate-200 text-sm">
+        <i id="toast-icon" class="fa-solid fa-circle-info text-sky-400 dark:text-primary-600 text-lg"></i>
+        <span id="toast-msg">알림 메시지</span>
+    </div>
+
+    <script>
+        // 다크모드 초기화
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') document.documentElement.classList.add('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-yellow-400 text-lg';
+            }
+        })();
+
+        function toggleDarkMode() {
+            const docEl = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (docEl.classList.contains('dark')) {
+                docEl.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                icon.className = 'fa-solid fa-moon text-slate-600 text-lg';
+                showToast('라이트 모드로 전환되었습니다.', 'info');
+            } else {
+                docEl.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                icon.className = 'fa-solid fa-sun text-yellow-400 text-lg';
+                showToast('다크 모드로 전환되었습니다.', 'sun');
+            }
+        }
+
+        // URL에서 id 파라미터 읽기
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = parseInt(urlParams.get('id'), 10);
+        const article = techArticles.find(a => a.id === articleId);
+
+        if (!article) {
+            document.getElementById('not-found').classList.remove('hidden');
+        } else {
+            // 페이지 타이틀
+            document.title = article.title + ' | TITeng Tech Blog';
+
+            // 브레드크럼
+            document.getElementById('breadcrumb-title').innerText = article.title;
+
+            // 아티클 헤더
+            document.getElementById('article-badge').innerText = article.categoryKo;
+            document.getElementById('article-badge').className = `px-2.5 py-0.5 rounded-full text-xs font-bold ${article.badgeClass}`;
+            document.getElementById('article-readtime').innerText = article.readTime;
+            document.getElementById('article-title').innerText = article.title;
+            document.getElementById('article-author').innerText = article.author;
+            document.getElementById('article-date').innerText = article.date;
+
+            // 태그
+            document.getElementById('article-tags').innerHTML = article.tags.map(t =>
+                `<span class="text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded">#${t}</span>`
+            ).join('');
+
+            // 본문
+            const bodyEl = document.getElementById('article-body');
+            bodyEl.innerHTML = article.content;
+
+            // TOC 생성
+            const headings = bodyEl.querySelectorAll('h2, h3, h4');
+            const tocEl = document.getElementById('article-toc');
+            if (headings.length > 0) {
+                tocEl.innerHTML = Array.from(headings).map((h, i) => {
+                    const id = `heading-${i}`;
+                    h.setAttribute('id', id);
+                    const isSubHeading = h.tagName === 'H4';
+                    return `<a href="#${id}" class="block py-1 hover:underline transition ${isSubHeading ? 'text-slate-500 dark:text-slate-400 pl-3' : 'text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-sky-400 font-medium'}">${h.innerText}</a>`;
+                }).join('');
+
+                // 스크롤 시 TOC 활성화
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const id = entry.target.getAttribute('id');
+                        const link = tocEl.querySelector(`a[href="#${id}"]`);
+                        if (link) link.classList.toggle('active', entry.isIntersecting);
+                    });
+                }, { rootMargin: '0px 0px -70% 0px' });
+                headings.forEach(h => observer.observe(h));
+            } else {
+                tocEl.innerHTML = '<span class="text-slate-400 italic text-xs">요약 인덱스 없음</span>';
+            }
+
+            // 아티클 표시
+            document.getElementById('article-container').classList.remove('hidden');
+        }
+
+        // 추천
+        function likeArticle(btn) {
+            const label = btn.querySelector('.like-label');
+            if (btn.classList.contains('border-primary-600')) {
+                btn.className = btn.className.replace(/border-primary-600[\s]*/g, 'border-slate-300 dark:border-slate-700 ')
+                    .replace(/bg-primary-50[\s]*/g, '')
+                    .replace(/dark:bg-primary-950\/30[\s]*/g, '')
+                    .replace(/text-primary-600[\s]*/g, 'text-slate-600 ')
+                    .replace(/dark:text-sky-400[\s]*/g, 'dark:text-slate-300 ');
+                label.innerText = '추천';
+                showToast('추천이 해제되었습니다.', 'thumbs-down');
+            } else {
+                btn.classList.remove('border-slate-300', 'dark:border-slate-700', 'text-slate-600', 'dark:text-slate-300');
+                btn.classList.add('border-primary-600', 'bg-primary-50', 'dark:bg-primary-950/30', 'text-primary-600', 'dark:text-sky-400');
+                label.innerText = '추천완료';
+                showToast('이 기술 문서를 추천했습니다! 연구 부서에 전달됩니다.', 'heart');
+            }
+        }
+
+        // 공유
+        function shareArticle() {
+            const url = window.location.href;
+            copyToClipboard(url);
+            showToast('공유 링크 주소가 클립보드에 복사되었습니다.', 'share');
+        }
+
+        // SDK 다운로드
+        function downloadSDKFromArticle() {
+            const title = document.getElementById('article-title').innerText;
+            showToast(`[다운로드] '${title}' 연계 공식 드라이버 패키지를 탐색 및 전송합니다.`, 'download');
+        }
+
+        // 클립보드
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const el = document.createElement('textarea');
+                el.value = text;
+                el.style.position = 'fixed';
+                document.body.appendChild(el);
+                el.focus();
+                el.select();
+                try { document.execCommand('copy'); } catch(e) {}
+                document.body.removeChild(el);
+            }
+        }
+
+        // 토스트
+        let toastTimeout = null;
+        function showToast(msg, iconName = 'circle-info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            let faIcon = 'fa-circle-info text-sky-400';
+            if (iconName === 'check') faIcon = 'fa-circle-check text-emerald-500';
+            else if (iconName === 'download') faIcon = 'fa-file-arrow-down text-sky-400';
+            else if (iconName === 'heart') faIcon = 'fa-heart text-rose-500';
+            else if (iconName === 'share') faIcon = 'fa-share-nodes text-blue-500';
+            else if (iconName === 'sun') faIcon = 'fa-sun text-amber-400';
+            else if (iconName === 'thumbs-down') faIcon = 'fa-thumbs-down text-slate-400';
+
+            toastIcon.className = `fa-solid ${faIcon} text-lg`;
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>
