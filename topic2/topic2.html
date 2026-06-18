@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 시대의 Git 활용법 with VSCode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f5f4;
+      --surface: #ffffff;
+      --ink: #111111;
+      --soft: #31302e;
+      --muted: #615d59;
+      --line: #e6e6e6;
+      --blue: #0075de;
+      --blue-dark: #005bab;
+      --indigo: #213183;
+      --sky: #62aef0;
+      --purple: #d6b6f6;
+      --pink: #ff64c8;
+      --orange: #dd5b00;
+      --teal: #2a9d99;
+      --green: #1aae39;
+      --red: #e5484d;
+      --shadow: 0 18px 46px rgba(17, 17, 17, 0.10);
+      --mono: "Cascadia Mono", "D2Coding", Consolas, monospace;
+      --font: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --deck-scale: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font);
+      word-break: keep-all;
+      overflow-wrap: normal;
+      line-break: strict;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      place-items: center;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      font-family: inherit;
+    }
+
+    .deck-shell {
+      width: calc(1920px * var(--deck-scale));
+      max-width: none;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: fixed;
+      left: 50%;
+      top: 14px;
+      z-index: 20;
+      width: calc(1920px * var(--deck-scale));
+      transform: translateX(-50%);
+      margin-bottom: 0;
+      padding: 0 18px;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      padding: 8px 12px;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 8px 20px rgba(17, 17, 17, 0.08);
+      color: var(--ink);
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #counter {
+      min-width: 82px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--soft);
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(17, 17, 17, 0.08);
+    }
+
+    .nav button {
+      width: 54px;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 26px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .progress {
+      width: 230px;
+      height: 9px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 8px 20px rgba(17, 17, 17, 0.08);
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: var(--blue);
+      transition: width 180ms ease;
+    }
+
+    .stage-frame {
+      position: relative;
+      width: calc(1920px * var(--deck-scale));
+      height: calc(1080px * var(--deck-scale));
+    }
+
+    .stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      transform: scale(var(--deck-scale));
+      transform-origin: top left;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 76px 92px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: grid;
+    }
+
+    .slide::after {
+      content: attr(data-no);
+      position: absolute;
+      right: 46px;
+      bottom: 36px;
+      color: #a39e98;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .hero {
+      color: #fff;
+      background: linear-gradient(135deg, #10143f 0%, var(--indigo) 54%, #0d5c87 100%);
+    }
+
+    .hero::before,
+    .dark::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 17% 20%, rgba(98, 174, 240, 0.30) 0 2px, transparent 3px),
+        radial-gradient(circle at 76% 28%, rgba(255, 100, 200, 0.24) 0 2px, transparent 3px),
+        radial-gradient(circle at 54% 72%, rgba(26, 174, 57, 0.22) 0 2px, transparent 3px);
+      background-size: 160px 160px, 220px 220px, 190px 190px;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .dark {
+      color: #fff;
+      background: #15183b;
+    }
+
+    .soft {
+      background: var(--paper);
+    }
+
+    .split {
+      grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .center {
+      place-items: center;
+      text-align: center;
+    }
+
+    .stack {
+      align-content: center;
+      gap: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      min-height: 42px;
+      padding: 8px 16px;
+      border: 1px solid rgba(0, 117, 222, 0.24);
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--blue);
+      font-size: 20px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .hero .eyebrow,
+    .dark .eyebrow {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 1180px;
+      font-size: 98px;
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    h2 {
+      max-width: 1260px;
+      font-size: 66px;
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    h3 {
+      font-size: 36px;
+      line-height: 1.28;
+      font-weight: 900;
+    }
+
+    .lead {
+      max-width: 1800px;
+      color: var(--soft);
+      font-size: 32px;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    .hero .lead,
+    .dark .lead {
+      color: rgba(255, 255, 255, 0.80);
+    }
+
+    .bigline {
+      font-size: 88px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .accent {
+      color: var(--blue);
+    }
+
+    .hero .accent,
+    .dark .accent {
+      color: var(--sky);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .cards.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards.stack-cards {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .cards.stack-cards .card {
+      min-height: 150px;
+      padding: 24px 28px;
+    }
+
+    .cards.stack-cards .card strong {
+      font-size: 30px;
+    }
+
+    .cards.stack-cards .card span {
+      font-size: 22px;
+      line-height: 1.42;
+    }
+
+    .card {
+      min-height: 210px;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 10px 22px rgba(17, 17, 17, 0.05);
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-size: 32px;
+      line-height: 1.28;
+      font-weight: 900;
+    }
+
+    .card span,
+    .card p {
+      color: var(--muted);
+      font-size: 24px;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    .dark .card,
+    .hero .card {
+      border-color: rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.10);
+      box-shadow: none;
+    }
+
+    .dark .card strong,
+    .hero .card strong,
+    .dark .card span,
+    .hero .card span,
+    .dark .card p,
+    .hero .card p {
+      color: #fff;
+    }
+
+    .quote {
+      max-width: 1320px;
+      padding-left: 34px;
+      border-left: 10px solid var(--blue);
+      font-size: 56px;
+      line-height: 1.28;
+      font-weight: 900;
+    }
+
+    .list {
+      display: grid;
+      gap: 18px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 32px;
+      line-height: 1.42;
+      font-weight: 700;
+    }
+
+    .list li::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      margin-top: 17px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .dark .list li,
+    .hero .list li {
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .code {
+      display: block;
+      padding: 32px 36px;
+      border-radius: 8px;
+      background: #151515;
+      color: #f7f7f7;
+      font-family: var(--mono);
+      font-size: 30px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 6px 14px;
+      border: 1px solid var(--line);
+      border-bottom-width: 3px;
+      border-radius: 6px;
+      background: var(--surface);
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .image-frame {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: #111;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    }
+
+    .image-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .visual-photo {
+      min-height: 620px;
+      overflow: hidden;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      border-radius: 8px;
+      background: #111;
+      box-shadow: 0 24px 54px rgba(17, 17, 17, 0.18);
+    }
+
+    .visual-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .visual-board {
+      position: relative;
+      min-height: 650px;
+      overflow: hidden;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(0, 117, 222, 0.07) 1px, transparent 1px),
+        linear-gradient(rgba(0, 117, 222, 0.07) 1px, transparent 1px),
+        #fff;
+      background-size: 58px 58px;
+      box-shadow: 0 24px 54px rgba(17, 17, 17, 0.10);
+    }
+
+    .visual-board.dark-panel {
+      border-color: rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(90deg, rgba(98, 174, 240, 0.09) 1px, transparent 1px),
+        linear-gradient(rgba(98, 174, 240, 0.09) 1px, transparent 1px),
+        #161a3d;
+    }
+
+    .visual-chip {
+      position: absolute;
+      min-width: 210px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 900;
+      box-shadow: 0 14px 26px rgba(17, 17, 17, 0.08);
+      white-space: nowrap;
+    }
+
+    .visual-chip small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 700;
+      white-space: normal;
+    }
+
+    .dark-panel .visual-chip {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+    }
+
+    .dark-panel .visual-chip small {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .visual-line {
+      position: absolute;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--blue);
+      transform-origin: left center;
+      box-shadow: 0 0 0 7px rgba(0, 117, 222, 0.12);
+    }
+
+    .visual-line.green {
+      background: var(--green);
+      box-shadow: 0 0 0 7px rgba(26, 174, 57, 0.12);
+    }
+
+    .visual-line.orange {
+      background: var(--orange);
+      box-shadow: 0 0 0 7px rgba(221, 91, 0, 0.12);
+    }
+
+    .visual-line.red {
+      background: var(--red);
+      box-shadow: 0 0 0 7px rgba(229, 72, 77, 0.12);
+    }
+
+    .visual-node {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border: 6px solid #fff;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 6px rgba(0, 117, 222, 0.15);
+    }
+
+    .visual-node.green { background: var(--green); box-shadow: 0 0 0 6px rgba(26, 174, 57, 0.15); }
+    .visual-node.orange { background: var(--orange); box-shadow: 0 0 0 6px rgba(221, 91, 0, 0.15); }
+    .visual-node.red { background: var(--red); box-shadow: 0 0 0 6px rgba(229, 72, 77, 0.15); }
+
+    .concept-board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      min-height: 650px;
+      padding: 34px;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 24px 54px rgba(17, 17, 17, 0.10);
+    }
+
+    .concept-card {
+      display: grid;
+      align-content: start;
+      gap: 14px;
+      min-height: 280px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .concept-card.wide {
+      grid-column: 1 / -1;
+      min-height: 240px;
+    }
+
+    .concept-card b {
+      color: var(--blue);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .concept-card strong {
+      color: var(--ink);
+      font-size: 38px;
+      line-height: 1.16;
+      font-weight: 900;
+    }
+
+    .concept-card span {
+      color: var(--soft);
+      font-size: 24px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .mini-diff {
+      display: grid;
+      gap: 9px;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 22px;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+
+    .mini-diff i {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-style: normal;
+      white-space: nowrap;
+    }
+
+    .mini-diff .add { background: #eaf8ef; color: #157f31; }
+    .mini-diff .del { background: #fff0ef; color: #b53135; }
+    .mini-diff .base { background: #eef6ff; color: #005bab; }
+
+    .branch-board {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 28px;
+      min-height: 650px;
+      padding: 34px;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 24px 54px rgba(17, 17, 17, 0.10);
+    }
+
+    .branch-column {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .branch-lane {
+      min-height: 142px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .branch-lane strong {
+      display: block;
+      color: var(--ink);
+      font-size: 30px;
+      line-height: 1.18;
+      font-weight: 900;
+    }
+
+    .branch-lane span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.42;
+      font-weight: 700;
+    }
+
+    .branch-map {
+      position: relative;
+      min-height: 582px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(0, 117, 222, 0.07) 1px, transparent 1px),
+        linear-gradient(rgba(0, 117, 222, 0.07) 1px, transparent 1px),
+        #fff;
+      background-size: 52px 52px;
+      overflow: hidden;
+    }
+
+    .branch-flow {
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      min-height: 582px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(0, 117, 222, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(0, 117, 222, 0.06) 1px, transparent 1px),
+        #fff;
+      background-size: 52px 52px;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+      min-height: 118px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 20px rgba(17, 17, 17, 0.05);
+    }
+
+    .flow-step em {
+      display: grid;
+      place-items: center;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-style: normal;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .flow-step strong {
+      display: block;
+      color: var(--ink);
+      font-size: 28px;
+      line-height: 1.18;
+      font-weight: 900;
+    }
+
+    .flow-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.36;
+      font-weight: 700;
+    }
+
+    .flow-step.green em { background: var(--green); }
+    .flow-step.orange em { background: var(--orange); }
+    .flow-step.red em { background: var(--red); }
+
+    .branch-layout {
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .branch-layout .branch-board {
+      grid-template-columns: 0.48fr 0.52fr;
+      gap: 18px;
+      min-height: 642px;
+      padding: 24px;
+    }
+
+    .branch-layout .branch-column {
+      gap: 14px;
+    }
+
+    .branch-layout .branch-lane {
+      min-height: 126px;
+      padding: 18px;
+    }
+
+    .branch-layout .branch-lane strong {
+      font-size: 26px;
+    }
+
+    .branch-layout .branch-lane span {
+      font-size: 18px;
+      line-height: 1.34;
+    }
+
+    .branch-layout .branch-flow {
+      min-height: 594px;
+      padding: 18px;
+      gap: 14px;
+    }
+
+    .branch-layout .flow-step {
+      grid-template-columns: 72px minmax(0, 1fr);
+      min-height: 122px;
+      padding: 14px;
+      gap: 14px;
+    }
+
+    .branch-layout .flow-step em {
+      width: 58px;
+      height: 58px;
+      font-size: 22px;
+    }
+
+    .branch-layout .flow-step strong {
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .branch-layout .flow-step span {
+      font-size: 17px;
+      line-height: 1.32;
+    }
+
+    .branch-label {
+      position: absolute;
+      min-width: 196px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: 0 12px 24px rgba(17, 17, 17, 0.08);
+    }
+
+    .branch-label small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .revert-command {
+      display: inline-flex;
+      align-items: center;
+      min-height: 78px;
+      padding: 8px 22px;
+      border: 1px solid var(--line);
+      border-bottom-width: 5px;
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 66px;
+      line-height: 1;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .dense {
+      display: grid;
+      gap: 18px;
+      color: var(--soft);
+      font-size: 25px;
+      line-height: 1.48;
+      font-weight: 700;
+    }
+
+    .dense p {
+      margin: 0;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .note {
+      min-height: 132px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--soft);
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .note b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .term-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .term-card {
+      min-height: 126px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--soft);
+      font-size: 18px;
+      line-height: 1.38;
+      font-weight: 700;
+    }
+
+    .term-card b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .dark .term-card,
+    .hero .term-card {
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.10);
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .dark .term-card b,
+    .hero .term-card b {
+      color: #fff;
+    }
+
+    .browser {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 18px 34px rgba(17, 17, 17, 0.08);
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      background: #f6f5f4;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      background: #ddd;
+    }
+
+    .dot.red { background: #e5484d; }
+    .dot.yellow { background: #ddad00; }
+    .dot.green { background: #1aae39; }
+
+    .fake-ui {
+      display: grid;
+      grid-template-columns: 0.58fr 1fr;
+      gap: 0;
+      height: 360px;
+      background: #171717;
+      color: #e8e8e8;
+    }
+
+    .side {
+      padding: 20px;
+      border-right: 1px solid rgba(255, 255, 255, 0.10);
+      background: #202020;
+    }
+
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .editor {
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .line-add { color: #73daca; }
+    .line-del { color: #ff8f8f; }
+    .line-dim { color: #9da3ad; }
+
+    .graph {
+      position: relative;
+      min-height: 610px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(0, 117, 222, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(0, 117, 222, 0.08) 1px, transparent 1px),
+        #fff;
+      background-size: 42px 42px;
+    }
+
+    .node {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 4px solid #fff;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 117, 222, 0.18);
+    }
+
+    .path {
+      position: absolute;
+      height: 5px;
+      border-radius: 99px;
+      background: var(--blue);
+      transform-origin: left center;
+    }
+
+    .path.green { background: var(--green); }
+    .path.orange { background: var(--orange); }
+    .path.purple { background: #8a55cf; }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 240px;
+      padding: 30px 26px 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .step b {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--ink);
+      font-size: 30px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .step span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .checklist .card {
+      min-height: 340px;
+    }
+
+    .checklist ul {
+      display: grid;
+      gap: 11px;
+      padding: 0;
+      margin: 14px 0 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      color: var(--soft);
+      font-size: 24px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--soft);
+      font-size: 26px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .metric {
+      display: grid;
+      gap: 10px;
+      place-items: center;
+      min-height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .metric .num {
+      color: var(--blue);
+      font-size: 126px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .metric .label {
+      color: var(--soft);
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .footer-note {
+      position: absolute;
+      left: 92px;
+      bottom: 40px;
+      color: #a39e98;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1200px) {
+      body { padding: 0; }
+      .deck-shell {
+        width: calc(1920px * var(--deck-scale));
+      }
+      .topbar { font-size: 16px; }
+      .cards,
+      .cards.two,
+      .workflow,
+      .checklist {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media print {
+      body {
+        display: block;
+        padding: 0;
+        background: #fff;
+      }
+      .topbar {
+        display: none;
+      }
+      .deck-shell {
+        width: 100%;
+      }
+      .stage {
+        transform: none;
+        width: 100%;
+        aspect-ratio: auto;
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .slide {
+        position: relative;
+        display: grid !important;
+        width: 1920px;
+        height: 1080px;
+        page-break-after: always;
+        border: 0;
+      }
+      .stage-frame {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-mark">G</span>
+        <span>AI 시대의 Git 활용법 with VSCode</span>
+      </div>
+      <div class="nav">
+        <button type="button" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+        <span id="counter">1 / 40</span>
+        <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+        <button type="button" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      </div>
+    </div>
+
+    <div class="stage-frame">
+    <main class="stage" id="deck">
+      <section class="slide hero split" data-no="01">
+        <div class="stack">
+          <span class="eyebrow">45분 발표</span>
+          <h1>AI 시대의 Git 활용법<br><span class="accent">with VSCode</span></h1>
+          <p class="lead">AI가 코드를 더 빨리 바꾸는 시대, 개발자는 변경을 이해하고 검토하고 설명해야 합니다.</p>
+          <div class="note-grid">
+            <div class="note"><b>Git</b>변경 이력과 되돌릴 기준점을 남기는 도구입니다.</div>
+            <div class="note"><b>VSCode</b>diff, stage, commit을 눈으로 확인하는 작업대입니다.</div>
+          </div>
+        </div>
+        <div class="image-frame" style="height: 640px;">
+          <img src="assets/vscode-codex-workspace.png" alt="VSCode Git 작업 화면">
+        </div>
+      </section>
+
+      <section class="slide soft stack" data-no="02">
+        <span class="eyebrow">오늘의 질문</span>
+        <h2>AI가 코드를 더 빨리 만들면,<br>우리는 그 코드를 어떻게 믿을까?</h2>
+        <p class="lead">답은 blind trust가 아니라 <span class="accent">Git으로 변경을 통제하는 작업 습관입니다.</span></p>
+        <div class="note-grid">
+          <div class="note"><b>AI는 속도를 올립니다</b>몇 분 안에 여러 파일과 수백 줄을 바꿀 수 있습니다.</div>
+          <div class="note"><b>Git은 판단을 돕습니다</b>무엇이 바뀌었고, 왜 바뀌었고, 되돌릴 수 있는지 확인합니다.</div>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="03">
+        <span class="eyebrow">발표 목표</span>
+        <div class="cards two">
+          <div class="card"><strong>Git을 다시 정의</strong><span>백업 도구가 아니라 변경의 기록, 실험의 경계, 협업의 언어로 이해합니다.</span></div>
+          <div class="card"><strong>VSCode에서 실행</strong><span>Source Control, diff, stage, commit을 실제 작업 흐름으로 연결합니다.</span></div>
+          <div class="card"><strong>AI 결과 검토</strong><span>AI가 만든 변경을 패치로 보고, 필요한 것만 받아들이는 루틴을 만듭니다.</span></div>
+          <div class="card"><strong>협업 가능한 단위</strong><span>브랜치, PR, 커밋 메시지로 팀이 이해할 수 있는 히스토리를 남깁니다.</span></div>
+        </div>
+        <div class="note-grid">
+          <div class="note"><b>발표의 범위</b>모든 Git 명령어를 외우는 시간이 아니라, AI가 만든 변경을 VSCode에서 읽고 통제하는 실무 흐름을 다룹니다.</div>
+          <div class="note"><b>도착점</b>작업 전 상태 확인, 작업 후 diff 검토, 의미 있는 stage, 설명 가능한 commit과 PR까지 이어지는 습관을 만듭니다.</div>
+        </div>
+      </section>
+
+      <section class="slide dark center" data-no="04">
+        <div class="stack">
+          <span class="eyebrow">핵심 결론 미리보기</span>
+          <p class="bigline">AI가 코드를 바꾼 뒤에는<br><span class="accent">반드시 Git diff를 읽자.</span></p>
+          <p class="lead">오늘 발표의 기준은 명령어 암기가 아니라, AI가 만든 변경을 사람이 읽고 통제하는 작업 습관입니다.</p>
+          <div class="term-grid two">
+            <div class="term-card"><b>diff</b>이전 상태와 현재 상태의 차이를 보여주는 화면입니다. 추가된 줄, 삭제된 줄, 바뀐 파일을 함께 봅니다.</div>
+            <div class="term-card"><b>읽는다</b>코드가 그럴듯한지 보는 것이 아니라 요구사항, 예외 처리, 보안, 테스트가 유지됐는지 확인하는 일입니다.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="05">
+        <div class="stack">
+          <span class="eyebrow">Git의 역할 1</span>
+          <h2>Git은 백업 도구가 아니다</h2>
+          <p class="lead">GitHub에 올리는 저장소가 전부가 아닙니다. Git의 진짜 가치는 “왜 이렇게 바뀌었는지”를 남기는 데 있습니다.</p>
+          <div class="dense">
+            <p>백업은 최종 파일을 보존하지만, Git은 변경의 과정과 이유를 보존합니다.</p>
+            <p>AI가 만든 결과를 바로 믿기보다, 변경 단위로 읽고 선택할 수 있어야 합니다.</p>
+          </div>
+        </div>
+        <div class="concept-board" aria-label="Git 역할 설명 보드">
+          <div class="concept-card">
+            <b>01</b>
+            <strong>변경의 기록</strong>
+            <span>최종 파일만 보존하는 것이 아니라, 코드가 언제 왜 바뀌었는지 과정까지 남깁니다.</span>
+            <div class="mini-diff">
+              <i class="base">main: 안정 상태</i>
+              <i class="add">+ 로그인 실패 메시지 표시</i>
+            </div>
+          </div>
+          <div class="concept-card">
+            <b>02</b>
+            <strong>실험의 경계</strong>
+            <span>AI에게 큰 변경을 맡겨도 브랜치와 커밋이 있으면 실패를 관리할 수 있습니다.</span>
+            <div class="mini-diff">
+              <i class="base">checkpoint</i>
+              <i class="del">- 원치 않는 변경은 되돌림</i>
+            </div>
+          </div>
+          <div class="concept-card wide">
+            <b>03</b>
+            <strong>협업의 언어</strong>
+            <span>말로 “대충 고쳤다”가 아니라 diff, commit, PR로 어떤 파일의 어떤 의도가 바뀌었는지 설명합니다. AI 시대에는 이 설명 능력이 코드 작성 능력만큼 중요합니다.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="06">
+        <span class="eyebrow">Git이 관리하는 세 가지</span>
+        <div class="cards">
+          <div class="card"><strong>변경의 기록</strong><span>언제, 왜, 어떻게 바뀌었는지 남깁니다.</span></div>
+          <div class="card"><strong>실험의 경계</strong><span>실패해도 돌아갈 수 있는 지점을 만듭니다.</span></div>
+          <div class="card"><strong>협업의 언어</strong><span>말이 아니라 diff와 PR로 변경을 설명합니다.</span></div>
+        </div>
+        <p class="lead">Git을 잘 쓴다는 것은 저장소에 코드를 올리는 데서 끝나지 않습니다. 작업의 의도를 작게 나누고, 그 단위를 팀이 읽을 수 있게 남기는 것입니다.</p>
+      </section>
+
+      <section class="slide split soft" data-no="07">
+        <div class="metric">
+          <div class="num">30초</div>
+          <div class="label">AI가 200줄을 바꾸는 시간</div>
+        </div>
+        <div class="stack">
+          <span class="eyebrow">AI 시대의 변화</span>
+          <h2>코드 작성 속도보다<br>변경 검토 속도가 중요해진다</h2>
+          <p class="lead">AI는 많은 코드를 빠르게 제안합니다. 개발자는 그 변경이 맞는지 판단해야 합니다.</p>
+          <div class="dense">
+            <p>예전에는 사람이 천천히 고친 코드만 검토하면 됐지만, 이제는 AI가 만든 대량 변경을 짧은 시간 안에 판별해야 합니다.</p>
+            <p>그래서 작업의 중심은 “많이 작성하기”에서 “잘 나누고, 잘 읽고, 잘 되돌리기”로 이동합니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="08">
+        <span class="eyebrow">겉으로 멀쩡해 보이는 코드의 위험</span>
+        <ul class="list">
+          <li>기존 비즈니스 규칙을 놓쳤을 수 있습니다.</li>
+          <li>테스트는 통과하지만 실제 사용 흐름에서 깨질 수 있습니다.</li>
+          <li>보안상 위험한 처리를 넣었을 수 있습니다.</li>
+          <li>프로젝트 스타일과 다른 방식을 섞었을 수 있습니다.</li>
+          <li>필요 이상으로 많은 파일을 수정했을 수 있습니다.</li>
+        </ul>
+        <div class="note-grid">
+          <div class="note"><b>검토 비용의 이동</b>AI가 작성 시간을 줄여도, 변경을 이해하고 검증하는 시간은 사라지지 않습니다. 오히려 변경량이 늘면 더 중요해집니다.</div>
+          <div class="note"><b>판단 기준</b>“코드가 그럴듯한가”보다 “요구사항, 예외 처리, 보안, 테스트, 프로젝트 관례를 지켰는가”를 봐야 합니다.</div>
+        </div>
+      </section>
+
+      <section class="slide dark stack" data-no="09">
+        <span class="eyebrow">오늘의 네 가지 원칙</span>
+        <div class="cards two">
+          <div class="card"><strong>작게 바꾸고 자주 커밋한다</strong><span>검토 가능한 단위를 유지합니다.</span></div>
+          <div class="card"><strong>AI 변경은 diff로 확인한다</strong><span>결과물이 아니라 제안된 패치로 봅니다.</span></div>
+          <div class="card"><strong>실험은 브랜치에서 한다</strong><span>main은 안정적인 공간으로 남깁니다.</span></div>
+          <div class="card"><strong>커밋 메시지는 설명이다</strong><span>미래의 나와 팀원을 위해 씁니다.</span></div>
+        </div>
+        <p class="lead">이 네 가지는 서로 연결됩니다. 작은 요청은 작은 diff를 만들고, 작은 diff는 좋은 커밋이 되며, 좋은 커밋은 리뷰 가능한 PR로 이어집니다.</p>
+      </section>
+
+      <section class="slide split" data-no="10">
+        <div class="stack">
+          <span class="eyebrow">VSCode Git 기본기</span>
+          <h2>Source Control 패널은<br>매일 보는 대시보드다</h2>
+          <p class="lead">AI 작업 후에는 가장 먼저 변경된 파일 목록을 확인합니다.</p>
+          <div class="dense">
+            <p>파일 상태 목록은 “AI가 어디까지 손댔는지” 보여주는 첫 번째 신호입니다.</p>
+            <p>의도하지 않은 설정 파일, 새 파일, 삭제 파일이 보이면 커밋 전에 반드시 멈춰야 합니다.</p>
+          </div>
+        </div>
+        <div class="visual-photo">
+          <img src="assets/vscode-codex-workspace.png" alt="VSCode Source Control 화면">
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="11">
+        <span class="eyebrow">파일 상태 읽기</span>
+        <h2>Source Control의 글자는 변경 상태를 알려주는 표지판입니다</h2>
+        <div class="term-grid">
+          <div class="term-card"><b>M: Modified</b>Git이 이미 추적하던 파일의 내용이 바뀐 상태입니다. diff를 열어 의도한 줄만 바뀌었는지 확인합니다.</div>
+          <div class="term-card"><b>U: Untracked</b>Git이 아직 추적하지 않는 새 파일입니다. `.env`, 임시 로그, 로컬 설정처럼 커밋하면 안 되는 파일이 섞일 수 있습니다.</div>
+          <div class="term-card"><b>A: Added</b>새 파일이 이번 커밋 후보로 stage된 상태입니다. 정말 저장소에 들어가야 하는 새 파일인지 확인합니다.</div>
+          <div class="term-card"><b>D: Deleted</b>추적 중이던 파일이 삭제된 상태입니다. AI가 테스트, 설정, 예외 처리 파일을 지운 것은 아닌지 반드시 봅니다.</div>
+        </div>
+        <p class="lead">핵심은 상태 글자를 외우는 것이 아니라, 각 상태가 “커밋 전 확인해야 할 질문”을 만든다는 점입니다.</p>
+      </section>
+
+      <section class="slide split soft" data-no="12">
+        <div class="stack">
+          <span class="eyebrow">Diff 보기</span>
+          <h2>AI 결과를 믿기 전에<br>변경 자체를 읽는다</h2>
+          <p class="lead">초록색 추가만 보지 말고, 빨간색 삭제를 더 조심해서 봅니다.</p>
+          <div class="dense">
+            <p>AI가 만든 코드는 “완성품”이 아니라 “제안된 패치”입니다.</p>
+            <p>패치는 적용하기 전에 읽어야 하고, diff는 그 패치를 가장 정확하게 보여주는 화면입니다.</p>
+          </div>
+        </div>
+        <pre class="code"><span class="line-del">- if (!user.hasPermission) return deny()</span>
+<span class="line-add">+ return allow()</span>
+
+<span class="line-add">+ showLoginError(message)</span>
+<span class="line-dim">  trackLoginAttempt()</span></pre>
+      </section>
+
+      <section class="slide stack" data-no="13">
+        <span class="eyebrow">Diff에서 확인할 것</span>
+        <ul class="list">
+          <li>요구사항과 관련 있는 변경인가?</li>
+          <li>기존 로직을 실수로 지우지 않았는가?</li>
+          <li>파일 위치와 함수 이름이 프로젝트 관례에 맞는가?</li>
+          <li>에러 처리와 예외 상황이 빠지지 않았는가?</li>
+          <li>테스트 코드도 함께 바뀌었는가?</li>
+        </ul>
+        <p class="lead">특히 삭제된 코드는 추가된 코드보다 더 위험할 수 있습니다. 권한 체크, 예외 처리, 로그, 테스트가 사라졌다면 기능이 깔끔해진 것이 아니라 안전장치가 빠진 것일 수 있습니다.</p>
+      </section>
+
+      <section class="slide split" data-no="14">
+        <div class="stack">
+          <span class="eyebrow">Stage</span>
+          <h2>Stage는 이번 커밋에 담을 변경을 고르는 장바구니다</h2>
+          <p class="lead">AI가 여러 파일을 바꿨다면, 의미 있는 단위로 나누어 stage합니다.</p>
+          <div class="dense">
+            <p>Git의 commit은 작업 폴더 전체를 무조건 저장하는 것이 아니라, staging area에 올려둔 변경의 스냅샷을 기록합니다.</p>
+            <p>따라서 stage는 단순한 중간 단계가 아니라 “이번 커밋의 범위와 의미를 정하는 편집 과정”입니다.</p>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="card"><strong>로그인 버그</strong><span>요구사항과 직접 관련된 변경이므로 이번 커밋에 포함합니다.</span></div>
+          <div class="card"><strong>README 문구</strong><span>동작 변경과 목적이 다르므로 문서 커밋으로 분리합니다.</span></div>
+          <div class="card"><strong>임시 로그</strong><span>검토와 실행 중 필요했던 흔적은 커밋 전에 제거합니다.</span></div>
+        </div>
+      </section>
+
+      <section class="slide soft stack" data-no="15">
+        <span class="eyebrow">Partial staging</span>
+        <h2>한 파일 안에서도<br>일부 변경만 커밋할 수 있다</h2>
+        <p class="lead">VSCode diff 화면에서 특정 변경 블록만 stage하면 히스토리가 훨씬 읽기 쉬워집니다.</p>
+        <div class="note-grid">
+          <div class="note"><b>AI 변경 분리</b>AI가 로그인 코드와 README를 동시에 고쳤다면, 로그인 수정만 먼저 stage하고 문서 수정은 별도 커밋으로 분리합니다.</div>
+          <div class="note"><b>임시 작업 제외</b>디버깅 로그, 실험 코드, 포맷팅 변경은 실제 수정 커밋에 섞이지 않게 제거하거나 따로 처리합니다.</div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="16">
+        <div class="stack">
+          <span class="eyebrow">Commit</span>
+          <h2>Commit은 저장이 아니라 설명이다</h2>
+          <p class="lead">나중에 문제가 생겼을 때 메시지만 봐도 의도를 알 수 있어야 합니다.</p>
+          <div class="dense">
+            <p>Git의 commit은 나중에 비교하거나 되돌릴 수 있는 프로젝트 스냅샷입니다.</p>
+            <p>메시지가 부실하면 스냅샷은 남아도 “왜 그 상태가 필요했는지”라는 맥락은 사라집니다.</p>
+          </div>
+        </div>
+        <div class="cards two">
+          <div class="card"><strong>나쁜 예</strong><span>update<br>fix<br>수정<br>작업<br><br>문제가 생겼을 때 어떤 변경인지 추적하기 어렵습니다.</span></div>
+          <div class="card"><strong>좋은 예</strong><span>fix: 만료 세션 리다이렉트 오류 수정<br><br>문제 상황과 수정 의도가 함께 드러납니다.</span></div>
+        </div>
+      </section>
+
+      <section class="slide dark center" data-no="17">
+        <div class="stack">
+          <span class="eyebrow">전환점</span>
+          <p class="bigline">이제 Git을<br><span class="accent">AI 작업의 안전장치</span>로 써봅시다.</p>
+          <p class="lead">안전장치라는 말은 AI를 막는다는 뜻이 아닙니다. 변경 범위를 나누고, 확인하고, 필요하면 되돌릴 수 있게 만드는 작업 방식입니다.</p>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="18">
+        <span class="eyebrow">AI 작업 전 체크포인트</span>
+        <h2>먼저 현재 상태를 깨끗하게 만든다</h2>
+        <pre class="code">git status</pre>
+        <p class="lead">이미 작업 중인 변경이 있다면 먼저 커밋하거나 stash하거나 별도 브랜치로 옮깁니다.</p>
+        <div class="dense">
+          <p>내가 직접 만든 변경과 AI가 만든 변경이 섞이면, 나중에 어떤 판단으로 들어간 코드인지 구분하기 어렵습니다.</p>
+          <p>AI에게 일을 맡기기 전의 깨끗한 상태는 되돌아올 수 있는 출발점입니다.</p>
+        </div>
+      </section>
+
+      <section class="slide stack soft" data-no="19">
+        <span class="eyebrow">좋은 흐름</span>
+        <div class="workflow">
+          <div class="step"><b>01</b><strong>상태 확인</strong><span>현재 변경 파일을 확인하고, 이미 작업 중인 내용은 먼저 정리합니다.</span></div>
+          <div class="step"><b>02</b><strong>브랜치 생성</strong><span>AI 실험과 main의 안정 상태를 분리합니다.</span></div>
+          <div class="step"><b>03</b><strong>AI 요청</strong><span>하나의 목적만 가진 작은 요청으로 범위를 제한합니다.</span></div>
+          <div class="step"><b>04</b><strong>Diff 검토</strong><span>파일 목록, 삭제 코드, 테스트를 확인한 뒤 커밋합니다.</span></div>
+        </div>
+        <p class="lead">이 순서는 AI 도구와 상관없이 반복 가능한 체크리스트입니다. 시작점을 깨끗하게 만들고, 실험 공간을 나누고, 결과를 diff로 읽은 뒤에만 히스토리에 남깁니다.</p>
+      </section>
+
+      <section class="slide split" data-no="20">
+        <div class="stack">
+          <span class="eyebrow">요청 범위</span>
+          <h2>AI에게 한 번에 너무 많이 맡기지 않는다</h2>
+          <p class="lead">요청이 커질수록 변경 범위가 커지고, 검토 비용도 커집니다.</p>
+          <div class="dense">
+            <p>좋은 AI 요청은 좋은 커밋처럼 하나의 목적을 가져야 합니다.</p>
+            <p>“전체 개선”보다 “로그인 실패 메시지만 수정”이 검토하기 쉽고 되돌리기도 쉽습니다.</p>
+          </div>
+        </div>
+        <div class="cards two">
+          <div class="card"><strong>나쁜 요청</strong><span>이 프로젝트 리팩터링해줘.</span></div>
+          <div class="card"><strong>좋은 요청</strong><span>UserService의 validation 로직만 별도 함수로 분리해줘. 동작은 바꾸지 마.</span></div>
+        </div>
+      </section>
+
+      <section class="slide soft stack" data-no="21">
+        <span class="eyebrow">AI 요청 원칙</span>
+        <p class="quote">Git 관점에서 좋은 AI 요청은 좋은 커밋 단위와 비슷합니다.</p>
+        <p class="lead">하나의 요청은 하나의 목적을 가져야 합니다.</p>
+        <div class="note-grid">
+          <div class="note"><b>범위 제한</b>수정 파일, 관련 테스트, 바꾸지 말아야 할 동작을 함께 말하면 검토할 diff가 작아집니다.</div>
+          <div class="note"><b>검토 가능성</b>한 번에 많은 것을 맡기면 편해 보이지만, 실제로는 리뷰 비용과 롤백 비용이 커집니다.</div>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="22">
+        <span class="eyebrow">AI 결과 검토 루틴</span>
+        <div class="cards two">
+          <div class="card"><strong>파일 목록</strong><span>의도하지 않은 파일이 바뀌었는지 확인합니다. 설정, 빌드, lock 파일 변경은 특히 이유를 확인합니다.</span></div>
+          <div class="card"><strong>삭제된 코드</strong><span>권한 체크, 예외 처리, 로그, 테스트가 사라졌는지 봅니다. 삭제는 추가보다 더 조용히 문제를 만듭니다.</span></div>
+          <div class="card"><strong>테스트</strong><span>구현에 맞춘 테스트인지, 실제 요구사항을 검증하는 테스트인지 봅니다. 없는 경우 수동 확인 범위를 넓힙니다.</span></div>
+          <div class="card"><strong>직접 실행</strong><span>주요 화면과 흐름을 한 번 확인합니다. 자동화가 통과해도 실제 사용 흐름에서 깨질 수 있습니다.</span></div>
+        </div>
+        <p class="lead">VSCode의 Source Control과 diff 화면은 이 루틴을 한 곳에서 진행하기 위한 작업대입니다.</p>
+      </section>
+
+      <section class="slide split dark" data-no="23">
+        <div class="stack">
+          <span class="eyebrow">검증 명령 예시</span>
+          <h2>눈으로 보고,<br>자동화로 다시 확인한다</h2>
+          <div class="note-grid">
+            <div class="note"><b>test / lint</b>테스트는 동작을, lint는 코드 규칙과 잠재 오류를 확인합니다.</div>
+            <div class="note"><b>dev / 수동 확인</b>개발 서버로 실제 화면과 주요 흐름을 직접 확인합니다.</div>
+          </div>
+        </div>
+        <pre class="code">npm test
+npm run lint
+npm run dev
+
+pytest
+ruff check .</pre>
+      </section>
+
+      <section class="slide split" data-no="24">
+        <div class="stack">
+          <span class="eyebrow">롤백</span>
+          <h2>롤백이 쉬워야<br>실험이 쉬워진다</h2>
+          <p class="lead">실패해도 되돌릴 수 있으면 AI 실험을 더 안전하게 할 수 있습니다.</p>
+          <div class="dense">
+            <p>AI에게 맡긴 작업이 기대와 다르면, 설득하려고 오래 붙잡기보다 변경 단위를 되돌리고 더 작은 요청으로 다시 시작할 수 있어야 합니다.</p>
+            <p>restore, revert, reset은 모두 되돌리는 명령처럼 보이지만 적용 대상과 위험도가 다릅니다.</p>
+          </div>
+        </div>
+        <div class="cards stack-cards">
+          <div class="card"><strong>restore</strong><span>커밋 전 작업 폴더의 파일 변경을 되돌릴 때 씁니다. 아직 히스토리에 남지 않은 실험을 버리는 용도입니다.</span></div>
+          <div class="card"><strong>revert</strong><span>이미 기록된 커밋을 취소하는 새 커밋을 만듭니다. 공유된 브랜치에서 가장 설명하기 쉬운 기본값입니다.</span></div>
+          <div class="card"><strong>reset</strong><span>브랜치가 가리키는 위치를 옮깁니다. 개인 작업 정리에는 유용하지만 공유 브랜치에서는 매우 조심해야 합니다.</span></div>
+        </div>
+      </section>
+
+      <section class="slide soft stack" data-no="25">
+        <span class="eyebrow">초보자에게 안전한 기본값</span>
+        <h2><span class="revert-command">git revert</span>는 공유된 히스토리를 망가뜨리지 않고 되돌립니다.</h2>
+        <div class="note-grid">
+          <div class="note"><b>restore</b>아직 커밋하지 않은 파일 변경을 되돌릴 때 자주 사용합니다.</div>
+          <div class="note"><b>revert</b>이미 공유된 커밋을 취소하는 새 커밋을 만들어, 협업 히스토리를 안전하게 유지합니다.</div>
+        </div>
+      </section>
+
+      <section class="slide dark center" data-no="26">
+        <div class="stack">
+          <span class="eyebrow">브랜치 전략</span>
+          <p class="bigline">브랜치는<br><span class="accent">실험실</span>이다.</p>
+          <p class="lead">main은 안정적인 코드가 있는 공간으로 두고, AI 실험이나 새 기능은 별도 브랜치에서 진행합니다.</p>
+          <div class="term-grid two">
+            <div class="term-card"><b>main</b>팀이 기준으로 삼는 안정 상태입니다. 바로 실험하면 롤백과 리뷰 범위가 흐려집니다.</div>
+            <div class="term-card"><b>작업 브랜치</b>기능, 버그 수정, AI 실험을 분리하는 임시 작업 공간입니다. 실패하면 브랜치 단위로 버릴 수 있습니다.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide branch-layout" data-no="27">
+        <div class="stack">
+          <span class="eyebrow">브랜치 이름 예시</span>
+          <h2>main은 안정 공간,<br>실험은 별도 브랜치</h2>
+          <pre class="code">feature/login-error-message
+fix/session-redirect
+refactor/user-validation
+ai/prototype-search-ui</pre>
+        </div>
+        <div class="branch-board" aria-label="브랜치 전략 보드">
+          <div class="branch-column">
+            <div class="branch-lane">
+              <strong>main</strong>
+              <span>배포 가능하거나 팀이 기준으로 삼는 안정 브랜치입니다.</span>
+            </div>
+            <div class="branch-lane">
+              <strong>feature / fix</strong>
+              <span>기능 추가, 버그 수정처럼 리뷰 가능한 작업 단위를 분리합니다.</span>
+            </div>
+            <div class="branch-lane">
+              <strong>ai / prototype</strong>
+              <span>AI로 실험한 변경을 명확히 구분하고, 필요하면 쉽게 버립니다.</span>
+            </div>
+            <div class="branch-lane">
+              <strong>PR review</strong>
+              <span>실험이 끝나면 diff와 테스트 결과를 설명하는 리뷰 문서로 전환합니다.</span>
+            </div>
+          </div>
+          <div class="branch-flow">
+            <div class="flow-step">
+              <em>1</em>
+              <div><strong>main에서 바로 실험하지 않기</strong><span>안정 상태를 기준점으로 두고 새 브랜치를 만듭니다.</span></div>
+            </div>
+            <div class="flow-step orange">
+              <em>2</em>
+              <div><strong>feature / fix로 목적 분리</strong><span>기능 추가, 버그 수정, 리팩터링을 서로 다른 리뷰 단위로 나눕니다.</span></div>
+            </div>
+            <div class="flow-step green">
+              <em>3</em>
+              <div><strong>ai / prototype으로 실험 표시</strong><span>AI가 만든 실험성 변경은 브랜치 이름만 봐도 구분되게 합니다.</span></div>
+            </div>
+            <div class="flow-step red">
+              <em>4</em>
+              <div><strong>PR에서 설명과 검토로 전환</strong><span>diff, 테스트 결과, 리뷰 포인트를 남겨 협업 가능한 형태로 만듭니다.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide stack soft" data-no="28">
+        <span class="eyebrow">브랜치 생성</span>
+        <h2>VSCode 상태바에서 만들 수도 있고,<br>명령어로 만들 수도 있습니다.</h2>
+        <pre class="code">git switch -c feature/login-error-message</pre>
+        <p class="lead">브랜치는 거창한 기능이 아니라 작업 공간을 분리하는 방법입니다. AI에게 실험적인 수정을 맡길 때 main에서 바로 하지 않는 것만으로도 검토와 롤백이 쉬워집니다.</p>
+      </section>
+
+      <section class="slide stack" data-no="29">
+        <span class="eyebrow">Pull Request</span>
+        <h2>PR은 리뷰 요청이자 설명 문서다</h2>
+        <div class="cards">
+          <div class="card"><strong>무엇을</strong><span>변경했는가. 어떤 파일과 흐름이 영향을 받는가.</span></div>
+          <div class="card"><strong>왜</strong><span>버그 수정인지, 기능 추가인지, 리팩터링인지 이유를 남깁니다.</span></div>
+          <div class="card"><strong>어떻게</strong><span>테스트했는가. 미확인 항목은 미확인으로 남깁니다.</span></div>
+        </div>
+        <div class="note-grid">
+          <div class="note"><b>PR의 본질</b>PR은 main에 합치는 버튼이 아니라, merge 전에 변경을 논의하고 리뷰하는 협업 공간입니다.</div>
+          <div class="note"><b>AI 변경일수록 중요</b>AI가 만든 코드는 작성자가 의도를 직접 경험하지 않았을 수 있으므로, diff 기반 설명과 리뷰 포인트가 더 필요합니다.</div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="30">
+        <div class="stack">
+          <span class="eyebrow">PR 설명 예시</span>
+          <h2>리뷰어가 볼 부분을<br>먼저 알려준다</h2>
+          <div class="dense">
+            <p>좋은 PR 설명은 리뷰어가 전체 코드를 다시 읽지 않아도 변경의 목적과 위험 지점을 빠르게 파악하게 합니다.</p>
+            <p>테스트 결과, 수동 확인, 미확인 항목을 분리해서 쓰면 리뷰 품질이 좋아집니다.</p>
+          </div>
+        </div>
+        <pre class="code">## 변경 내용
+- 로그인 실패 메시지 표시
+- LoginError 컴포넌트 사용
+- 관련 테스트 2개 추가
+
+## 테스트
+- npm test
+- Chrome에서 로그인 실패 흐름 확인
+
+## 리뷰 포인트
+- 에러 메시지 노출 범위 확인</pre>
+      </section>
+
+      <section class="slide soft stack" data-no="31">
+        <span class="eyebrow">AI로 PR 설명 만들기</span>
+        <h2>AI가 쓴 설명도 사실 확인이 필요하다</h2>
+        <p class="lead">AI는 실행하지 않은 테스트를 실행했다고 쓰거나, 실제로 바꾸지 않은 내용을 바꿨다고 말할 수 있습니다.</p>
+        <div class="note-grid">
+          <div class="note"><b>diff 기반으로 제한</b>PR 설명은 현재 diff에서 확인되는 내용만 쓰도록 요청해야 합니다.</div>
+          <div class="note"><b>미확인은 미확인</b>실제로 실행하지 않은 테스트는 “미확인”으로 남겨야 리뷰어가 판단할 수 있습니다.</div>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="32">
+        <span class="eyebrow">좋은 요청 문장</span>
+        <pre class="code">현재 git diff를 기준으로 PR 설명 초안을 작성해줘.
+실제로 확인되지 않은 테스트는 "미확인"으로 표시해줘.
+추측하지 말고 diff에서 확인되는 내용만 써줘.</pre>
+        <p class="lead">AI를 문서화 보조 도구로 쓰는 것은 좋지만, 최종 PR 설명의 책임은 사람에게 있습니다.</p>
+      </section>
+
+      <section class="slide dark center" data-no="33">
+        <div class="stack">
+          <span class="eyebrow">실무 팁</span>
+          <p class="bigline">좋은 히스토리는<br><span class="accent">나중의 디버깅 비용</span>을 줄인다.</p>
+          <p class="lead">히스토리는 단순 로그가 아니라 팀의 기억입니다. 문제를 추적할 때 “왜 이 코드가 들어왔는지”를 알려주는 근거가 됩니다.</p>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="34">
+        <div class="stack">
+          <span class="eyebrow">좋은 커밋 단위</span>
+          <h2>나중에 이 커밋만 되돌려도 의미가 있는가?</h2>
+          <div class="dense">
+            <p>커밋 단위는 작게 쪼갠 작업의 결과이면서, 나중에 문제를 찾는 검색 단위입니다.</p>
+            <p>AI가 여러 일을 한 번에 고쳤다면 사람이 stage를 나누어 커밋 단위를 다시 만들어야 합니다.</p>
+          </div>
+        </div>
+        <ul class="list">
+          <li>로그인 실패 메시지 표시 버그 수정</li>
+          <li>사용자 입력 validation 함수 분리</li>
+          <li>검색 결과 empty state UI 추가</li>
+          <li>결제 API timeout 테스트 추가</li>
+        </ul>
+      </section>
+
+      <section class="slide stack soft" data-no="35">
+        <span class="eyebrow">피해야 할 커밋</span>
+        <div class="cards">
+          <div class="card"><strong>섞인 커밋</strong><span>여러 기능, 리팩터링, 포맷팅이 한 번에 들어감</span></div>
+          <div class="card"><strong>목적이 다른 커밋</strong><span>동작 변경과 코드 정리가 섞임</span></div>
+          <div class="card"><strong>임시 작업 포함</strong><span>임시 로그와 실제 수정이 함께 들어감</span></div>
+        </div>
+        <p class="lead">AI는 종종 “겸사겸사” 많은 것을 고칩니다. 사람이 커밋 단위를 나누지 않으면 히스토리가 빠르게 흐려집니다.</p>
+      </section>
+
+      <section class="slide split" data-no="36">
+        <div class="stack">
+          <span class="eyebrow">커밋 메시지 패턴</span>
+          <h2><span class="kbd">type: summary</span></h2>
+          <p class="lead">type보다 중요한 것은 구체적인 summary입니다.</p>
+          <div class="dense">
+            <p>`fix: bug`처럼 넓은 표현은 나중에 아무 도움이 되지 않습니다.</p>
+            <p>`fix: prevent duplicate payment submission`처럼 문제와 의도가 보이게 써야 합니다.</p>
+          </div>
+        </div>
+        <pre class="code">fix: 만료 세션 리다이렉트 오류 수정
+feat: 검색 결과 없음 화면 추가
+refactor: 사용자 검증 로직 분리
+test: 결제 타임아웃 테스트 추가
+docs: 개발 환경 설정 문서 업데이트</pre>
+      </section>
+
+      <section class="slide stack" data-no="37">
+        <span class="eyebrow">충돌 해결</span>
+        <h2>충돌은 실패가 아니라 대화다</h2>
+        <p class="lead">충돌 해결은 “둘 중 하나 고르기”가 아니라 최종적으로 맞는 코드를 다시 구성하는 일입니다.</p>
+        <div class="tagrow">
+          <span class="tag">Accept Current Change</span>
+          <span class="tag">Accept Incoming Change</span>
+          <span class="tag">Accept Both Changes</span>
+          <span class="tag">Compare Changes</span>
+        </div>
+        <div class="note-grid">
+          <div class="note"><b>버튼을 기계적으로 누르지 않기</b>current와 incoming 중 하나가 항상 정답은 아닙니다. 두 변경을 읽고 최종 코드를 다시 구성합니다.</div>
+          <div class="note"><b>AI에게 맡겨도 최종 diff 확인</b>충돌 해결 과정에서 비즈니스 로직, 권한 체크, 테스트가 사라질 수 있습니다.</div>
+        </div>
+      </section>
+
+      <section class="slide split soft" data-no="38">
+        <div class="stack">
+          <span class="eyebrow">.gitignore와 비밀정보</span>
+          <h2>커밋 전에는 새 파일을 더 조심해서 본다</h2>
+          <p class="lead">AI가 임시 키나 설정 파일을 만들 수 있고, 사용자가 모르고 커밋할 수 있습니다.</p>
+          <div class="dense">
+            <p>`.gitignore`는 Git이 의도적으로 추적하지 않을 파일을 지정하는 장치입니다.</p>
+            <p>팀과 공유해야 하는 ignore 규칙은 저장소 루트의 `.gitignore`에 두고, 개인 도구가 만든 파일은 개인 제외 설정으로 분리하는 편이 좋습니다.</p>
+          </div>
+        </div>
+        <ul class="list">
+          <li>.env 같은 환경변수 파일</li>
+          <li>API key, token, password</li>
+          <li>빌드 결과물과 로컬 캐시</li>
+          <li>공유할 필요 없는 개인 IDE 설정</li>
+        </ul>
+      </section>
+
+      <section class="slide stack" data-no="39">
+        <span class="eyebrow">히스토리는 팀의 기억</span>
+        <h2>좋은 Git 히스토리는 질문에 답합니다</h2>
+        <div class="cards two">
+          <div class="card"><strong>언제 들어왔는가?</strong><span>기능이나 예외 처리가 처음 추가된 시점을 찾고, 관련 PR과 요구사항으로 이어갑니다.</span></div>
+          <div class="card"><strong>왜 필요한가?</strong><span>커밋 메시지와 PR 설명을 통해 당시의 제약, 버그, 결정 이유를 이해합니다.</span></div>
+          <div class="card"><strong>무슨 버그였는가?</strong><span>같은 문제가 반복될 때 과거 수정 방향과 놓친 테스트를 함께 확인할 수 있습니다.</span></div>
+          <div class="card"><strong>어디부터 봐야 하는가?</strong><span>문제가 생겼을 때 전체 코드를 뒤지지 않고 의심 커밋과 변경 범위를 좁힙니다.</span></div>
+        </div>
+        <p class="lead">AI가 코드를 많이 만들어도, 맥락을 보존하는 일은 여전히 사람의 책임입니다.</p>
+      </section>
+
+      <section class="slide stack soft" data-no="40">
+        <span class="eyebrow">마무리 체크리스트</span>
+        <div class="checklist">
+          <div class="card">
+            <strong>AI 작업 전</strong>
+            <ul>
+              <li>Git 상태가 깨끗한가?</li>
+              <li>새 브랜치인가?</li>
+              <li>요청 범위가 작은가?</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>AI 작업 후</strong>
+            <ul>
+              <li>파일 목록을 확인했는가?</li>
+              <li>diff를 직접 읽었는가?</li>
+              <li>테스트나 실행 확인을 했는가?</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>협업 전</strong>
+            <ul>
+              <li>PR 설명이 사실인가?</li>
+              <li>리뷰 포인트가 있는가?</li>
+              <li>커밋 메시지가 구체적인가?</li>
+            </ul>
+          </div>
+        </div>
+        <p class="lead">오늘 내용을 하나로 줄이면 “AI가 만든 결과를 바로 믿지 말고, Git으로 변경을 읽고 선택하자”입니다. Git diff를 읽는 습관이 사고를 줄입니다.</p>
+        <p class="footer-note">결론: AI가 코드를 바꾼 뒤에는 반드시 Git diff를 읽자.</p>
+      </section>
+    </main>
+    </div>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const counter = document.getElementById("counter");
+    const progressBar = document.getElementById("progressBar");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let current = 0;
+
+    function fitDeck() {
+      const viewportW = window.innerWidth;
+      const viewportH = window.innerHeight;
+      const scale = Math.min(viewportW / 1920, viewportH / 1080);
+      document.documentElement.style.setProperty("--deck-scale", String(scale));
+    }
+
+    function showSlide(index) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      location.hash = `slide-${current + 1}`;
+    }
+
+    function next() {
+      showSlide(current + 1);
+    }
+
+    function prev() {
+      showSlide(current - 1);
+    }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+    window.addEventListener("resize", fitDeck);
+    window.addEventListener("orientationchange", fitDeck);
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        next();
+      }
+      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) {
+        event.preventDefault();
+        prev();
+      }
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    const hashMatch = location.hash.match(/slide-(\d+)/);
+    fitDeck();
+    showSlide(hashMatch ? Number(hashMatch[1]) - 1 : 0);
+  </script>
+</body>
+</html>
