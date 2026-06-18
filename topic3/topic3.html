@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -23,6 +23,7 @@
       --text-secondary: #94a3b8;
       --text-muted: #475569;
       --grid-line: rgba(56, 189, 248, 0.06);
+      --font-scale: 1.2;
     }
 
     * {
@@ -109,7 +110,7 @@
       border: none;
       cursor: pointer;
       color: var(--neon-blue);
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1;
       padding: 2px 6px;
       transition: opacity .2s;
@@ -148,7 +149,7 @@
       border: 1px solid var(--bg-border);
       border-radius: 12px;
       padding: 18px 24px;
-      font-size: 13.5px;
+      font-size: 14px;
       line-height: 1.7;
       color: var(--text-secondary);
       opacity: 0;
@@ -167,7 +168,7 @@
 
     #notes-panel strong {
       color: var(--neon-blue);
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: .1em;
       text-transform: uppercase;
       display: block;
@@ -179,7 +180,7 @@
       position: fixed;
       top: 20px;
       right: 24px;
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-muted);
       z-index: 100;
       text-align: right;
@@ -191,7 +192,7 @@
       border: 1px solid var(--bg-border);
       border-radius: 4px;
       padding: 1px 5px;
-      font-size: 10px;
+      font-size: 11px;
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -203,7 +204,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 600;
       letter-spacing: .12em;
       text-transform: uppercase;
@@ -247,7 +248,7 @@
     }
 
     .slide-sub {
-      font-size: 15px;
+      font-size: calc(20px * var(--font-scale));
       color: var(--text-secondary);
       line-height: 1.6;
       font-weight: 400;
@@ -271,7 +272,7 @@
     }
 
     .card-title {
-      font-size: 11px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 700;
       letter-spacing: .1em;
       text-transform: uppercase;
@@ -294,7 +295,7 @@
 
     /* Stat number */
     .stat-num {
-      font-size: clamp(60px, 8vw, 100px);
+      font-size: clamp(calc(60px * var(--font-scale)), 8vw, calc(100px * var(--font-scale)));
       font-weight: 900;
       line-height: 1;
       letter-spacing: -.04em;
@@ -305,7 +306,7 @@
     }
 
     .stat-label {
-      font-size: 13px;
+      font-size: calc(20px * var(--font-scale));
       color: var(--text-secondary);
       margin-top: 6px;
       font-weight: 500;
@@ -318,7 +319,7 @@
       border-radius: 8px;
       padding: 16px 20px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: calc(20px * var(--font-scale));
       line-height: 1.7;
     }
 
@@ -353,13 +354,13 @@
       align-items: center;
       justify-content: center;
       color: var(--cyan);
-      font-size: 22px;
+      font-size: calc(22px * var(--font-scale));
       flex-shrink: 0;
     }
 
     /* Part header */
     .part-badge {
-      font-size: 11px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 700;
       letter-spacing: .18em;
       text-transform: uppercase;
@@ -379,7 +380,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: calc(22px * var(--font-scale));
       flex-shrink: 0;
       background: rgba(56, 189, 248, .12);
       border: 1px solid rgba(56, 189, 248, .25);
@@ -416,7 +417,7 @@
       left: 14px;
       background: var(--bg-deep);
       padding: 0 8px;
-      font-size: 10px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 700;
       letter-spacing: .1em;
       text-transform: uppercase;
@@ -446,7 +447,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 700;
       color: var(--bg-deep);
       flex-shrink: 0;
@@ -457,14 +458,14 @@
     }
 
     .step-body h4 {
-      font-size: 14px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 3px;
     }
 
     .step-body p {
-      font-size: 12.5px;
+      font-size: calc(20px * var(--font-scale));
       color: var(--text-secondary);
       line-height: 1.5;
     }
@@ -485,7 +486,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: calc(20px * var(--font-scale));
       font-weight: 800;
       letter-spacing: .12em;
       color: var(--text-muted);
@@ -519,30 +520,30 @@
       data-note="안녕하세요. 오늘 발표를 맡은 발표자입니다. 첫 번째 세션으로, AI가 바꾼 개발 패러다임의 원리와 로컬 환경의 한계를 극복하는 클라우드 네이티브 IDE에 대해 깊이 있게 알아보겠습니다.">
       <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:820px;">
         <div
-          style="font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:28px; display:flex; align-items:center; gap:10px;">
+          style="font-size: calc(20px * var(--font-scale)); font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:28px; display:flex; align-items:center; gap:10px;">
           <span
             style="width:32px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);display:inline-block;"></span>
           SESSION 01
         </div>
         <h1
-          style="font-size:clamp(34px,4.8vw,64px); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:24px;">
+          style="font-size: clamp(calc(34px * var(--font-scale)), 4.8vw, calc(64px * var(--font-scale))); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:24px;">
           AI 코딩 패러다임과<br>
           <span
             style="background:linear-gradient(90deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">차세대
             클라우드 개발 환경</span>
         </h1>
-        <p style="font-size:18px; color:var(--text-secondary); line-height:1.65; font-weight:400; max-width:600px;">
+        <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.65; font-weight:400; max-width:600px;">
           대화형 개발의 시작과<br>중력에서 해방된 <strong style="color:var(--neon-blue); font-weight:700;">Antigravity IDE</strong>
         </p>
         <div style="margin-top:48px; display:flex; gap:12px; flex-wrap:wrap;">
           <span
-            style="font-size:11px; padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">AI
+            style="font-size: calc(20px * var(--font-scale)); padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">AI
             Coding Paradigm</span>
           <span
-            style="font-size:11px; padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">LLM
+            style="font-size: calc(20px * var(--font-scale)); padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">LLM
             Architecture</span>
           <span
-            style="font-size:11px; padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">Cloud-Native
+            style="font-size: calc(20px * var(--font-scale)); padding:6px 16px; border-radius:20px; border:1px solid var(--bg-border); color:var(--text-muted);">Cloud-Native
             IDE</span>
         </div>
       </div>
@@ -568,39 +569,39 @@
       <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;">
         <div class="card" style="display:flex; gap:18px; align-items:flex-start;">
           <div
-            style="font-size:clamp(36px,4vw,52px); font-weight:900; color:rgba(56,189,248,.2); line-height:1; font-variant-numeric:tabular-nums;">
+            style="font-size: clamp(calc(36px * var(--font-scale)), 4vw, calc(52px * var(--font-scale))); font-weight:900; color:rgba(56,189,248,.2); line-height:1; margin-top:6px;font-variant-numeric:tabular-nums;">
             01</div>
           <div>
-            <h3 style="font-size:16px; font-weight:700; color:var(--neon-blue); margin-bottom:8px;">개발 패러다임 시프트</h3>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">검색·복붙의 종말과 자연어 프롬프팅 모델의 탄생. AI가 개발
+            <h3 style="font-size: calc(40px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:8px;">개발 패러다임 시프트</h3>
+            <p style="font-size: calc(28px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;"><br>검색·복붙의 종말과 자연어 프롬프팅 모델의 탄생. AI가 개발
               인터페이스를 완전히 재정의한 과정.</p>
           </div>
         </div>
         <div class="card" style="display:flex; gap:18px; align-items:flex-start;">
-          <div style="font-size:clamp(36px,4vw,52px); font-weight:900; color:rgba(56,189,248,.2); line-height:1;">02
+          <div style="font-size: clamp(calc(36px * var(--font-scale)), 4vw, calc(52px * var(--font-scale))); font-weight:900; color:rgba(56,189,248,.2); line-height:1; margin-top:6px;">02
           </div>
           <div>
-            <h3 style="font-size:16px; font-weight:700; color:var(--neon-blue); margin-bottom:8px;">LLM 구조와 문맥 제어</h3>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">토큰 예측의 수학적 원리와 Context Window 최적화
+            <h3 style="font-size: calc(40px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:8px;">LLM 구조와 문맥 제어</h3>
+            <p style="font-size: calc(28px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;"><br>토큰 예측의 수학적 원리와 Context Window 최적화
               전략. 환각·보안 위험 관리 방법론.</p>
           </div>
         </div>
         <div class="card" style="display:flex; gap:18px; align-items:flex-start;">
-          <div style="font-size:clamp(36px,4vw,52px); font-weight:900; color:rgba(56,189,248,.2); line-height:1;">03
+          <div style="font-size: clamp(calc(36px * var(--font-scale)), 4vw, calc(52px * var(--font-scale))); font-weight:900; color:rgba(56,189,248,.2); line-height:1; margin-top:6px;">03
           </div>
           <div>
-            <h3 style="font-size:16px; font-weight:700; color:var(--neon-blue); margin-bottom:8px;">레거시 로컬 개발의 한계</h3>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">환경 파편화, Fat Client 과부하, "내 컴에선 됐는데"
+            <h3 style="font-size: calc(40px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:8px;">레거시 로컬 개발의 한계</h3>
+            <p style="font-size: calc(28px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;"><br>환경 파편화, Fat Client 과부하, "내 컴에선 됐는데"
               배포 장애. 로컬 개발의 구조적 한계 진단.</p>
           </div>
         </div>
         <div class="card" style="display:flex; gap:18px; align-items:flex-start;">
-          <div style="font-size:clamp(36px,4vw,52px); font-weight:900; color:rgba(56,189,248,.2); line-height:1;">04
+          <div style="font-size: clamp(calc(36px * var(--font-scale)), 4vw, calc(52px * var(--font-scale))); font-weight:900; color:rgba(56,189,248,.2); line-height:1; margin-top:6px;">04
           </div>
           <div>
-            <h3 style="font-size:16px; font-weight:700; color:var(--neon-blue); margin-bottom:8px;">Antigravity IDE 코어
+            <h3 style="font-size: calc(40px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:8px;">Antigravity IDE 코어
               아키텍처</h3>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">WASM·원격 컨테이너·스냅샷 복구·보안 VPC. 클라우드
+            <p style="font-size: calc(28px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;"><br>WASM·원격 컨테이너·스냅샷 복구·보안 VPC. 클라우드
               IDE의 기술적 뼈대와 기업 도입 전략.</p>
           </div>
         </div>
@@ -615,28 +616,28 @@
         style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; max-width:760px;">
         <div class="part-badge">Part 01 / 04</div>
         <h2
-          style="font-size:clamp(36px,5vw,68px); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
+          style="font-size: clamp(calc(36px * var(--font-scale)), 5vw, calc(68px * var(--font-scale))); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
           개발 패러다임의<br><span
             style="background:linear-gradient(90deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">시프트</span>
         </h2>
-        <p style="font-size:17px; color:var(--text-secondary); line-height:1.7; max-width:520px;">
+        <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.7; max-width:520px;">
           검색과 복사·붙여넣기의 종말,<br>그리고 <strong style="color:var(--text-primary);">자연어 지시(Prompting) 모델</strong>의 탄생
         </p>
         <div style="margin-top:36px; display:flex; gap:24px;">
           <div style="text-align:center;">
             <div
-              style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">
+              style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">
               Before</div>
-            <div style="font-size:22px; filter:grayscale(1) opacity(.4);">🔍</div>
-            <div style="font-size:11px; color:var(--text-muted);">Search & Copy</div>
+            <div style="font-size: calc(22px * var(--font-scale)); filter:grayscale(1) opacity(.4);">🔍</div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">Search & Copy</div>
           </div>
-          <div class="flow-arrow" style="font-size:28px;">→</div>
+          <div class="flow-arrow" style="font-size: calc(28px * var(--font-scale));">→</div>
           <div style="text-align:center;">
             <div
-              style="font-size:11px; color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">
+              style="font-size: calc(20px * var(--font-scale)); color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">
               Now</div>
-            <div style="font-size:22px;">💬</div>
-            <div style="font-size:11px; color:var(--cyan);">Prompt & Converse</div>
+            <div style="font-size: calc(22px * var(--font-scale));">💬</div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--cyan);">Prompt & Converse</div>
           </div>
         </div>
       </div>
@@ -656,23 +657,23 @@
           <div class="card-title" style="color:var(--accent-red);">🕰 Legacy Flow — 맥락 단절</div>
           <div style="display:flex; flex-direction:column; gap:10px;">
             <div class="hl-row" style="background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.12);">
-              <span style="font-size:18px;">❌</span>
-              <span style="font-size:13px; color:var(--text-secondary);">런타임 에러 발생</span>
+              <span style="font-size: calc(20px * var(--font-scale));">❌</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">런타임 에러 발생</span>
             </div>
-            <div style="text-align:center; color:var(--text-muted); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--text-muted); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.12);">
-              <span style="font-size:18px;">🌐</span>
-              <span style="font-size:13px; color:var(--text-secondary);">브라우저 이동 → 구글 검색</span>
+              <span style="font-size: calc(20px * var(--font-scale));">🌐</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">브라우저 이동 → 구글 검색</span>
             </div>
-            <div style="text-align:center; color:var(--text-muted); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--text-muted); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.12);">
-              <span style="font-size:18px;">📑</span>
-              <span style="font-size:13px; color:var(--text-secondary);">탭 10개 오픈 → 코드 복사·붙여넣기</span>
+              <span style="font-size: calc(20px * var(--font-scale));">📑</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">탭 10개 오픈 → 코드 복사·붙여넣기</span>
             </div>
-            <div style="text-align:center; color:var(--text-muted); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--text-muted); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.12);">
-              <span style="font-size:18px;">⚠️</span>
-              <span style="font-size:13px; color:var(--text-secondary);">컨텍스트 유실 · 수동 수정 반복</span>
+              <span style="font-size: calc(20px * var(--font-scale));">⚠️</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">컨텍스트 유실 · 수동 수정 반복</span>
             </div>
           </div>
         </div>
@@ -681,23 +682,23 @@
           <div class="card-title" style="color:var(--accent-green);">⚡ AI-Native Flow — 문맥 유지</div>
           <div style="display:flex; flex-direction:column; gap:10px;">
             <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-              <span style="font-size:18px;">🔴</span>
-              <span style="font-size:13px; color:var(--text-secondary);">런타임 에러 발생</span>
+              <span style="font-size: calc(20px * var(--font-scale));">🔴</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">런타임 에러 발생</span>
             </div>
-            <div style="text-align:center; color:var(--accent-green); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--accent-green); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-              <span style="font-size:18px;">⌨️</span>
-              <span style="font-size:13px; color:var(--text-secondary);">IDE 단축키 → AI 챗봇 즉시 실행</span>
+              <span style="font-size: calc(20px * var(--font-scale));">⌨️</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">IDE 단축키 → AI 챗봇 즉시 실행</span>
             </div>
-            <div style="text-align:center; color:var(--accent-green); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--accent-green); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-              <span style="font-size:18px;">🤖</span>
-              <span style="font-size:13px; color:var(--text-secondary);">에러 로그 자동 전송 → 맞춤 패치</span>
+              <span style="font-size: calc(20px * var(--font-scale));">🤖</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">에러 로그 자동 전송 → 맞춤 패치</span>
             </div>
-            <div style="text-align:center; color:var(--accent-green); font-size:12px;">↓</div>
+            <div style="text-align:center; color:var(--accent-green); font-size: calc(20px * var(--font-scale));">↓</div>
             <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-              <span style="font-size:18px;">✅</span>
-              <span style="font-size:13px; color:var(--text-secondary);">원클릭 적용 · 전체 컨텍스트 보존</span>
+              <span style="font-size: calc(20px * var(--font-scale));">✅</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">원클릭 적용 · 전체 컨텍스트 보존</span>
             </div>
           </div>
         </div>
@@ -743,24 +744,24 @@
             <div class="card-title">무엇이 줄어들었나</div>
             <div style="display:flex; flex-direction:column; gap:12px; margin-top:4px;">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <span style="font-size:13px; color:var(--text-secondary);">반복 코드 타이핑</span>
-                <span style="font-size:13px; font-weight:700; color:var(--accent-red);">−72%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">반복 코드 타이핑</span>
+                <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">−72%</span>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <span style="font-size:13px; color:var(--text-secondary);">문법 오류 디버깅 시간</span>
-                <span style="font-size:13px; font-weight:700; color:var(--accent-red);">−61%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">문법 오류 디버깅 시간</span>
+                <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">−61%</span>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <span style="font-size:13px; color:var(--text-secondary);">API 레퍼런스 조회</span>
-                <span style="font-size:13px; font-weight:700; color:var(--accent-red);">−58%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">API 레퍼런스 조회</span>
+                <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">−58%</span>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <span style="font-size:13px; color:var(--text-secondary);">단순 테스트 코드 작성</span>
-                <span style="font-size:13px; font-weight:700; color:var(--accent-red);">−80%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">단순 테스트 코드 작성</span>
+                <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">−80%</span>
               </div>
             </div>
             <div
-              style="margin-top:16px; padding-top:16px; border-top:1px solid var(--bg-border); font-size:11px; color:var(--text-muted);">
+              style="margin-top:16px; padding-top:16px; border-top:1px solid var(--bg-border); font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">
               Source: GitHub Octoverse Developer Productivity Survey</div>
           </div>
         </div>
@@ -779,20 +780,23 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
           <div class="card" style="border-color:rgba(248,113,113,.2); background:rgba(248,113,113,.04);">
             <div
-              style="font-size:12px; font-weight:700; color:var(--accent-red); margin-bottom:10px; text-transform:uppercase; letter-spacing:.1em;">
+              style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red); margin-bottom:10px; text-transform:uppercase; letter-spacing:.1em;">
               🔴 Before — 분산된 인지 에너지</div>
             <div style="display:flex; flex-direction:column; gap:8px;">
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
                 문법 오류 수정 & 세미콜론 추적</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
                 API 파라미터 순서 확인</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
                 보일러플레이트 반복 타이핑</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:7px 12px; background:rgba(248,113,113,.05); border-radius:6px; border-left:2px solid var(--accent-red);">
                 패키지 버전 호환 확인</div>
             </div>
           </div>
@@ -800,27 +804,30 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
           <div class="card" style="border-color:rgba(52,211,153,.2); background:rgba(52,211,153,.04);">
             <div
-              style="font-size:12px; font-weight:700; color:var(--accent-green); margin-bottom:10px; text-transform:uppercase; letter-spacing:.1em;">
+              style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green); margin-bottom:10px; text-transform:uppercase; letter-spacing:.1em;">
               ✅ After — 고차원 집중 가능</div>
             <div style="display:flex; flex-direction:column; gap:8px;">
               <div
-                style="font-size:13px; color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
                 비즈니스 도메인 논리 설계</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
                 시스템 아키텍처 의사결정</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
                 코드 품질 & 보안 리뷰</div>
+                <br>
               <div
-                style="font-size:13px; color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-primary); padding:7px 12px; background:rgba(52,211,153,.06); border-radius:6px; border-left:2px solid var(--accent-green); font-weight:500;">
                 제품 로드맵 기획 및 실행</div>
             </div>
           </div>
           <div class="card" style="background:rgba(56,189,248,.04); border-color:rgba(56,189,248,.2);">
-            <div style="font-size:14px; font-weight:700; color:var(--neon-blue); margin-bottom:4px;">결과: 개발자는 "엔지니어"로 진화
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:4px;">결과: 개발자는 "엔지니어"로 진화
             </div>
-            <p style="font-size:13px; color:var(--text-secondary);">AI가 Low-level 작업을 흡수함으로써, 개발자는 본질적인 문제 해결에 집중할 수
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">AI가 Low-level 작업을 흡수함으로써, 개발자는 본질적인 문제 해결에 집중할 수
               있습니다.</p>
           </div>
         </div>
@@ -834,16 +841,16 @@
       <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:760px;">
         <div class="part-badge">Part 02 / 04</div>
         <h2
-          style="font-size:clamp(36px,5vw,68px); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
+          style="font-size: clamp(calc(36px * var(--font-scale)), 5vw, calc(68px * var(--font-scale))); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
           LLM 구조와<br><span
             style="background:linear-gradient(90deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">문맥(Context)
             제어</span>
         </h2>
-        <p style="font-size:17px; color:var(--text-secondary); line-height:1.7; max-width:560px;">
+        <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.7; max-width:560px;">
           AI 코딩 엔진의 이면:<br>
           <strong style="color:var(--text-primary);">거대 언어 모델</strong>이 코드를 예측하는 수학적 원리
         </p>
-        <div style="margin-top:36px;" class="code-block" style="font-size:13px; max-width:460px;">
+        <div style="margin-top:36px;" class="code-block" style="font-size: calc(20px * var(--font-scale)); max-width:460px;">
           <span class="cm">// AI가 다음 토큰을 예측하는 원리</span><br>
           P(<span class="at">next_token</span> | <span class="fn">context</span>) = <span
             class="fn">softmax</span>(<span class="str">W</span> · <span class="fn">embed</span>(<span
@@ -877,19 +884,19 @@
             <div class="card-title">확률 계산 흐름</div>
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <div
-                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size:12px; font-weight:600; color:var(--neon-blue);">
+                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--neon-blue);">
                 입력 토큰</div>
               <span style="color:var(--cyan);">→</span>
               <div
-                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size:12px; font-weight:600; color:var(--neon-blue);">
+                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--neon-blue);">
                 Embedding</div>
               <span style="color:var(--cyan);">→</span>
               <div
-                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size:12px; font-weight:600; color:var(--neon-blue);">
+                style="padding:6px 12px; background:rgba(56,189,248,.1); border-radius:6px; font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--neon-blue);">
                 Transformer</div>
               <span style="color:var(--cyan);">→</span>
               <div
-                style="padding:6px 12px; background:rgba(52,211,153,.1); border-radius:6px; font-size:12px; font-weight:600; color:var(--accent-green);">
+                style="padding:6px 12px; background:rgba(52,211,153,.1); border-radius:6px; font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--accent-green);">
                 다음 토큰 ↑확률</div>
             </div>
           </div>
@@ -900,37 +907,37 @@
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
               <div style="display:flex; align-items:center; gap:10px;">
                 <code
-                  style="font-size:12px; color:var(--accent-green); font-family:'JetBrains Mono',monospace; width:80px;">WHERE</code>
+                  style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green); font-family:'JetBrains Mono',monospace; width:80px;">WHERE</code>
                 <div style="flex:1; height:10px; background:var(--bg-border); border-radius:5px; overflow:hidden;">
                   <div
                     style="width:72%; height:100%; background:linear-gradient(90deg,var(--accent-green),rgba(52,211,153,.4)); border-radius:5px;">
                   </div>
                 </div>
-                <span style="font-size:12px; color:var(--accent-green); width:36px;">72%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green); width:36px;">72%</span>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
                 <code
-                  style="font-size:12px; color:var(--text-secondary); font-family:'JetBrains Mono',monospace; width:80px;">JOIN</code>
+                  style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); font-family:'JetBrains Mono',monospace; width:80px;">JOIN</code>
                 <div style="flex:1; height:10px; background:var(--bg-border); border-radius:5px; overflow:hidden;">
                   <div
                     style="width:18%; height:100%; background:var(--bg-border); border-radius:5px; background:rgba(56,189,248,.4);">
                   </div>
                 </div>
-                <span style="font-size:12px; color:var(--text-secondary); width:36px;">18%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:36px;">18%</span>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
                 <code
-                  style="font-size:12px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; width:80px;">LIMIT</code>
+                  style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); font-family:'JetBrains Mono',monospace; width:80px;">LIMIT</code>
                 <div style="flex:1; height:10px; background:var(--bg-border); border-radius:5px; overflow:hidden;">
                   <div style="width:7%; height:100%; background:rgba(56,189,248,.2); border-radius:5px;"></div>
                 </div>
-                <span style="font-size:12px; color:var(--text-muted); width:36px;">7%</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); width:36px;">7%</span>
               </div>
             </div>
           </div>
           <div class="card">
             <div class="card-title">핵심 인사이트</div>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">AI는 코드를 <em
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;">AI는 코드를 <em
                 style="color:var(--neon-blue); font-style:normal; font-weight:600;">"이해"하지 않습니다</em>. 방대한 오픈소스 코드로 학습한
               확률적 패턴 매칭의 결과물입니다. 컨텍스트가 풍부할수록 예측 정확도가 높아집니다.</p>
           </div>
@@ -950,20 +957,20 @@
           <div class="arch-box" data-label="Context Window 구조" style="padding-top:24px;">
             <div style="display:flex; flex-direction:column; gap:8px;">
               <div
-                style="padding:10px; background:rgba(56,189,248,.12); border-radius:6px; border:1px dashed rgba(56,189,248,.3); font-size:12px; color:var(--neon-blue); text-align:center; font-weight:600;">
+                style="padding:10px; background:rgba(56,189,248,.12); border-radius:6px; border:1px dashed rgba(56,189,248,.3); font-size: calc(20px * var(--font-scale)); color:var(--neon-blue); text-align:center; font-weight:600;">
                 System Prompt (지시문)</div>
               <div
-                style="padding:10px; background:rgba(6,182,212,.08); border-radius:6px; border:1px dashed rgba(6,182,212,.3); font-size:12px; color:var(--cyan); text-align:center;">
+                style="padding:10px; background:rgba(6,182,212,.08); border-radius:6px; border:1px dashed rgba(6,182,212,.3); font-size: calc(20px * var(--font-scale)); color:var(--cyan); text-align:center;">
                 @참조 파일 코드 (컨텍스트)</div>
               <div
-                style="padding:10px; background:rgba(56,189,248,.08); border-radius:6px; border:1px dashed rgba(56,189,248,.3); font-size:12px; color:var(--neon-blue); text-align:center;">
+                style="padding:10px; background:rgba(56,189,248,.08); border-radius:6px; border:1px dashed rgba(56,189,248,.3); font-size: calc(20px * var(--font-scale)); color:var(--neon-blue); text-align:center;">
                 대화 히스토리</div>
               <div
-                style="padding:10px; background:rgba(52,211,153,.12); border-radius:6px; border:1px dashed rgba(52,211,153,.3); font-size:12px; color:var(--accent-green); text-align:center; font-weight:600;">
+                style="padding:10px; background:rgba(52,211,153,.12); border-radius:6px; border:1px dashed rgba(52,211,153,.3); font-size: calc(20px * var(--font-scale)); color:var(--accent-green); text-align:center; font-weight:600;">
                 현재 사용자 질문 ← 핵심</div>
             </div>
             <div
-              style="margin-top:10px; padding:8px 12px; background:rgba(251,146,60,.07); border-radius:6px; border:1px solid rgba(251,146,60,.2); font-size:11px; color:var(--accent-orange);">
+              style="margin-top:10px; padding:8px 12px; background:rgba(251,146,60,.07); border-radius:6px; border:1px solid rgba(251,146,60,.2); font-size: calc(20px * var(--font-scale)); color:var(--accent-orange);">
               ⚠️ 토큰 한도 초과 시 이전 대화 자동 소거됨</div>
           </div>
         </div>
@@ -972,34 +979,34 @@
             <div class="card-title">모델별 Context Window 비교</div>
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
               <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:12px; color:var(--text-secondary); width:100px;">GPT-4o</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:100px;">GPT-4o</span>
                 <div style="flex:1; height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div style="width:64%; height:100%; background:linear-gradient(90deg,var(--cyan),var(--neon-blue));">
                   </div>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); width:60px;">128K tok</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); width:60px;">128K tok</span>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:12px; color:var(--text-secondary); width:100px;">Claude 3.7</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:100px;">Claude 3.7</span>
                 <div style="flex:1; height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div style="width:100%; height:100%; background:linear-gradient(90deg,var(--cyan),var(--neon-blue));">
                   </div>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); width:60px;">200K tok</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); width:60px;">200K tok</span>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:12px; color:var(--text-secondary); width:100px;">Gemini 1.5</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:100px;">Gemini 1.5</span>
                 <div style="flex:1; height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div style="width:80%; height:100%; background:rgba(56,189,248,.4);"></div>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); width:60px;">1M tok</span>
+                <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); width:60px;">1M tok</span>
               </div>
             </div>
           </div>
           <div class="warn-box">
-            <div style="font-size:13px; font-weight:700; color:var(--accent-orange); margin-bottom:8px;">⚡ 컨텍스트 노이즈 문제
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-orange); margin-bottom:8px;">⚡ 컨텍스트 노이즈 문제
             </div>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">관련 없는 코드를 무분별하게 넣으면 AI의 집중도가 분산되어
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;">관련 없는 코드를 무분별하게 넣으면 AI의 집중도가 분산되어
               답변 품질이 오히려 저하됩니다. <strong style="color:var(--text-primary);">Signal-to-Noise 비율</strong>을 높이는 것이 핵심입니다.
             </p>
           </div>
@@ -1036,15 +1043,15 @@
           <div class="card" style="border-color:rgba(56,189,248,.2);">
             <div class="card-title">컨텍스트 최적화 체크리스트</div>
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
-              <div class="hl-row"><span>📂</span><span style="font-size:13px; color:var(--text-secondary);"><strong
+              <div class="hl-row"><span>📂</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);"><strong
                     style="color:var(--text-primary);">@file</strong> 로 관련 파일 3~5개 직접 지정</span></div>
-              <div class="hl-row"><span>📁</span><span style="font-size:13px; color:var(--text-secondary);"><strong
+              <div class="hl-row"><span>📁</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);"><strong
                     style="color:var(--text-primary);">@folder</strong> 로 관련 디렉토리 지정</span></div>
-              <div class="hl-row"><span>📋</span><span style="font-size:13px; color:var(--text-secondary);">에러 스택 트레이스
+              <div class="hl-row"><span>📋</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">에러 스택 트레이스
                   전체를 포함</span></div>
-              <div class="hl-row"><span>🎯</span><span style="font-size:13px; color:var(--text-secondary);">기존 코딩 컨벤션 샘플
+              <div class="hl-row"><span>🎯</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">기존 코딩 컨벤션 샘플
                   1개 포함</span></div>
-              <div class="hl-row"><span>✂️</span><span style="font-size:13px; color:var(--text-secondary);">무관한 파일은 과감하게
+              <div class="hl-row"><span>✂️</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">무관한 파일은 과감하게
                   제외</span></div>
             </div>
           </div>
@@ -1066,45 +1073,45 @@
           <div
             style="display:flex; gap:16px; align-items:flex-start; padding:20px; background:rgba(17,24,39,.5); border:1px solid var(--bg-border); border-radius:12px 12px 0 0; border-bottom:none;">
             <div
-              style="width:40px; height:40px; background:rgba(148,163,184,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">
+              style="width:40px; height:40px; background:rgba(148,163,184,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: calc(20px * var(--font-scale)); flex-shrink:0;">
               🖊</div>
             <div>
               <div
-                style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
                 Stage 1 · 2022</div>
-              <div style="font-size:16px; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">줄 단위 자동완성
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-secondary); margin-bottom:4px;">줄 단위 자동완성
                 (Copilot)</div>
-              <div style="font-size:13px; color:var(--text-muted);">다음 줄 코드를 확률적으로 제안. 탭 키로 수락.</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">다음 줄 코드를 확률적으로 제안. 탭 키로 수락.</div>
             </div>
           </div>
           <!-- Stage 2 -->
           <div
             style="display:flex; gap:16px; align-items:flex-start; padding:20px; background:rgba(17,24,39,.7); border:1px solid rgba(56,189,248,.2); border-top:none; border-bottom:none;">
             <div
-              style="width:40px; height:40px; background:rgba(56,189,248,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">
+              style="width:40px; height:40px; background:rgba(56,189,248,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: calc(20px * var(--font-scale)); flex-shrink:0;">
               💬</div>
             <div>
               <div
-                style="font-size:11px; color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
                 Stage 2 · 2023</div>
-              <div style="font-size:16px; font-weight:700; color:var(--neon-blue); margin-bottom:4px;">대화형 챗봇 통합 (Chat
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:4px;">대화형 챗봇 통합 (Chat
                 Mode)</div>
-              <div style="font-size:13px; color:var(--text-secondary);">자연어로 질문→코드 블록 생성. 파일 단위 수정 가능.</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">자연어로 질문→코드 블록 생성. 파일 단위 수정 가능.</div>
             </div>
           </div>
           <!-- Stage 3 -->
           <div
             style="display:flex; gap:16px; align-items:flex-start; padding:20px; background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(6,182,212,.04)); border:1px solid var(--cyan); border-radius:0 0 12px 12px; border-top:none;">
             <div
-              style="width:40px; height:40px; background:linear-gradient(135deg,var(--cyan),var(--neon-blue)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; color:var(--bg-deep);">
+              style="width:40px; height:40px; background:linear-gradient(135deg,var(--cyan),var(--neon-blue)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: calc(20px * var(--font-scale)); flex-shrink:0; color:var(--bg-deep);">
               🤖</div>
             <div>
               <div
-                style="font-size:11px; color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">
                 Stage 3 · 2024~ 현재 주류</div>
-              <div style="font-size:16px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">자율형 에이전트
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:800; color:var(--text-primary); margin-bottom:4px;">자율형 에이전트
                 (Cursor / Windsurf)</div>
-              <div style="font-size:13px; color:var(--text-secondary);">프로젝트 전체 구조 자동 파악 → 멀티 파일 동시 수정 → 자율적 테스트 실행 및 오류
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">프로젝트 전체 구조 자동 파악 → 멀티 파일 동시 수정 → 자율적 테스트 실행 및 오류
                 수정.</div>
             </div>
           </div>
@@ -1122,8 +1129,8 @@
       <div class="two-col" style="flex:1; margin-top:20px;">
         <div style="display:flex; flex-direction:column; gap:14px;">
           <div class="warn-box">
-            <div style="font-size:13px; font-weight:700; color:var(--accent-red); margin-bottom:10px;">실제 발생 사례 패턴</div>
-            <div class="code-block" style="background:#0a0508; border-color:rgba(248,113,113,.2); font-size:12px;">
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red); margin-bottom:10px;">실제 발생 사례 패턴</div>
+            <div class="code-block" style="background:#0a0508; border-color:rgba(248,113,113,.2); font-size: calc(20px * var(--font-scale));">
               <span class="cm">// AI가 생성한 코드 (실행 시 오류)</span><br>
               <span class="kw">import</span> { <span style="color:var(--accent-red);">smartFilter</span> } <span
                 class="kw">from</span> <span class="str">'lodash-extended'</span>;<br>
@@ -1135,7 +1142,7 @@
           </div>
           <div class="card">
             <div class="card-title">환각이 발생하는 이유</div>
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">LLM은 확률적 패턴 생성기이므로, <strong
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.6;">LLM은 확률적 패턴 생성기이므로, <strong
                 style="color:var(--text-primary);">존재하지 않는 API도 그럴듯하게 조합</strong>해 출력합니다. 특히 최신 라이브러리나 마이너 패키지일수록 위험도가
               높습니다.</p>
           </div>
@@ -1145,24 +1152,24 @@
             <div class="card-title" style="color:var(--accent-green);">🛡 환각 방어 전략</div>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px;">
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">🔍</span>
+                <span style="font-size: calc(20px * var(--font-scale));">🔍</span>
                 <div>
-                  <div style="font-size:13px; font-weight:600; color:var(--text-primary);">공식 문서 즉시 교차 검증</div>
-                  <div style="font-size:12px; color:var(--text-muted);">npm, PyPI 등 공식 레지스트리 확인 필수</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--text-primary);">공식 문서 즉시 교차 검증</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">npm, PyPI 등 공식 레지스트리 확인 필수</div>
                 </div>
               </div>
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">🧪</span>
+                <span style="font-size: calc(20px * var(--font-scale));">🧪</span>
                 <div>
-                  <div style="font-size:13px; font-weight:600; color:var(--text-primary);">단위 테스트 즉시 실행</div>
-                  <div style="font-size:12px; color:var(--text-muted);">생성된 코드를 바로 실행해 동작 확인</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--text-primary);">단위 테스트 즉시 실행</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">생성된 코드를 바로 실행해 동작 확인</div>
                 </div>
               </div>
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">📌</span>
+                <span style="font-size: calc(20px * var(--font-scale));">📌</span>
                 <div>
-                  <div style="font-size:13px; font-weight:600; color:var(--text-primary);">버전 고정 명시</div>
-                  <div style="font-size:12px; color:var(--text-muted);">프롬프트에 라이브러리 버전을 명확히 지정</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--text-primary);">버전 고정 명시</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">프롬프트에 라이브러리 버전을 명확히 지정</div>
                 </div>
               </div>
             </div>
@@ -1184,15 +1191,15 @@
           <div class="arch-box" data-label="퍼블릭 LLM 데이터 흐름" style="padding-top:24px;">
             <div style="display:flex; flex-direction:column; gap:8px;">
               <div
-                style="padding:10px; background:rgba(56,189,248,.08); border-radius:6px; font-size:12px; color:var(--neon-blue); text-align:center;">
+                style="padding:10px; background:rgba(56,189,248,.08); border-radius:6px; font-size: calc(20px * var(--font-scale)); color:var(--neon-blue); text-align:center;">
                 개발자 입력 (내부 코드 포함)</div>
-              <div style="text-align:center; color:var(--accent-red); font-size:18px;">↓</div>
+              <div style="text-align:center; color:var(--accent-red); font-size: calc(20px * var(--font-scale));">↓</div>
               <div
-                style="padding:10px; background:rgba(248,113,113,.1); border-radius:6px; border:1px solid rgba(248,113,113,.3); font-size:12px; color:var(--accent-red); text-align:center; font-weight:600;">
+                style="padding:10px; background:rgba(248,113,113,.1); border-radius:6px; border:1px solid rgba(248,113,113,.3); font-size: calc(20px * var(--font-scale)); color:var(--accent-red); text-align:center; font-weight:600;">
                 ⚠️ 퍼블릭 LLM 서버 (외부)</div>
-              <div style="text-align:center; color:var(--accent-red); font-size:18px;">↓</div>
+              <div style="text-align:center; color:var(--accent-red); font-size: calc(20px * var(--font-scale));">↓</div>
               <div
-                style="padding:10px; background:rgba(248,113,113,.07); border-radius:6px; font-size:12px; color:var(--accent-red); text-align:center;">
+                style="padding:10px; background:rgba(248,113,113,.07); border-radius:6px; font-size: calc(20px * var(--font-scale)); color:var(--accent-red); text-align:center;">
                 AI 학습 데이터로 재사용 가능성</div>
             </div>
           </div>
@@ -1202,25 +1209,25 @@
             <div class="card-title" style="color:var(--accent-green);">✅ 기업 보안 솔루션</div>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">🔒</span>
+                <span style="font-size: calc(20px * var(--font-scale));">🔒</span>
                 <div>
-                  <div style="font-size:13px; font-weight:700; color:var(--text-primary);">Zero-Data Retention (ZDR)
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">Zero-Data Retention (ZDR)
                   </div>
-                  <div style="font-size:12px; color:var(--text-muted);">입력 데이터를 서버에 저장하지 않는 기업용 플랜</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">입력 데이터를 서버에 저장하지 않는 기업용 플랜</div>
                 </div>
               </div>
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">🏠</span>
+                <span style="font-size: calc(20px * var(--font-scale));">🏠</span>
                 <div>
-                  <div style="font-size:13px; font-weight:700; color:var(--text-primary);">온프레미스 / 프라이빗 VPC 배포</div>
-                  <div style="font-size:12px; color:var(--text-muted);">모델 자체를 사내 인프라에 격리 운영</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">온프레미스 / 프라이빗 VPC 배포</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">모델 자체를 사내 인프라에 격리 운영</div>
                 </div>
               </div>
               <div class="hl-row" style="background:rgba(52,211,153,.05); border-color:rgba(52,211,153,.12);">
-                <span style="font-size:16px;">📜</span>
+                <span style="font-size: calc(20px * var(--font-scale));">📜</span>
                 <div>
-                  <div style="font-size:13px; font-weight:700; color:var(--text-primary);">AI 사용 정책 수립 의무화</div>
-                  <div style="font-size:12px; color:var(--text-muted);">입력 허용/금지 정보 범위 규정 문서화</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">AI 사용 정책 수립 의무화</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">입력 허용/금지 정보 범위 규정 문서화</div>
                 </div>
               </div>
             </div>
@@ -1236,12 +1243,12 @@
       <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:760px;">
         <div class="part-badge">Part 03 / 04</div>
         <h2
-          style="font-size:clamp(36px,5vw,68px); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
+          style="font-size: clamp(calc(36px * var(--font-scale)), 5vw, calc(68px * var(--font-scale))); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
           레거시 로컬 개발<br><span
             style="background:linear-gradient(90deg,var(--accent-red),var(--accent-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">환경의
             한계</span>
         </h2>
-        <p style="font-size:17px; color:var(--text-secondary); line-height:1.7; max-width:560px;">
+        <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.7; max-width:560px;">
           <em style="color:var(--text-primary); font-style:normal; font-weight:700;">"내 컴퓨터에서는 잘 되는데요?"</em><br>
           왜 로컬 개발 세팅은 늘 고통을 수반하는가?
         </p>
@@ -1262,20 +1269,20 @@
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
               <div
                 style="padding:10px 14px; background:rgba(251,146,60,.06); border-radius:8px; border-left:2px solid var(--accent-orange);">
-                <div style="font-size:13px; font-weight:700; color:var(--text-primary);">🍎 macOS (ARM M-series)</div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:3px;">Rosetta 2 호환 이슈, node-gyp 네이티브 빌드
+                <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">🍎 macOS (ARM M-series)</div>
+                <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:3px;">Rosetta 2 호환 이슈, node-gyp 네이티브 빌드
                   실패</div>
               </div>
               <div
                 style="padding:10px 14px; background:rgba(251,146,60,.06); border-radius:8px; border-left:2px solid var(--accent-orange);">
-                <div style="font-size:13px; font-weight:700; color:var(--text-primary);">🪟 Windows</div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:3px;">경로 구분자 충돌, WSL2 파일 시스템 퍼포먼스 저하
+                <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">🪟 Windows</div>
+                <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:3px;">경로 구분자 충돌, WSL2 파일 시스템 퍼포먼스 저하
                 </div>
               </div>
               <div
                 style="padding:10px 14px; background:rgba(251,146,60,.06); border-radius:8px; border-left:2px solid var(--accent-orange);">
-                <div style="font-size:13px; font-weight:700; color:var(--text-primary);">🐧 Linux (배포판별)</div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:3px;">glibc 버전 불일치, 패키지 관리자 충돌</div>
+                <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">🐧 Linux (배포판별)</div>
+                <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:3px;">glibc 버전 불일치, 패키지 관리자 충돌</div>
               </div>
             </div>
           </div>
@@ -1283,13 +1290,13 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
           <div
             style="background:linear-gradient(135deg,rgba(251,146,60,.08),rgba(251,146,60,.03)); border:1px solid rgba(251,146,60,.2); border-radius:12px; padding:24px; text-align:center;">
-            <div style="font-size:70px; font-weight:900; line-height:1; color:var(--accent-orange);">3<span
-                style="font-size:40px;">일+</span></div>
-            <div style="font-size:14px; color:var(--text-secondary); margin-top:8px; font-weight:500;">평균 신규 입사자 개발 환경
+            <div style="font-size: calc(70px * var(--font-scale)); font-weight:900; line-height:1; color:var(--accent-orange);">3<span
+                style="font-size: calc(40px * var(--font-scale));">일+</span></div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:8px; font-weight:500;">평균 신규 입사자 개발 환경
               세팅 소요 시간</div>
           </div>
           <div class="card">
-            <p style="font-size:13px; color:var(--text-secondary); line-height:1.65;">개발자가 <strong
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.65;">개발자가 <strong
                 style="color:var(--text-primary);">첫 유의미한 커밋</strong>을 하기까지 3~5일이 소요되는 것은 현업에서 흔한 현실입니다. 이 시간은 비즈니스 가치를
               전혀 생산하지 못하는 <strong style="color:var(--accent-orange);">순수 낭비 비용</strong>입니다.</p>
           </div>
@@ -1312,8 +1319,8 @@
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px;">
               <div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span
-                    style="font-size:12px; color:var(--text-secondary);">node_modules 용량</span><span
-                    style="font-size:12px; color:var(--accent-orange);">~800MB / 프로젝트</span></div>
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">node_modules 용량</span><span
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--accent-orange);">~800MB / 프로젝트</span></div>
                 <div style="height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div
                     style="width:80%; height:100%; background:linear-gradient(90deg,var(--accent-orange),rgba(251,146,60,.4));">
@@ -1322,8 +1329,8 @@
               </div>
               <div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span
-                    style="font-size:12px; color:var(--text-secondary);">Docker 컨테이너 RAM 점유</span><span
-                    style="font-size:12px; color:var(--accent-orange);">~4GB+ (MSA 환경)</span></div>
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">Docker 컨테이너 RAM 점유</span><span
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--accent-orange);">~4GB+ (MSA 환경)</span></div>
                 <div style="height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div
                     style="width:75%; height:100%; background:linear-gradient(90deg,var(--accent-red),rgba(248,113,113,.4));">
@@ -1332,8 +1339,8 @@
               </div>
               <div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span
-                    style="font-size:12px; color:var(--text-secondary);">IDE + 분석 도구 CPU</span><span
-                    style="font-size:12px; color:var(--accent-orange);">빌드 시 100%</span></div>
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">IDE + 분석 도구 CPU</span><span
+                    style="font-size: calc(20px * var(--font-scale)); color:var(--accent-orange);">빌드 시 100%</span></div>
                 <div style="height:8px; background:var(--bg-border); border-radius:4px; overflow:hidden;">
                   <div
                     style="width:100%; height:100%; background:linear-gradient(90deg,var(--accent-red),var(--accent-orange));">
@@ -1342,7 +1349,7 @@
               </div>
             </div>
           </div>
-          <div class="code-block" style="border-color:rgba(251,146,60,.2); font-size:12px;">
+          <div class="code-block" style="border-color:rgba(251,146,60,.2); font-size: calc(20px * var(--font-scale));">
             <span class="cm"># MSA 환경 docker-compose 실행 시</span><br>
             $ docker-compose up<br>
             <span style="color:var(--accent-orange);">⚠ CPU: 98%, RAM: 14.2/16GB</span><br>
@@ -1352,10 +1359,10 @@
         <div style="display:flex; flex-direction:column; gap:14px; justify-content:center;">
           <div
             style="text-align:center; padding:28px; background:rgba(251,146,60,.06); border:1px solid rgba(251,146,60,.2); border-radius:12px;">
-            <div style="font-size:64px; line-height:1.1;">🔥</div>
-            <div style="font-size:20px; font-weight:800; color:var(--accent-orange); margin-top:10px;">Fat Client 증후군
+            <div style="font-size: calc(64px * var(--font-scale)); line-height:1.1;">🔥</div>
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:800; color:var(--accent-orange); margin-top:10px;">Fat Client 증후군
             </div>
-            <div style="font-size:13px; color:var(--text-secondary); margin-top:8px; line-height:1.6;">
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:8px; line-height:1.6;">
               개발자 노트북은<br><strong style="color:var(--text-primary);">휴대용 서버실</strong>이 되었다
             </div>
           </div>
@@ -1376,19 +1383,19 @@
             <div style="display:flex; flex-direction:column; gap:10px;">
               <div style="display:flex; gap:12px; align-items:center;">
                 <div
-                  style="flex:1; padding:10px; background:rgba(52,211,153,.08); border-radius:8px; border:1px solid rgba(52,211,153,.2); font-size:12px; text-align:center;">
+                  style="flex:1; padding:10px; background:rgba(52,211,153,.08); border-radius:8px; border:1px solid rgba(52,211,153,.2); font-size: calc(20px * var(--font-scale)); text-align:center;">
                   <div style="color:var(--accent-green); font-weight:700;">개발자 로컬</div>
                   <div style="color:var(--text-muted); margin-top:4px;">Node 20.x<br>PostgreSQL 16</div>
                 </div>
-                <span style="color:var(--accent-red); font-size:20px;">≠</span>
+                <span style="color:var(--accent-red); font-size: calc(20px * var(--font-scale));">≠</span>
                 <div
-                  style="flex:1; padding:10px; background:rgba(248,113,113,.08); border-radius:8px; border:1px solid rgba(248,113,113,.2); font-size:12px; text-align:center;">
+                  style="flex:1; padding:10px; background:rgba(248,113,113,.08); border-radius:8px; border:1px solid rgba(248,113,113,.2); font-size: calc(20px * var(--font-scale)); text-align:center;">
                   <div style="color:var(--accent-red); font-weight:700;">운영 서버 (Prod)</div>
                   <div style="color:var(--text-muted); margin-top:4px;">Node 18.x<br>PostgreSQL 14</div>
                 </div>
               </div>
               <div
-                style="padding:10px; background:rgba(248,113,113,.07); border-radius:8px; text-align:center; font-size:13px; color:var(--accent-red); font-weight:600;">
+                style="padding:10px; background:rgba(248,113,113,.07); border-radius:8px; text-align:center; font-size: calc(20px * var(--font-scale)); color:var(--accent-red); font-weight:600;">
                 🚨 배포 후 즉시 500 Error 발생
               </div>
             </div>
@@ -1397,13 +1404,13 @@
             <div class="card-title">실제 발생 원인 TOP 3</div>
             <div style="display:flex; flex-direction:column; gap:7px; margin-top:4px;">
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-red); background:rgba(248,113,113,.04); border-radius:0 6px 6px 0;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-red); background:rgba(248,113,113,.04); border-radius:0 6px 6px 0;">
                 런타임 버전 미스매치 (Node, Python, JDK)</div>
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-orange); background:rgba(251,146,60,.04); border-radius:0 6px 6px 0;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-orange); background:rgba(251,146,60,.04); border-radius:0 6px 6px 0;">
                 환경 변수 미적용 또는 오타</div>
               <div
-                style="font-size:13px; color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-orange); background:rgba(251,146,60,.04); border-radius:0 6px 6px 0;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); padding:6px 10px; border-left:2px solid var(--accent-orange); background:rgba(251,146,60,.04); border-radius:0 6px 6px 0;">
                 OS별 파일 경로·인코딩 차이</div>
             </div>
           </div>
@@ -1411,11 +1418,11 @@
         <div style="display:flex; flex-direction:column; gap:14px; justify-content:center;">
           <div
             style="padding:28px; background:rgba(248,113,113,.05); border:1px solid rgba(248,113,113,.2); border-radius:12px; text-align:center;">
-            <div style="font-size:48px; font-weight:900; color:var(--accent-red); line-height:1.1;">2<span
-                style="font-size:28px;">시간+</span></div>
-            <div style="font-size:13px; color:var(--text-secondary); margin-top:8px;">배포 당일 평균 장애 대응 시간</div>
+            <div style="font-size: calc(48px * var(--font-scale)); font-weight:900; color:var(--accent-red); line-height:1.1;">2<span
+                style="font-size: calc(28px * var(--font-scale));">시간+</span></div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:8px;">배포 당일 평균 장애 대응 시간</div>
             <div
-              style="margin-top:16px; font-size:14px; font-weight:700; color:var(--text-primary); font-style:italic;">"내
+              style="margin-top:16px; font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary); font-style:italic;">"내
               컴에서는 됐는데..."</div>
           </div>
         </div>
@@ -1429,13 +1436,13 @@
       <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:760px;">
         <div class="part-badge">Part 04 / 04</div>
         <h2
-          style="font-size:clamp(32px,4.5vw,62px); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
+          style="font-size: clamp(calc(32px * var(--font-scale)), 4.5vw, calc(62px * var(--font-scale))); font-weight:900; line-height:1.1; letter-spacing:-.03em; margin-bottom:20px;">
           <span
             style="background:linear-gradient(90deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Antigravity
             IDE</span><br>
           코어 아키텍처
         </h2>
-        <p style="font-size:17px; color:var(--text-secondary); line-height:1.7; max-width:560px;">
+        <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.7; max-width:560px;">
           중력을 거스르는 가벼움:<br>
           <strong style="color:var(--text-primary);">로컬 자원 소모 제로</strong>를 지향하는<br>차세대 클라우드 IDE의 기술적 뼈대
         </p>
@@ -1455,9 +1462,9 @@
           <div class="card-title" style="color:var(--accent-red);">🏋️ Fat Client (기존)</div>
           <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
             <div
-              style="padding:12px; background:rgba(248,113,113,.07); border-radius:8px; border:1px solid rgba(248,113,113,.15); font-size:13px;">
+              style="padding:12px; background:rgba(248,113,113,.07); border-radius:8px; border:1px solid rgba(248,113,113,.15); font-size: calc(20px * var(--font-scale));">
               <div style="color:var(--text-primary); font-weight:700; margin-bottom:6px;">💻 개발자 로컬 노트북</div>
-              <div style="color:var(--text-muted); font-size:12px; line-height:1.6;">
+              <div style="color:var(--text-muted); font-size: calc(20px * var(--font-scale)); line-height:1.6;">
                 ▸ 소스코드 저장<br>
                 ▸ 컴파일·빌드 처리<br>
                 ▸ Docker 컨테이너 실행<br>
@@ -1465,7 +1472,7 @@
                 ▸ IDE 자체 처리
               </div>
             </div>
-            <div style="text-align:center; font-size:13px; color:var(--accent-red); font-weight:600;">→ 고사양 하드웨어 필수 의존
+            <div style="text-align:center; font-size: calc(20px * var(--font-scale)); color:var(--accent-red); font-weight:600;">→ 고사양 하드웨어 필수 의존
             </div>
           </div>
         </div>
@@ -1474,17 +1481,17 @@
           <div class="card-title" style="color:var(--accent-green);">🪶 Thin Client (Antigravity)</div>
           <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
             <div
-              style="padding:12px; background:rgba(52,211,153,.07); border-radius:8px; border:1px solid rgba(52,211,153,.15); font-size:13px;">
+              style="padding:12px; background:rgba(52,211,153,.07); border-radius:8px; border:1px solid rgba(52,211,153,.15); font-size: calc(20px * var(--font-scale));">
               <div style="color:var(--text-primary); font-weight:700; margin-bottom:6px;">📱 개발자 디바이스 (어떤 기기든)</div>
-              <div style="color:var(--text-muted); font-size:12px; line-height:1.6;">
+              <div style="color:var(--text-muted); font-size: calc(20px * var(--font-scale)); line-height:1.6;">
                 ▸ 키보드 입력 전송만<br>
                 ▸ 화면 렌더링만 담당
               </div>
             </div>
             <div
-              style="padding:12px; background:rgba(56,189,248,.07); border-radius:8px; border:1px solid rgba(56,189,248,.15); font-size:13px;">
+              style="padding:12px; background:rgba(56,189,248,.07); border-radius:8px; border:1px solid rgba(56,189,248,.15); font-size: calc(20px * var(--font-scale));">
               <div style="color:var(--neon-blue); font-weight:700; margin-bottom:6px;">☁️ 원격 클라우드 인프라</div>
-              <div style="color:var(--text-muted); font-size:12px; line-height:1.6;">
+              <div style="color:var(--text-muted); font-size: calc(20px * var(--font-scale)); line-height:1.6;">
                 ▸ 소스코드 저장 및 관리<br>
                 ▸ 고성능 컴파일·빌드<br>
                 ▸ 컨테이너 오케스트레이션<br>
@@ -1509,72 +1516,72 @@
         <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:12px; align-items:center;">
           <!-- Browser -->
           <div class="arch-box" data-label="Browser (Client)" style="padding-top:28px; text-align:center;">
-            <div style="font-size:28px; margin-bottom:10px;">🌐</div>
-            <div style="font-size:13px; font-weight:700; color:var(--neon-blue); margin-bottom:8px;">WebAssembly Engine
+            <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:10px;">🌐</div>
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--neon-blue); margin-bottom:8px;">WebAssembly Engine
             </div>
             <div style="display:flex; flex-direction:column; gap:5px;">
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
                 UI 렌더링 (네이티브 속도)</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
                 키 입력 캡처 & 버퍼링</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(56,189,248,.07); border-radius:4px;">
                 낙관적 UI 업데이트</div>
             </div>
           </div>
           <!-- Arrow 1 -->
           <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <span style="color:var(--cyan); font-size:22px;">⇄</span>
+            <span style="color:var(--cyan); font-size: calc(22px * var(--font-scale));">⇄</span>
             <span
-              style="font-size:10px; color:var(--text-muted); text-align:center; white-space:nowrap;">WebSocket<br>TLS
+              style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); text-align:center; white-space:nowrap;">WebSocket<br>TLS
               1.3</span>
           </div>
           <!-- API Gateway -->
           <div class="arch-box" data-label="API Gateway"
             style="padding-top:28px; text-align:center; border-color:var(--cyan);">
-            <div style="font-size:28px; margin-bottom:10px;">🔀</div>
-            <div style="font-size:13px; font-weight:700; color:var(--cyan); margin-bottom:8px;">Load Balancer</div>
+            <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:10px;">🔀</div>
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--cyan); margin-bottom:8px;">Load Balancer</div>
             <div style="display:flex; flex-direction:column; gap:5px;">
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
                 인증 & 권한 검증</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
                 세션 라우팅</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(6,182,212,.07); border-radius:4px;">
                 엣지 리전 최적화</div>
             </div>
           </div>
           <!-- Arrow 2 -->
           <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <span style="color:var(--cyan); font-size:22px;">⇄</span>
+            <span style="color:var(--cyan); font-size: calc(22px * var(--font-scale));">⇄</span>
             <span
-              style="font-size:10px; color:var(--text-muted); text-align:center; white-space:nowrap;">gRPC<br>mTLS</span>
+              style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); text-align:center; white-space:nowrap;">gRPC<br>mTLS</span>
           </div>
           <!-- Remote Container -->
           <div class="arch-box" data-label="Remote Dev Container"
             style="padding-top:28px; text-align:center; border-color:var(--accent-green); background:linear-gradient(135deg,rgba(52,211,153,.05),rgba(52,211,153,.02));">
-            <div style="font-size:28px; margin-bottom:10px;">🐳</div>
-            <div style="font-size:13px; font-weight:700; color:var(--accent-green); margin-bottom:8px;">K8s Dev Pod
+            <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:10px;">🐳</div>
+            <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green); margin-bottom:8px;">K8s Dev Pod
             </div>
             <div style="display:flex; flex-direction:column; gap:5px;">
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
                 파일 시스템 & Git</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
                 빌드 & 테스트 실행</div>
               <div
-                style="font-size:11px; color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); padding:4px 8px; background:rgba(52,211,153,.07); border-radius:4px;">
                 Language Server Protocol</div>
             </div>
           </div>
         </div>
         <div class="card" style="border-color:rgba(56,189,248,.2); background:rgba(56,189,248,.04);">
-          <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; text-align:center;">모든 <strong
+          <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.6; text-align:center;">모든 <strong
               style="color:var(--text-primary);">무거운 연산은 클라우드</strong>에서, 개발자 기기는 <strong
               style="color:var(--neon-blue);">디스플레이 터미널</strong>로만 동작</p>
         </div>
@@ -1623,14 +1630,14 @@
               <div style="width:10px; height:10px; border-radius:50%; background:#ef4444;"></div>
               <div style="width:10px; height:10px; border-radius:50%; background:#eab308;"></div>
               <div style="width:10px; height:10px; border-radius:50%; background:#22c55e;"></div>
-              <span style="font-size:11px; color:var(--text-muted); margin-left:8px;">Antigravity IDE — browser</span>
+              <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-left:8px;">Antigravity IDE — browser</span>
             </div>
-            <div style="padding:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11px;">
+            <div style="padding:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size: calc(20px * var(--font-scale));">
               <div
                 style="background:rgba(56,189,248,.07); border:1px solid rgba(56,189,248,.15); border-radius:6px; padding:10px;">
                 <div style="color:var(--neon-blue); font-weight:600; margin-bottom:6px;">📝 Editor</div>
                 <div
-                  style="height:60px; background:rgba(0,0,0,.3); border-radius:4px; padding:6px; font-family:'JetBrains Mono',monospace; color:var(--text-muted); font-size:10px; line-height:1.5;">
+                  style="height:60px; background:rgba(0,0,0,.3); border-radius:4px; padding:6px; font-family:'JetBrains Mono',monospace; color:var(--text-muted); font-size: calc(20px * var(--font-scale)); line-height:1.5;">
                   <span style="color:#c792ea;">const</span> app = ...<br>
                   <span style="color:#82aaff;">app</span>.listen(<span style="color:#f78c6c;">3000</span>)
                 </div>
@@ -1639,11 +1646,11 @@
                 style="background:rgba(52,211,153,.07); border:1px solid rgba(52,211,153,.15); border-radius:6px; padding:10px;">
                 <div style="color:var(--accent-green); font-weight:600; margin-bottom:6px;">🌐 Preview</div>
                 <div
-                  style="height:60px; background:rgba(0,0,0,.3); border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--accent-green); font-size:12px;">
+                  style="height:60px; background:rgba(0,0,0,.3); border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--accent-green); font-size: calc(20px * var(--font-scale));">
                   ✓ localhost:3000</div>
               </div>
               <div
-                style="grid-column:span 2; background:rgba(0,0,0,.4); border-radius:6px; padding:8px; font-family:'JetBrains Mono',monospace; color:var(--accent-green); font-size:10px; line-height:1.5;">
+                style="grid-column:span 2; background:rgba(0,0,0,.4); border-radius:6px; padding:8px; font-family:'JetBrains Mono',monospace; color:var(--accent-green); font-size: calc(20px * var(--font-scale)); line-height:1.5;">
                 $ npm run dev<br>
                 <span style="color:var(--text-muted);">Server ready on port 3000 ✓</span>
               </div>
@@ -1651,9 +1658,9 @@
           </div>
           <div
             style="text-align:center; padding:14px; background:rgba(52,211,153,.06); border:1px solid rgba(52,211,153,.2); border-radius:10px;">
-            <div style="font-size:32px; font-weight:900; color:var(--accent-green);">3일 → <span
-                style="font-size:20px;">5초</span></div>
-            <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">온보딩 첫 코딩 시작까지</div>
+            <div style="font-size: calc(32px * var(--font-scale)); font-weight:900; color:var(--accent-green);">3일 → <span
+                style="font-size: calc(20px * var(--font-scale));">5초</span></div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:4px;">온보딩 첫 코딩 시작까지</div>
           </div>
         </div>
       </div>
@@ -1669,15 +1676,15 @@
       <div class="two-col" style="flex:1; margin-top:20px;">
         <div style="display:flex; flex-direction:column; gap:14px;">
           <div class="code-block" style="position:relative;">
-            <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">// 실시간 멀티 커서 편집 화면</div>
+            <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-bottom:8px;">// 실시간 멀티 커서 편집 화면</div>
             <span class="kw">async function</span> <span class="fn">processOrder</span>(<span class="at">orderId</span>)
             {<br>
             &nbsp;&nbsp;<span class="kw">const</span> order = <span class="kw">await</span> <span
               class="fn">db</span>.<span class="fn">find</span>(<span class="at">orderId</span>);<br>
             &nbsp;&nbsp;<span style="background:rgba(59,130,246,.25); border-radius:2px;">&nbsp;</span><span
-              style="color:#60a5fa; font-size:11px;">김개발</span><br>
+              style="color:#60a5fa; font-size: calc(20px * var(--font-scale));">김개발</span><br>
             &nbsp;&nbsp;<span style="background:rgba(168,85,247,.25); border-radius:2px;">&nbsp;</span><span
-              style="color:#c084fc; font-size:11px;">이시니어</span><br>
+              style="color:#c084fc; font-size: calc(20px * var(--font-scale));">이시니어</span><br>
             &nbsp;&nbsp;<span class="kw">return</span> <span class="fn">validate</span>(order);<br>
             }
           </div>
@@ -1685,17 +1692,17 @@
             <div class="card-title">기반 기술</div>
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
               <div class="hl-row">
-                <span style="font-size:15px;">🔗</span>
+                <span style="font-size: calc(20px * var(--font-scale));">🔗</span>
                 <div>
-                  <div style="font-size:13px; font-weight:600; color:var(--text-primary);">CRDT 알고리즘</div>
-                  <div style="font-size:12px; color:var(--text-muted);">충돌 없는 분산 데이터 타입으로 동시 편집 충돌 원천 제거</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--text-primary);">CRDT 알고리즘</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">충돌 없는 분산 데이터 타입으로 동시 편집 충돌 원천 제거</div>
                 </div>
               </div>
               <div class="hl-row">
-                <span style="font-size:15px;">⚡</span>
+                <span style="font-size: calc(20px * var(--font-scale));">⚡</span>
                 <div>
-                  <div style="font-size:13px; font-weight:600; color:var(--text-primary);">WebSocket 실시간 동기화</div>
-                  <div style="font-size:12px; color:var(--text-muted);">키 입력 → 전 세계 참여자 화면에 < 50ms 반영</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:600; color:var(--text-primary);">WebSocket 실시간 동기화</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">키 입력 → 전 세계 참여자 화면에 < 50ms 반영</div>
                   </div>
                 </div>
               </div>
@@ -1704,24 +1711,24 @@
           <div style="display:flex; flex-direction:column; gap:14px; justify-content:center;">
             <div
               style="padding:24px; background:rgba(52,211,153,.05); border:1px solid rgba(52,211,153,.2); border-radius:12px;">
-              <div style="font-size:14px; font-weight:700; color:var(--accent-green); margin-bottom:16px;">🌏 동시 접속 개발
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green); margin-bottom:16px;">🌏 동시 접속 개발
                 현황</div>
               <div style="display:flex; flex-direction:column; gap:10px;">
                 <div style="display:flex; align-items:center; gap:10px;">
                   <div style="width:10px; height:10px; border-radius:50%; background:#60a5fa; flex-shrink:0;"></div>
-                  <span style="font-size:13px; color:var(--text-secondary);">김개발 — 서울 (functions.ts)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">김개발 — 서울 (functions.ts)</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
                   <div style="width:10px; height:10px; border-radius:50%; background:#c084fc; flex-shrink:0;"></div>
-                  <span style="font-size:13px; color:var(--text-secondary);">이시니어 — 부산 (same file)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">이시니어 — 부산 (same file)</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
                   <div style="width:10px; height:10px; border-radius:50%; background:#34d399; flex-shrink:0;"></div>
-                  <span style="font-size:13px; color:var(--text-secondary);">박원격 — 싱가포르 (routes.ts)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">박원격 — 싱가포르 (routes.ts)</span>
                 </div>
               </div>
               <div
-                style="margin-top:16px; padding:10px; background:rgba(52,211,153,.08); border-radius:8px; font-size:12px; color:var(--accent-green); text-align:center; font-weight:600;">
+                style="margin-top:16px; padding:10px; background:rgba(52,211,153,.08); border-radius:8px; font-size: calc(20px * var(--font-scale)); color:var(--accent-green); text-align:center; font-weight:600;">
                 화면 공유 Zero · 충돌 Zero</div>
             </div>
           </div>
@@ -1742,16 +1749,16 @@
               <div class="card-title" style="color:var(--accent-red);">🔴 로컬 빌드 한계</div>
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">노트북 CPU</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--text-muted);">4~8 코어</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">노트북 CPU</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-muted);">4~8 코어</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">대규모 빌드 시간</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-red);">5~15분</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">대규모 빌드 시간</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">5~15분</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">빌드 중 사용 가능성</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-red);">거의 불가</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">빌드 중 사용 가능성</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">거의 불가</span>
                 </div>
               </div>
             </div>
@@ -1759,25 +1766,25 @@
               <div class="card-title" style="color:var(--accent-green);">🟢 클라우드 엘라스틱 빌드</div>
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">가상 vCPU</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">32~128 vCPU</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">가상 vCPU</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">32~128 vCPU</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">대규모 빌드 시간</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">20초 ~ 90초</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">대규모 빌드 시간</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">20초 ~ 90초</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <span style="font-size:13px; color:var(--text-secondary); width:160px;">빌드 중 사용 가능성</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">완전 정상 작동</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); width:160px;">빌드 중 사용 가능성</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">완전 정상 작동</span>
                 </div>
               </div>
             </div>
           </div>
           <div style="display:flex; align-items:center; justify-content:center;">
             <div style="text-align:center;">
-              <div class="stat-num" style="font-size:clamp(60px,8vw,90px);">10x</div>
-              <div class="stat-label" style="font-size:15px;">빌드 속도 향상</div>
-              <div style="margin-top:20px; font-size:13px; color:var(--text-muted); line-height:1.8;">
+              <div class="stat-num" style="font-size: clamp(calc(60px * var(--font-scale)), 8vw, calc(90px * var(--font-scale)));">10x</div>
+              <div class="stat-label" style="font-size: calc(20px * var(--font-scale));">빌드 속도 향상</div>
+              <div style="margin-top:20px; font-size: calc(20px * var(--font-scale)); color:var(--text-muted); line-height:1.8;">
                 필요 시 즉시 스케일업<br>
                 사용 후 자동 스케일다운<br>
                 <strong style="color:var(--neon-blue);">쓴 만큼만 과금</strong>
@@ -1800,15 +1807,19 @@
             <div class="card" style="border-color:rgba(56,189,248,.2);">
               <div class="card-title">스냅샷에 보존되는 항목</div>
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
-                <div class="hl-row"><span>📝</span><span style="font-size:13px; color:var(--text-secondary);">편집 중인 파일 &
+                <div class="hl-row"><span>📝</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">편집 중인 파일 &
                     커서 위치</span></div>
-                <div class="hl-row"><span>📟</span><span style="font-size:13px; color:var(--text-secondary);">터미널 세션 &
+                    <br>
+                <div class="hl-row"><span>📟</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">터미널 세션 &
                     명령어 히스토리</span></div>
-                <div class="hl-row"><span>🌍</span><span style="font-size:13px; color:var(--text-secondary);">실행 중인 Dev
+                    <br>
+                <div class="hl-row"><span>🌍</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">실행 중인 Dev
                     서버 프로세스</span></div>
-                <div class="hl-row"><span>🔍</span><span style="font-size:13px; color:var(--text-secondary);">열려있는 탭 &
+                    <br>
+                <div class="hl-row"><span>🔍</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">열려있는 탭 &
                     파일 탐색기 상태</span></div>
-                <div class="hl-row"><span>🔧</span><span style="font-size:13px; color:var(--text-secondary);">브레이크포인트 &
+                    <br>
+                <div class="hl-row"><span>🔧</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">브레이크포인트 &
                     디버거 설정</span></div>
               </div>
             </div>
@@ -1817,19 +1828,19 @@
             <div style="display:flex; flex-direction:column; gap:12px;">
               <div
                 style="padding:14px; background:rgba(56,189,248,.07); border:1px solid rgba(56,189,248,.2); border-radius:10px; display:flex; gap:12px; align-items:center;">
-                <span style="font-size:24px;">💻</span>
+                <span style="font-size: calc(24px * var(--font-scale));">💻</span>
                 <div>
-                  <div style="font-size:13px; font-weight:700; color:var(--text-primary);">사무실 노트북 — 18:00 퇴근</div>
-                  <div style="font-size:12px; color:var(--text-muted);">작업 중 스냅샷 자동 저장</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">사무실 노트북 — 18:00 퇴근</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">작업 중 스냅샷 자동 저장</div>
                 </div>
               </div>
-              <div style="text-align:center; color:var(--cyan); font-size:22px;">↓ 클라우드에 1초 저장</div>
+              <div style="text-align:center; color:var(--cyan); font-size: calc(22px * var(--font-scale));">↓ 클라우드에 1초 저장</div>
               <div
                 style="padding:14px; background:rgba(52,211,153,.07); border:1px solid rgba(52,211,153,.2); border-radius:10px; display:flex; gap:12px; align-items:center;">
-                <span style="font-size:24px;">📱</span>
+                <span style="font-size: calc(24px * var(--font-scale));">📱</span>
                 <div>
-                  <div style="font-size:13px; font-weight:700; color:var(--text-primary);">집의 iPad — 21:00 재접속</div>
-                  <div style="font-size:12px; color:var(--accent-green);">정확히 같은 화면에서 즉시 계속</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary);">집의 iPad — 21:00 재접속</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green);">정확히 같은 화면에서 즉시 계속</div>
                 </div>
               </div>
             </div>
@@ -1849,13 +1860,13 @@
             <div class="arch-box" data-label="코드 격리 아키텍처" style="padding-top:24px;">
               <div style="display:flex; flex-direction:column; gap:8px;">
                 <div
-                  style="padding:10px; background:rgba(52,211,153,.07); border-radius:8px; border:1px solid rgba(52,211,153,.2); font-size:12px; text-align:center;">
+                  style="padding:10px; background:rgba(52,211,153,.07); border-radius:8px; border:1px solid rgba(52,211,153,.2); font-size: calc(20px * var(--font-scale)); text-align:center;">
                   <div style="color:var(--accent-green); font-weight:700;">☁️ 보안 VPC 내 원격 컨테이너</div>
                   <div style="color:var(--text-muted); margin-top:4px;">소스코드 100% 상주 위치</div>
                 </div>
-                <div style="text-align:center; color:var(--accent-red); font-size:20px;">🚫</div>
+                <div style="text-align:center; color:var(--accent-red); font-size: calc(20px * var(--font-scale));">🚫</div>
                 <div
-                  style="padding:10px; background:rgba(248,113,113,.07); border-radius:8px; border:1px solid rgba(248,113,113,.2); font-size:12px; text-align:center;">
+                  style="padding:10px; background:rgba(248,113,113,.07); border-radius:8px; border:1px solid rgba(248,113,113,.2); font-size: calc(20px * var(--font-scale)); text-align:center;">
                   <div style="color:var(--accent-red); font-weight:700;">💻 개발자 로컬 디스크</div>
                   <div style="color:var(--text-muted); margin-top:4px;">코드 다운로드(Git Clone) 불허</div>
                 </div>
@@ -1868,21 +1879,21 @@
               <div style="margin-top:8px; display:flex; flex-direction:column; gap:10px;">
                 <div
                   style="padding:10px 14px; border-radius:8px; background:rgba(248,113,113,.05); border:1px solid rgba(248,113,113,.15);">
-                  <div style="font-size:12px; font-weight:700; color:var(--accent-red); margin-bottom:4px;">🔴 기존: 노트북
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red); margin-bottom:4px;">🔴 기존: 노트북
                     분실 시</div>
-                  <div style="font-size:12px; color:var(--text-muted);">로컬 코드 + DB 자격증명 + API 키 전부 유출 위험</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">로컬 코드 + DB 자격증명 + API 키 전부 유출 위험</div>
                 </div>
                 <div
                   style="padding:10px 14px; border-radius:8px; background:rgba(52,211,153,.05); border:1px solid rgba(52,211,153,.15);">
-                  <div style="font-size:12px; font-weight:700; color:var(--accent-green); margin-bottom:4px;">🟢
+                  <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green); margin-bottom:4px;">🟢
                     Antigravity: 노트북 분실 시</div>
-                  <div style="font-size:12px; color:var(--text-muted);">관리자 콘솔에서 접속 권한 즉시 차단 → 피해 Zero</div>
+                  <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted);">관리자 콘솔에서 접속 권한 즉시 차단 → 피해 Zero</div>
                 </div>
               </div>
             </div>
             <div class="card">
               <div class="card-title">기업 보안 컴플라이언스</div>
-              <div style="font-size:13px; color:var(--text-secondary); line-height:1.65; margin-top:4px;">ISO 27001 /
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.65; margin-top:4px;">ISO 27001 /
                 SOC 2 Type II / GDPR 요구사항 충족. <strong style="color:var(--text-primary);">감사 로그 자동 생성</strong>으로 누가 언제
                 무엇을 편집했는지 완전 추적 가능.</div>
             </div>
@@ -1905,18 +1916,18 @@
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(248,113,113,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">맥북 프로 M3 (1인)</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-red);">₩ 4,000,000</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">맥북 프로 M3 (1인)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">₩ 4,000,000</span>
                 </div>
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(248,113,113,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">교체 주기 (3~4년)</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-red);">일괄 대량 구매</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">교체 주기 (3~4년)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">일괄 대량 구매</span>
                 </div>
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(248,113,113,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">IT 자산 관리 비용</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-red);">별도 발생</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">IT 자산 관리 비용</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-red);">별도 발생</span>
                 </div>
               </div>
             </div>
@@ -1927,25 +1938,25 @@
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(52,211,153,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">저사양 디바이스 (1인)</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">₩ 800,000</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">저사양 디바이스 (1인)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">₩ 800,000</span>
                 </div>
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(52,211,153,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">클라우드 IDE 구독 (월)</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">~$39/월</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">클라우드 IDE 구독 (월)</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">~$39/월</span>
                 </div>
                 <div
                   style="display:flex; justify-content:space-between; padding:8px 12px; background:rgba(52,211,153,.05); border-radius:6px;">
-                  <span style="font-size:13px; color:var(--text-secondary);">사양 조정</span>
-                  <span style="font-size:13px; font-weight:700; color:var(--accent-green);">실시간 탄력 조정</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">사양 조정</span>
+                  <span style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--accent-green);">실시간 탄력 조정</span>
                 </div>
               </div>
             </div>
             <div
               style="text-align:center; padding:16px; background:rgba(52,211,153,.06); border:1px solid rgba(52,211,153,.2); border-radius:10px;">
-              <div style="font-size:32px; font-weight:900; color:var(--accent-green);">~40% TCO 절감</div>
-              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">3년 기준 50인 개발팀 추정</div>
+              <div style="font-size: calc(32px * var(--font-scale)); font-weight:900; color:var(--accent-green);">~40% TCO 절감</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:4px;">3년 기준 50인 개발팀 추정</div>
             </div>
           </div>
         </div>
@@ -1963,43 +1974,43 @@
           <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
             <div class="card" style="border-color:rgba(56,189,248,.2); text-align:center;">
               <div
-                style="font-size:11px; color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--cyan); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
                 Phase 1 · Month 1-2</div>
-              <div style="font-size:28px; margin-bottom:8px;">🧪</div>
-              <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">파일럿 프로젝트</div>
-              <div style="font-size:12px; color:var(--text-muted); line-height:1.5;">신규 프론트엔드 프로젝트 1개 선정, 소규모 2~3인 팀 선도
+              <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:8px;">🧪</div>
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary); margin-bottom:6px;">파일럿 프로젝트</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); line-height:1.5;">신규 프론트엔드 프로젝트 1개 선정, 소규모 2~3인 팀 선도
                 적용</div>
             </div>
             <div class="card" style="border-color:rgba(56,189,248,.3); text-align:center;">
               <div
-                style="font-size:11px; color:var(--neon-blue); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--neon-blue); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
                 Phase 2 · Month 3-4</div>
-              <div style="font-size:28px; margin-bottom:8px;">📊</div>
-              <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">성과 측정</div>
-              <div style="font-size:12px; color:var(--text-muted); line-height:1.5;">온보딩 시간, 빌드 속도, 개발자 만족도 KPI 수집 및 공유
+              <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:8px;">📊</div>
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary); margin-bottom:6px;">성과 측정</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); line-height:1.5;">온보딩 시간, 빌드 속도, 개발자 만족도 KPI 수집 및 공유
               </div>
             </div>
             <div class="card" style="border-color:rgba(52,211,153,.2); text-align:center;">
               <div
-                style="font-size:11px; color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
                 Phase 3 · Month 5-8</div>
-              <div style="font-size:28px; margin-bottom:8px;">🌱</div>
-              <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">팀 단위 확산</div>
-              <div style="font-size:12px; color:var(--text-muted); line-height:1.5;">신규 프로젝트 전체 및 MSA 백엔드 서비스로 확장 적용
+              <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:8px;">🌱</div>
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary); margin-bottom:6px;">팀 단위 확산</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); line-height:1.5;">신규 프로젝트 전체 및 MSA 백엔드 서비스로 확장 적용
               </div>
             </div>
             <div class="card" style="border-color:rgba(52,211,153,.3); text-align:center;">
               <div
-                style="font-size:11px; color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--accent-green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">
                 Phase 4 · Month 9+</div>
-              <div style="font-size:28px; margin-bottom:8px;">🏢</div>
-              <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">전사 표준화</div>
-              <div style="font-size:12px; color:var(--text-muted); line-height:1.5;">전사 개발 환경 표준 정책 수립 및 레거시 로컬 환경 단계적
+              <div style="font-size: calc(28px * var(--font-scale)); margin-bottom:8px;">🏢</div>
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-primary); margin-bottom:6px;">전사 표준화</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); line-height:1.5;">전사 개발 환경 표준 정책 수립 및 레거시 로컬 환경 단계적
                 폐기</div>
             </div>
           </div>
           <div class="card" style="border-color:rgba(56,189,248,.2); background:rgba(56,189,248,.04);">
-            <p style="font-size:13.5px; color:var(--text-secondary); text-align:center; line-height:1.6;">
+            <p style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); text-align:center; line-height:1.6;">
               <strong style="color:var(--neon-blue);">핵심 원칙:</strong> 레거시 시스템을 강제 전환하지 않고,
               <strong style="color:var(--text-primary);">신규 프로젝트부터 성공 사례를 만들어 자연스럽게 확산</strong>하는 전략
             </p>
@@ -2019,10 +2030,10 @@
           <div style="display:flex; flex-direction:column; gap:14px;">
             <div class="card">
               <div class="card-title">기술 1: 낙관적 UI 업데이트</div>
-              <div style="font-size:13px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">키 입력을 서버 확인
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">키 입력을 서버 확인
                 없이 <strong style="color:var(--text-primary);">브라우저에서 즉시 화면에 반영</strong>. 서버와 미세한 차이 발생 시 백그라운드에서 조용히
                 동기화.</div>
-              <div class="code-block" style="font-size:12px;">
+              <div class="code-block" style="font-size: calc(20px * var(--font-scale));">
                 <span class="cm">// Optimistic Update 패턴</span><br>
                 <span class="fn">onKeyPress</span>(<span class="at">key</span>) {<br>
                 &nbsp;&nbsp;<span class="fn">renderLocal</span>(<span class="at">key</span>); <span class="cm">// 즉시 화면
@@ -2035,11 +2046,11 @@
             <div class="card">
               <div class="card-title">기술 2: 자동 최적 리전 매핑</div>
               <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-                <div class="hl-row"><span>🇰🇷</span><span style="font-size:13px; color:var(--text-secondary);">한국 → AWS
+                <div class="hl-row"><span>🇰🇷</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">한국 → AWS
                     ap-northeast-2 Seoul <strong style="color:var(--accent-green);">&lt; 8ms</strong></span></div>
-                <div class="hl-row"><span>🇯🇵</span><span style="font-size:13px; color:var(--text-secondary);">일본 → GCP
+                <div class="hl-row"><span>🇯🇵</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">일본 → GCP
                     asia-northeast1 Tokyo <strong style="color:var(--accent-green);">&lt; 12ms</strong></span></div>
-                <div class="hl-row"><span>🌍</span><span style="font-size:13px; color:var(--text-secondary);">유럽 → AWS
+                <div class="hl-row"><span>🌍</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">유럽 → AWS
                     eu-west-1 Ireland <strong style="color:var(--accent-green);">&lt; 20ms</strong></span></div>
               </div>
             </div>
@@ -2047,11 +2058,11 @@
           <div style="display:flex; flex-direction:column; gap:14px; justify-content:center;">
             <div
               style="text-align:center; padding:28px; background:rgba(56,189,248,.05); border:1px solid rgba(56,189,248,.2); border-radius:12px;">
-              <div style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">체감 타이핑 레이턴시</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-bottom:8px;">체감 타이핑 레이턴시</div>
               <div
-                style="font-size:72px; font-weight:900; line-height:1; background:linear-gradient(135deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
-                &lt; 8<span style="font-size:40px;">ms</span></div>
-              <div style="font-size:14px; color:var(--text-secondary); margin-top:10px;">인간이 인지 가능한 최소 단위<br><strong
+                style="font-size: calc(72px * var(--font-scale)); font-weight:900; line-height:1; background:linear-gradient(135deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                &lt; 8<span style="font-size: calc(40px * var(--font-scale));">ms</span></div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); margin-top:10px;">인간이 인지 가능한 최소 단위<br><strong
                   style="color:var(--neon-blue);">(16ms)</strong>보다 빠름</div>
             </div>
           </div>
@@ -2072,28 +2083,28 @@
               <div class="card-title">AI 자동 프로비저닝 시나리오</div>
               <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
                 <div class="step">
-                  <div class="step-num" style="font-size:11px;">1</div>
+                  <div class="step-num" style="font-size: calc(20px * var(--font-scale));">1</div>
                   <div class="step-body">
                     <h4>개발자가 코드 작성</h4>
                     <p>데이터베이스 스키마 파일 작성 시작</p>
                   </div>
                 </div>
                 <div class="step">
-                  <div class="step-num" style="font-size:11px;">2</div>
+                  <div class="step-num" style="font-size: calc(20px * var(--font-scale));">2</div>
                   <div class="step-body">
                     <h4>AI가 의도 실시간 인식</h4>
                     <p>트래픽 패턴 분석 → PostgreSQL RDS 필요 감지</p>
                   </div>
                 </div>
                 <div class="step">
-                  <div class="step-num" style="font-size:11px;">3</div>
+                  <div class="step-num" style="font-size: calc(20px * var(--font-scale));">3</div>
                   <div class="step-body">
                     <h4>클라우드 인프라 자동 프로비저닝</h4>
                     <p>Terraform 코드 자동 생성 → 승인 원클릭으로 배포</p>
                   </div>
                 </div>
                 <div class="step">
-                  <div class="step-num" style="font-size:11px;">4</div>
+                  <div class="step-num" style="font-size: calc(20px * var(--font-scale));">4</div>
                   <div class="step-body">
                     <h4>개발자는 비즈니스 로직만</h4>
                     <p>인프라는 AI가 알아서 관리 및 최적화</p>
@@ -2105,11 +2116,11 @@
           <div style="flex:1; display:flex; flex-direction:column; gap:14px; justify-content:center;">
             <div
               style="padding:28px; background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(6,182,212,.03)); border:1px solid rgba(56,189,248,.2); border-radius:12px; text-align:center;">
-              <div style="font-size:40px; margin-bottom:16px;">🌌</div>
+              <div style="font-size: calc(40px * var(--font-scale)); margin-bottom:16px;">🌌</div>
               <div
-                style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:12px; line-height:1.3;">
+                style="font-size: calc(20px * var(--font-scale)); font-weight:800; color:var(--text-primary); margin-bottom:12px; line-height:1.3;">
                 코드를 짜면<br>인프라가 따라온다</div>
-              <div style="font-size:13px; color:var(--text-secondary); line-height:1.7;">
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary); line-height:1.7;">
                 Serverless, Kubernetes, DB, CDN...<br>
                 개발자는 <strong style="color:var(--neon-blue);">비즈니스 로직</strong>에만 집중.<br>
                 나머지는 AI가 최적화.
@@ -2127,51 +2138,51 @@
         <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center;">
           <div>
             <div
-              style="font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+              style="font-size: calc(20px * var(--font-scale)); font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
               <span
                 style="width:32px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);display:inline-block;"></span>
               SESSION 01 WRAP-UP
             </div>
             <h2
-              style="font-size:clamp(28px,3.5vw,48px); font-weight:900; line-height:1.2; letter-spacing:-.03em; margin-bottom:20px;">
+              style="font-size: clamp(calc(28px * var(--font-scale)), 3.5vw, calc(48px * var(--font-scale))); font-weight:900; line-height:1.2; letter-spacing:-.03em; margin-bottom:20px;">
               도구를 바꾸면<br>
               <span
                 style="background:linear-gradient(90deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">개발
                 문화가 바뀝니다.</span>
             </h2>
             <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:28px;">
-              <div class="hl-row"><span>🧠</span><span style="font-size:13px; color:var(--text-secondary);">AI 코딩으로
+              <div class="hl-row"><span>🧠</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">AI 코딩으로
                   <strong style="color:var(--text-primary);">인지 부하 감소</strong>, 생산성 폭발</span></div>
-              <div class="hl-row"><span>🔍</span><span style="font-size:13px; color:var(--text-secondary);">LLM은 확률적 예측.
+              <div class="hl-row"><span>🔍</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">LLM은 확률적 예측.
                   <strong style="color:var(--text-primary);">컨텍스트가 품질 결정</strong></span></div>
-              <div class="hl-row"><span>💻</span><span style="font-size:13px; color:var(--text-secondary);">로컬 환경의 한계는
+              <div class="hl-row"><span>💻</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">로컬 환경의 한계는
                   <strong style="color:var(--text-primary);">구조적 문제</strong></span></div>
-              <div class="hl-row"><span>☁️</span><span style="font-size:13px; color:var(--text-secondary);">Antigravity
+              <div class="hl-row"><span>☁️</span><span style="font-size: calc(20px * var(--font-scale)); color:var(--text-secondary);">Antigravity
                   IDE로 <strong style="color:var(--text-primary);">중력(로컬 제약)에서 해방</strong></span></div>
             </div>
             <div
               style="padding:16px 20px; background:rgba(56,189,248,.07); border:1px solid rgba(56,189,248,.2); border-radius:10px;">
               <div
-                style="font-size:12px; color:var(--cyan); font-weight:700; margin-bottom:4px; text-transform:uppercase; letter-spacing:.1em;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--cyan); font-weight:700; margin-bottom:4px; text-transform:uppercase; letter-spacing:.1em;">
                 Next: Session 02</div>
-              <div style="font-size:14px; color:var(--text-primary); font-weight:600;">플러그인 & CLI 실전 코딩</div>
-              <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">키보드만으로 날아다니는 Antigravity 실전 워크플로우
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-primary); font-weight:600;">플러그인 & CLI 실전 코딩</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:4px;">키보드만으로 날아다니는 Antigravity 실전 워크플로우
               </div>
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:20px; align-items:center;">
             <div
               style="text-align:center; padding:32px; background:var(--bg-card); border:1px solid var(--bg-border); border-radius:16px; width:100%;">
-              <div style="font-size:14px; font-weight:700; color:var(--text-secondary); margin-bottom:20px;">Q&A</div>
+              <div style="font-size: calc(20px * var(--font-scale)); font-weight:700; color:var(--text-secondary); margin-bottom:20px;">Q&A</div>
               <div
-                style="font-size:48px; font-weight:900; letter-spacing:-.04em; background:linear-gradient(135deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; line-height:1.1;">
+                style="font-size: calc(48px * var(--font-scale)); font-weight:900; letter-spacing:-.04em; background:linear-gradient(135deg,var(--neon-blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; line-height:1.1;">
                 질문 받습니다</div>
-              <div style="font-size:13px; color:var(--text-muted); margin-top:12px;">편하게 말씀해 주세요</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:12px;">편하게 말씀해 주세요</div>
             </div>
             <div
               style="border:1px solid var(--bg-border); border-radius:12px; padding:20px; width:100%; text-align:center;">
               <div
-                style="font-size:11px; color:var(--text-muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:.1em;">
+                style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:.1em;">
                 Session Feedback QR</div>
               <div
                 style="width:100px; height:100px; background:var(--bg-elevated); border:1px dashed var(--bg-border); border-radius:8px; margin:0 auto; display:flex; align-items:center; justify-content:center;">
@@ -2188,7 +2199,7 @@
                   <div style="width:8px;height:8px;background:var(--text-muted);border-radius:1px;"></div>
                 </div>
               </div>
-              <div style="font-size:11px; color:var(--text-muted); margin-top:10px;">피드백 링크 QR 자리</div>
+              <div style="font-size: calc(20px * var(--font-scale)); color:var(--text-muted); margin-top:10px;">피드백 링크 QR 자리</div>
             </div>
           </div>
         </div>
@@ -2270,3 +2281,6 @@
 </body>
 
 </html>
+
+
+

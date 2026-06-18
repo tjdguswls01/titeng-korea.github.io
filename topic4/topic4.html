@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코덱스 플러그인 사용과 CLI 코딩</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #05070b;
+  --panel: #0d111a;
+  --panel2: #121827;
+  --line: #263247;
+  --text: #f5f7fb;
+  --muted: #aab4c8;
+  --soft: #d8deea;
+  --blue: #4f8cff;
+  --mint: #2fe6bd;
+  --purple: #9b6dff;
+  --danger: #ff6b8a;
+  --warn: #ffd166;
+  --shadow: 0 26px 90px rgba(0, 0, 0, .38);
+}
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; }
+body {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 12% 0%, rgba(79, 140, 255, .17), transparent 28%), linear-gradient(135deg, #030407, #0a101b 48%, #05070b);
+  font-family: "Segoe UI", "Noto Sans KR", "Malgun Gothic", Arial, sans-serif;
+  color: var(--text);
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+.deck {
+  position: relative;
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  aspect-ratio: 16 / 9;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  gap: 26px;
+  padding: 70px 84px 76px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,.032) 1px, transparent 1px),
+    radial-gradient(circle at 86% 16%, rgba(47, 230, 189, .13), transparent 28%),
+    linear-gradient(145deg, #070a11 0%, #0d1220 58%, #05070b 100%);
+  background-size: 44px 44px, 44px 44px, auto, auto;
+}
+.slide.active { display: flex; }
+.slide::after {
+  content: "";
+  position: absolute;
+  left: 84px;
+  right: 84px;
+  bottom: 58px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,140,255,.55), rgba(47,230,189,.55), transparent);
+}
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--mint);
+  font-size: 21px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.kicker::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  background: var(--mint);
+  border-radius: 99px;
+}
+h1, h2, h3, p { margin: 0; }
+h1 {
+  max-width: 1220px;
+  font-size: 76px;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+h2 {
+  max-width: 1260px;
+  font-size: 52px;
+  line-height: 1.13;
+  letter-spacing: 0;
+}
+h3 {
+  color: var(--soft);
+  font-size: 28px;
+  line-height: 1.28;
+}
+.lead {
+  max-width: 1220px;
+  color: var(--muted);
+  font-size: 28px;
+  line-height: 1.42;
+}
+.title-slide {
+  justify-content: center;
+  padding-bottom: 116px;
+}
+.title-slide h1 {
+  font-size: 88px;
+  max-width: 1350px;
+}
+.title-slide .lead {
+  color: #dfe6f6;
+  font-size: 31px;
+}
+.title-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid rgba(79, 140, 255, .42);
+  background: rgba(79, 140, 255, .11);
+  color: #dbe7ff;
+  border-radius: 999px;
+  font-size: 21px;
+  font-weight: 750;
+}
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 22px;
+  flex: 1;
+  min-height: 0;
+}
+.grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card {
+  border: 1px solid rgba(168, 181, 205, .22);
+  background: linear-gradient(180deg, rgba(18, 24, 39, .92), rgba(10, 15, 25, .92));
+  border-radius: 8px;
+  padding: 24px 26px;
+  min-height: 0;
+}
+.card.accent { border-color: rgba(47, 230, 189, .45); background: linear-gradient(180deg, rgba(47,230,189,.12), rgba(12,18,28,.95)); }
+.card.blue { border-color: rgba(79, 140, 255, .48); background: linear-gradient(180deg, rgba(79,140,255,.13), rgba(12,18,28,.95)); }
+.card.purple { border-color: rgba(155, 109, 255, .48); background: linear-gradient(180deg, rgba(155,109,255,.14), rgba(12,18,28,.95)); }
+.card.warn { border-color: rgba(255, 107, 138, .52); background: linear-gradient(180deg, rgba(255,107,138,.13), rgba(12,18,28,.95)); }
+.card h3 {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 28px;
+}
+.card p, .card li {
+  color: var(--soft);
+  font-size: 23px;
+  line-height: 1.38;
+}
+ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 26px;
+}
+li::marker { color: var(--mint); }
+.big-list li {
+  font-size: 27px;
+  line-height: 1.35;
+}
+.flow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+.step-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+  height: 100%;
+  min-height: 520px;
+}
+.step-compact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(126px, auto));
+  gap: 14px;
+  align-items: stretch;
+}
+.step {
+  position: relative;
+  min-height: 162px;
+  border: 1px solid rgba(79, 140, 255, .35);
+  border-radius: 8px;
+  padding: 20px 16px;
+  background: rgba(11, 17, 28, .9);
+}
+.step strong {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--mint);
+  font-size: 22px;
+}
+.step span {
+  color: var(--soft);
+  font-size: 21px;
+  line-height: 1.32;
+}
+.step-board .step {
+  min-height: 0;
+  padding: 28px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.step-board .step strong {
+  font-size: 25px;
+}
+.step-board .step span {
+  font-size: 23px;
+  line-height: 1.38;
+}
+.step-compact .step {
+  min-height: 126px;
+}
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid rgba(168,181,205,.24);
+  border-radius: 8px;
+  background: rgba(9, 14, 23, .88);
+}
+.matrix th, .matrix td {
+  padding: 18px 18px;
+  border-bottom: 1px solid rgba(168,181,205,.18);
+  border-right: 1px solid rgba(168,181,205,.14);
+  text-align: left;
+  vertical-align: top;
+  font-size: 22px;
+  line-height: 1.34;
+}
+.matrix th {
+  color: #ffffff;
+  background: rgba(79,140,255,.18);
+  font-size: 23px;
+}
+.matrix td { color: var(--soft); }
+.matrix tr:last-child td { border-bottom: 0; }
+.matrix th:last-child, .matrix td:last-child { border-right: 0; }
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.compare .card {
+  min-height: 440px;
+}
+.label {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(47,230,189,.12);
+  color: var(--mint);
+  font-size: 20px;
+  font-weight: 800;
+}
+.terminal {
+  border: 1px solid rgba(47,230,189,.38);
+  border-radius: 8px;
+  background: #05080d;
+  overflow: hidden;
+  min-height: 318px;
+}
+.terminal-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 42px;
+  padding: 0 16px;
+  background: #111827;
+  border-bottom: 1px solid rgba(168,181,205,.16);
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+.dot:nth-child(2) { background: var(--warn); }
+.dot:nth-child(3) { background: var(--mint); }
+.terminal-body {
+  padding: 22px;
+  font-family: Consolas, "Cascadia Mono", monospace;
+  color: #d8fcec;
+  font-size: 24px;
+  line-height: 1.48;
+}
+.prompt { color: var(--mint); }
+.diagram {
+  display: grid;
+  gap: 16px;
+  align-content: center;
+}
+.node-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.node {
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px solid rgba(79,140,255,.42);
+  border-radius: 8px;
+  background: rgba(79,140,255,.12);
+  color: #eef4ff;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.arrow {
+  color: var(--mint);
+  font-size: 44px;
+  text-align: center;
+}
+.stack {
+  display: grid;
+  gap: 14px;
+}
+.strip {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 20px;
+  align-items: center;
+  border: 1px solid rgba(168,181,205,.22);
+  border-radius: 8px;
+  padding: 18px 22px;
+  background: rgba(12,18,30,.9);
+}
+.strip strong {
+  color: var(--mint);
+  font-size: 25px;
+}
+.strip span {
+  color: var(--soft);
+  font-size: 23px;
+  line-height: 1.34;
+}
+.badge-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.mini {
+  padding: 10px 14px;
+  border: 1px solid rgba(168,181,205,.24);
+  border-radius: 6px;
+  background: rgba(255,255,255,.04);
+  color: #edf3ff;
+  font-size: 21px;
+  font-weight: 750;
+}
+.quote {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  border-left: 5px solid var(--mint);
+  padding: 38px 46px;
+  background: rgba(47,230,189,.08);
+}
+.quote p {
+  max-width: 1220px;
+  font-size: 45px;
+  line-height: 1.32;
+  color: #f7fbff;
+  font-weight: 850;
+}
+.hud {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 10;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 46px 92px 360px 46px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(168,181,205,.24);
+  border-radius: 999px;
+  background: rgba(7,10,17,.78);
+  backdrop-filter: blur(14px);
+}
+.hud button {
+  width: 46px;
+  height: 36px;
+  border: 1px solid rgba(168,181,205,.24);
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  font-size: 22px;
+  cursor: pointer;
+}
+.hud button:hover { border-color: rgba(47,230,189,.62); }
+#counter {
+  color: var(--soft);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 750;
+}
+.progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(168,181,205,.18);
+}
+.progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--mint));
+  transition: width .22s ease;
+}
+code {
+  color: #bff8ec;
+  font-family: Consolas, "Cascadia Mono", monospace;
+}
+.compact p, .compact li { font-size: 22px; }
+.wide h2 { max-width: 1430px; }
+@media (max-width: 900px) {
+  .slide { padding: 42px 34px 66px; gap: 18px; }
+  h1, .title-slide h1 { font-size: 42px; }
+  h2 { font-size: 34px; }
+  .lead { font-size: 20px; }
+  .content, .grid2, .grid3, .grid4, .flow, .step-board, .step-compact, .compare, .node-row { grid-template-columns: 1fr; }
+  .step-board, .step-compact { grid-template-rows: none; min-height: 0; height: auto; }
+  .arrow { display: none; }
+  .card p, .card li, .strip span { font-size: 18px; }
+  .hud { grid-template-columns: 40px 78px 170px 40px; bottom: 8px; }
+  .matrix th, .matrix td { font-size: 16px; padding: 10px; }
+}
+@media print {
+  @page { size: 16in 9in; margin: 0; }
+  html, body { width: auto; height: auto; overflow: visible; background: #05070b; }
+  .deck { width: auto; height: auto; box-shadow: none; overflow: visible; }
+  .slide {
+    position: relative;
+    display: flex !important;
+    width: 16in;
+    height: 9in;
+    page-break-after: always;
+    break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .hud { display: none; }
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+<section class="slide title-slide active">
+  <span class="kicker">CLI Coding Workflow</span>
+  <h1>코덱스 플러그인 사용과 CLI 코딩</h1>
+  <p class="lead">Codex, Copilot, Claude Code를 <br>개발 workflow 관점에서 비교합니다.</p>
+  <div class="title-meta">
+    <span class="pill">Agent에게 작업 위임</span>
+    <span class="pill">Plugin과 Skill 확장</span>
+    <span class="pill">검증 가능한 운영 방식</span>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Question</span>
+  <h2>핵심 질문</h2>
+  <p class="lead">IDE 보조 기능을 넘어, 터미널에서 실행 권한을 가진 agent를 <br>어떻게 통제 가능한 개발 workflow로 사용할 것인가.</p>
+  <div class="content grid3">
+    <div class="card blue"><h3>CLI 코딩의 차이</h3><br><br><br><br><br><br><p>코드 한 줄 추천이 아니라 repository를 읽고 명령을 실행하며 결과를 다시 반영하는 작업 위임 방식입니다.</p></div>
+    <div class="card purple"><h3>Codex Plugin의 역할</h3><br><br><br><br><br><br><p>반복 workflow, 팀 규칙, 외부 연결, 검증 절차를 재사용 가능한 확장 단위로 묶습니다.</p></div>
+    <div class="card accent"><h3>도구별 선택 기준</h3><br><br><br><br><br><br><p>Copilot CLI, Claude Code, Codex CLI는 강점이 다르므로 조직의 저장소, 권한, 검증 방식에 맞춰 선택해야 합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Concept</span>
+  <h2>CLI 코딩은 터미널에서 agent에게 작업을 맡기는 방식</h2>
+  <p class="lead">agent는 자연어 지시를 받아 파일과 명령을 다루고, 실행 결과를 다시 해석해 다음 행동을 정합니다.</p>
+  <div class="content">
+    <div class="step-compact">
+      <div class="step"><strong>1. 지시</strong><span>목표, 범위, 금지 조건, 검증 명령을 자연어로 전달</span></div>
+      <div class="step"><strong>2. 탐색</strong><span>파일 구조, 관련 코드, 문서, 설정을 읽고 맥락 파악</span></div>
+      <div class="step"><strong>3. 수정</strong><span>필요한 파일만 변경하고 변경 이유를 추적</span></div>
+      <div class="step"><strong>4. 실행</strong><span>빌드, 테스트, 린트 같은 명령을 터미널에서 수행</span></div>
+      <div class="step"><strong>5. 반영</strong><span>오류 로그를 읽고 원인을 찾아 다시 수정</span></div>
+      <div class="step"><strong>6. 요약</strong><span>diff, 테스트 결과, 남은 위험을 사람이 검토할 수 있게 정리</span></div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="terminal-body"><span class="prompt">$</span> 실패한 테스트 원인을 찾고, 최소 수정 후 결과를 요약해줘<br><span class="prompt">agent</span> 파일 탐색 → 패치 작성 → 테스트 실행 → diff 요약</div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Difference</span>
+  <h2>IDE 기반 AI 코딩과 CLI 코딩의 차이</h2>
+  <p class="lead">IDE는 편집 화면 가까이 붙은 보조 장치이고, <br>CLI는 repository 작업 전체를 agent loop로 다루는 경향이 강합니다.</p>
+  <div class="content compare">
+    <div class="card blue">
+      <span class="label">IDE 중심</span>
+      <h3>편집 흐름 안의 AI</h3>
+      <br>
+      <ul class="big-list">
+        <li>열린 파일과 선택 영역 중심</li>
+        <br>
+        <li>자동완성, 설명, 작은 수정에 적합</li>
+        <br>
+        <li>개발자가 편집 주도권을 계속 유지</li>
+        <br>
+        <li>실행과 검증은 별도 흐름으로 남기 쉬움</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <span class="label">CLI 중심</span>
+      <h3>저장소 작업을 맡기는 AI</h3>
+      <br>
+      <ul class="big-list">
+        <li>파일 탐색과 명령 실행을 함께 수행</li>
+        <br>
+        <li>테스트 로그를 보고 반복 수정 가능</li>
+        <br>
+        <li>작업 단위가 기능, 버그, 문서로 커짐</li>
+        <br>
+        <li>권한과 검증 절차 설계가 중요해짐</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Use Cases</span>
+  <h2>CLI 코딩이 유용한 작업</h2>
+  <p class="lead">파일 하나의 문법 보정보다, 여러 파일과 실행 결과가 얽힌 작고 명확한 작업에서 효과가 큽니다.</p>
+  <div class="content grid3">
+    <div class="card"><h3>테스트 실패 분석</h3><br><br><br><p>실패 로그, fixture, 최근 변경 diff를 연결해 원인을 좁힙니다.</p></div>
+    <div class="card"><h3>작은 버그 수정</h3><br><br><br><p>재현 조건이 분명한 결함을 최소 변경으로 고치고 테스트합니다.</p></div>
+    <div class="card"><h3>README 검증</h3><br><br><br><p>문서의 실행 명령이 현재 repository에서 실제로 맞는지 확인합니다.</p></div>
+    <div class="card"><h3>리팩토링 후보 탐색</h3><br><br><br><p>중복, 긴 함수, 위험한 의존성을 찾아 제안 수준으로 정리합니다.</p></div>
+    <div class="card"><h3>반복 파일 수정</h3><br><br><br><p>동일 패턴의 import, 타입, 설정 변경을 여러 파일에 일관 적용합니다.</p></div>
+    <div class="card"><h3>변경사항 요약</h3><br><br><br><p>리뷰어가 볼 핵심 변경, 검증 결과, 남은 리스크를 정리합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Risk</span>
+  <h2>CLI 코딩의 위험성</h2>
+  <p class="lead">agent가 명령을 실행할 수 있다는 장점은 동시에 <br>파일, 네트워크, 비밀정보에 닿을 수 있다는 위험을 의미합니다.</p>
+  <div class="content grid3 compact">
+    <div class="card warn"><h3>대량 수정</h3><br><br><p>잘못된 범위 해석은 여러 파일 삭제, 포맷 변경, 불필요한 리팩토링으로 이어질 수 있습니다.</p></div>
+    <div class="card warn"><h3>명령 실행</h3><br><br><p>빌드나 테스트뿐 아니라 삭제, 배포, 권한 변경 명령도 터미널에서 실행될 수 있습니다.</p></div>
+    <div class="card warn"><h3>외부 접근</h3><br><br><p>MCP, 웹, 클라우드 도구 연결은 편리하지만 조직 밖 서비스로 데이터가 나갈 수 있습니다.</p></div>
+    <div class="card warn"><h3>민감정보</h3><br><br><p><code>.env</code>, API key, 고객 데이터가 prompt나 로그에 섞이면 회수하기 어렵습니다.</p></div>
+    <div class="card warn"><h3>검증 누락</h3><br><br><p>컴파일은 되지만 요구사항을 틀리게 구현한 코드가 그대로 반영될 수 있습니다.</p></div>
+    <div class="card warn"><h3>책임 경계</h3><br><br><p>도구가 수정해도 최종 책임은 repository를 운영하는 사람과 팀에 남습니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Guardrail</span>
+  <h2>안전한 CLI 코딩 기본 원칙</h2>
+  <p class="lead">좋은 CLI 코딩은 더 많은 자동 실행이 아니라, 사람이 검토할 수 있는 작은 단위의 자동화입니다.</p>
+  <div class="content">
+    <div class="step-board">
+      <div class="card warn"><h3>계획 먼저</h3><br><br><p>수정 전에 접근 방식과 예상 파일을 설명하게 합니다.</p></div>
+      <div class="card warn"><h3>작게 나누기</h3><br><br><p>한 요청에 기능, 리팩토링, 스타일 변경을 섞지 않습니다.</p></div>
+      <div class="card warn"><h3>격리</h3><br><br><p>branch 또는 worktree로 변경 범위를 분리합니다.</p></div>
+      <div class="card warn"><h3>diff 확인</h3><br><br><p>최종 결과보다 변경 내용 자체를 먼저 검토합니다.</p></div>
+      <div class="card warn"><h3>검증 실행</h3><br><br><p>테스트, 린트, 타입 체크 명령을 명시합니다.</p></div>
+      <div class="card warn"><h3>권한 최소화</h3><br><br><p>네트워크, 삭제, 배포 같은 권한은 필요할 때만 엽니다.</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Codex</span>
+  <h2>Codex는 여러 사용 표면을 가진 coding agent</h2>
+  <p class="lead">OpenAI Codex는 코드 작성, 이해, 리뷰, 디버깅을 돕는 coding agent이며 <br>CLI, IDE extension, app, web/cloud 흐름으로 사용할 수 있습니다.</p>
+  <div class="content grid4">
+    <div class="card blue"><h3>Codex CLI</h3><br><br><br><br><br><p>터미널에서 repository 작업을 진행하는 local-first 사용 표면입니다.</p></div>
+    <div class="card purple"><h3>Codex App</h3><br><br><br><br><p>작업 관리, 리뷰, 브라우저, 파일, 플러그인 사용을 하나의 개발 공간으로 묶습니다.</p></div>
+    <div class="card accent"><h3>IDE Extension</h3><br><br><br><br><p>에디터 옆에서 Codex를 쓰며 열린 파일과 선택 영역을 맥락으로 활용합니다.</p></div>
+    <div class="card"><h3>Cloud 또는 Web</h3><br><br><br><br><p>hosted 환경에서 병렬 작업과 offloaded 작업을 다루는 방식으로 확장됩니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Codex CLI</span>
+  <h2>Codex CLI는 터미널에서 실행되는 coding agent</h2>
+  <p class="lead">CLI의 핵심은 자연어 요청을 repository 탐색, 파일 수정, 명령 실행, 결과 요약으로 연결한다는 점입니다.</p>
+  <div class="content grid2">
+    <div class="terminal">
+      <div class="terminal-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="terminal-body"><span class="prompt">$</span> codex<br><span class="prompt">user</span> 로그인 실패 테스트를 고치고 원인을 요약해줘<br><span class="prompt">codex</span> 관련 파일 읽기<br><span class="prompt">codex</span> 패치 적용<br><span class="prompt">codex</span> 테스트 실행<br><span class="prompt">codex</span> 결과 보고</div>
+    </div>
+    <div class="stack">
+      <div class="strip"><strong>탐색</strong><span>파일 구조와 기존 패턴을 먼저 읽어 변경 범위를 좁힙니다.</span></div>
+      <div class="strip"><strong>수정</strong><span>필요한 파일을 패치하고 기존 스타일을 최대한 따릅니다.</span></div>
+      <div class="strip"><strong>검증</strong><span>테스트 결과와 오류 로그를 다음 수정 근거로 사용합니다.</span></div>
+      <div class="strip"><strong>요약</strong><span>최종 diff, 실행한 명령, 남은 확인 사항을 보고합니다.</span></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Codex App</span>
+  <h2>Codex App은 단순 코드 작성보다 개발 작업공간</h2>
+  <p class="lead">Codex app은 작업을 나누고, 결과를 검토하고, <br>브라우저와 이미지 생성 같은 주변 업무까지 같은 흐름에서 다루는 표면입니다.</p>
+  <div class="content">
+    <div class="node-row">
+      <div class="node">작업 큐와<br>계획</div>
+      <div class="arrow">→</div>
+      <div class="node">파일, 브라우저,<br>터미널</div>
+      <div class="arrow">→</div>
+      <div class="node">리뷰 가능한<br>결과물</div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3>여러 개발 작업 관리</h3><p>작업 단위를 나눠 병렬로 진행하고 결과를 검토하는 흐름에 적합합니다.</p></div>
+      <div class="card"><h3>플러그인 연동</h3><p>skill, MCP, app integration을 통해 팀 workflow와 외부 도구를 연결합니다.</p></div>
+      <div class="card"><h3>코드 밖 산출물</h3><p>프론트엔드 시안, 문서, 게임 asset, 이미지 같은 개발 주변 결과물까지 포함할 수 있습니다.</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">IDE Extension</span>
+  <h2>Codex Extension은 에디터와 agent를 연결한다</h2>
+  <p class="lead">작은 수정은 IDE 옆에서 빠르게 처리하고, <br>더 큰 작업은 Codex에게 계획과 검증이 있는 단위로 위임할 수 있습니다.</p>
+  <div class="content grid2">
+    <div class="card blue">
+      <h3>IDE 안에서 좋은 작업</h3>
+      <br><br><br><br>
+      <ul class="big-list">
+        <li>선택한 코드 설명 또는 부분 수정</li>
+        <br>
+        <li>열린 파일 기반의 빠른 맥락 전달</li>
+        <br>
+        <li>작은 버그와 타입 오류 확인</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Codex에 위임하기 좋은 작업</h3>
+      <br><br><br><br>
+      <ul class="big-list">
+        <li>여러 파일에 걸친 수정</li>
+        <br>
+        <li>테스트 실행과 실패 로그 반영</li>
+        <br>
+        <li>branch 또는 cloud 작업으로 분리할 변경</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Plugins</span>
+  <h2>Codex Plugins는 workflow와 외부 연결을 패키징</h2>
+  <p class="lead">Codex에서 plugin은 반복 가능한 skill, app integration, MCP 설정, <br>lifecycle hook 등을 배포 가능한 단위로 묶을 때 사용합니다.</p>
+  <div class="content grid4">
+    <div class="card purple"><h3>Skills</h3><br><br><br><br><br><p>작업 지침, 참고 자료, 선택적 script를 포함하는 재사용 workflow입니다.</p></div>
+    <div class="card blue"><h3>App Integrations</h3><br><br><br><br><br><p>특정 앱이나 작업 공간과 연결되는 사용자 경험을 확장합니다.</p></div>
+    <div class="card accent"><h3>MCP Servers</h3><br><br><br><br><br><p>외부 도구와 데이터를 표준화된 방식으로 agent에게 제공합니다.</p></div>
+    <div class="card"><h3>Hooks</h3><br><br><br><br><br><p>agentic loop 주변에 검사, 기록, validation 같은 결정론적 동작을 붙입니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Why Plugins</span>
+  <h2>Plugin이 필요한 이유</h2>
+  <p class="lead">한 번 잘 만든 요청과 검증 절차를 개인의 prompt 노하우로 남기지 않고 <br>팀이 반복 사용할 수 있게 만드는 것이 목적입니다.</p>
+  <div class="content grid2">
+    <div class="card accent"><h3>긴 프롬프트를 줄인다</h3><br><br><p>리뷰 기준, 테스트 규칙, 문서 양식 같은 반복 지시를 skill이나 plugin에 넣으면 매번 다시 쓰지 않아도 됩니다.</p></div>
+    <div class="card blue"><h3>팀 규칙을 일관 적용한다</h3><br><br><p>특정 repository의 migration 규칙, 보안 점검, 코드 스타일을 같은 방식으로 실행하게 만듭니다.</p></div>
+    <div class="card purple"><h3>외부 서비스를 연결한다</h3><br><br><p>GitHub, 이슈 트래커, 문서 저장소, 사내 시스템을 MCP 또는 integration으로 연결할 수 있습니다.</p></div>
+    <div class="card"><h3>반복 workflow를 표준화한다</h3><br><br><p>코드 리뷰, 보안 점검, 문서화, 릴리스 노트처럼 절차가 있는 작업을 패키징합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Skills</span>
+  <h2>Codex Skills는 재사용 가능한 작업 지침</h2>
+  <p class="lead">Skill은 지침, resource, 선택적 script를 하나의 디렉터리로 묶고, <br>Codex가 필요하다고 판단할 때만 전체 지침을 읽는 구조입니다.</p>
+  <div class="content grid3">
+    <div class="card blue"><h3>Instruction</h3><br><br><p>어떤 상황에서 어떻게 작업해야 하는지 절차와 판단 기준을 적습니다.</p></div>
+    <div class="card accent"><h3>Resource</h3><br><br><p>템플릿, reference, checklist처럼 작업 품질을 안정화하는 자료를 함께 둡니다.</p></div>
+    <div class="card purple"><h3>Script</h3><br><br><p>반복 검증이나 변환처럼 결정론적으로 처리할 부분을 script로 보완할 수 있습니다.</p></div>
+    <div class="card"><h3>Progressive Disclosure</h3><br><br><p>처음에는 이름과 설명만 보고, 선택된 skill만 전체 내용을 로드해 context 낭비를 줄입니다.</p></div>
+    <div class="card"><h3>Explicit Invocation</h3><br><br><p>사용자가 <code>$skill</code> 형태로 직접 호출해 특정 workflow를 강제할 수 있습니다.</p></div>
+    <div class="card"><h3>Implicit Invocation</h3><br><br><p>요청 내용이 description과 맞으면 Codex가 필요한 skill을 선택할 수 있습니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Hooks</span>
+  <h2>Codex Hooks는 loop에 결정론적 동작을 추가한다</h2>
+  <p class="lead">Hook은 prompt 제출, tool 사용 전후, 권한 요청, 작업 종료 같은 지점에 <br>검증 script를 연결하는 확장 프레임워크입니다.</p>
+  <div class="content">
+    <div class="step-board">
+      <div class="card"><h3>UserPromptSubmit</h3><br><br><br><p>API key나 고객 데이터가 prompt에 섞였는지 검사</p></div>
+      <div class="card"><h3>PreToolUse</h3><br><br><br><p>위험한 명령, 대량 삭제, 외부 접근을 실행 전 점검</p></div>
+      <div class="card"><h3>PermissionRequest</h3><br><br><br><br><br><p>권한 상승 요청의 사유와 범위를 검토</p></div>
+      <div class="card"><h3>PostToolUse</h3><br><br><p>명령 결과, 테스트 실패, 정책 위반을 분석</p></div>
+      <div class="card"><h3>Stop</h3><br><br><p>작업 종료 시 요약, validation, 기록 생성</p></div>
+      <div class="card"><h3>Trust Review</h3><br><br><p>변경된 non-managed hook은 신뢰 검토 후 실행</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">MCP</span>
+  <h2>MCP는 외부 도구와 Codex를 연결하는 표준 방식</h2>
+  <p class="lead">Model Context Protocol은 agent가 외부 시스템의 데이터와 행동을 <br>도구처럼 사용할 수 있게 만드는 연결 계층입니다.</p>
+  <div class="content grid2">
+    <div class="card accent">
+      <h3>연결 가능한 범위</h3>
+      <br><br>
+      <ul class="big-list">
+        <li>GitHub repository, issue, pull request</li>
+        <br>
+        <li>Slack, Google Drive, Notion 같은 업무 데이터</li>
+        <br>
+        <li>cloud service와 내부 운영 도구</li>
+        <br>
+        <li>공식 문서, 검색, 분석용 도구</li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>권한 관리가 핵심</h3><br><br>
+      <ul class="big-list">
+        <li>읽기와 쓰기 권한을 분리합니다.</li><br>
+        <li>인증 범위와 데이터 반출 경로를 확인합니다.</li><br>
+        <li>출처가 불명확한 MCP 서버는 사용하지 않습니다.</li><br>
+        <li>조직 정책과 감사 로그를 함께 설계합니다.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Superpowers</span>
+  <h2>Superpowers는 coding을 체계화하는 skills</h2>
+  <p class="lead">Superpowers는 AI agent가 바로 구현으로 뛰어들기보다 brainstorming, planning, worktree, execution, review 흐름을 따르도록 돕는 플러그인 계열 접근입니다.</p>
+  <div class="content grid3">
+    <div class="card blue"><h3>바로 코딩하지 않기</h3><br><br><br><br><br><p>요구사항을 정리하고 모호한 지점을 먼저 드러내도록 유도합니다.</p></div>
+    <div class="card accent"><h3>계획 기반 진행</h3><br><br><br><br><br><p>작업 단위, 파일 범위, 검증 기준을 계획으로 남긴 뒤 실행합니다.</p></div>
+    <div class="card purple"><h3>검토 가능한 결과</h3><br><br><br><br><br><p>작업이 끝난 뒤 변경 내용과 의사결정 근거를 리뷰할 수 있게 만듭니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Workflow</span>
+  <h2>Superpowers Workflow</h2>
+  <p class="lead">핵심은 agent에게 개발 방법론을 주입해 성급한 구현을 줄이고, 작업을 분리 가능한 단계로 만드는 것입니다.</p>
+  <div class="content">
+    <div class="step-board">
+      <div class="step"><strong>Brainstorming</strong><span>문제 정의, 대안 탐색, 질문 정리<br></span><br></div>
+      <div class="step"><strong>Writing Plans</strong><span>변경 범위와 검증 기준을 실행 계획으로 작성</span></div>
+      <div class="step"><strong>Git Worktree</strong><span>작업 격리와 병렬 진행을 위한 공간 확보</span><br></div>
+      <div class="step"><strong>Subagent-driven</strong><span>탐색, 구현, 리뷰를 역할별로 분리</span><br></div>
+      <div class="step"><strong>Executing Plans</strong><span>계획에 따라 코드 수정과 검증 수행</span><br></div>
+      <div class="step"><strong>Review</strong><span>diff, 테스트, 위험 요소를 검토 가능한 형태로 정리</span></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Meaning</span>
+  <h2>Superpowers의 의미</h2>
+  <p class="lead">AI에게 더 많은 권한을 주는 것이 아니라, 좋은 개발 습관을 agent가 따르게 만드는 쪽에 가깝습니다.</p>
+  <div class="content grid2">
+    <div class="card accent"><h3>개발 방법론을 설치한다</h3><br><br><br><p>작업 전 질문, 계획, 격리, 검토 같은 절차를 agent 행동의 기본값으로 만듭니다.</p></div>
+    <div class="card blue"><h3>성급한 구현을 방지한다</h3><br><br><br><p>요구사항이 흐린 상태에서 파일을 수정하기보다 먼저 목표와 제약을 정리하게 합니다.</p></div>
+    <div class="card purple"><h3>변경 범위를 통제한다</h3><br><br><br><p>worktree와 계획 문서가 있으면 한 작업이 다른 변경과 섞이는 위험이 줄어듭니다.</p></div>
+    <div class="card"><h3>리뷰 가능한 결과를 만든다</h3><br><br><br><p>agent가 왜 이 수정을 했는지, 어떤 검증을 했는지 추적 가능한 형태로 남깁니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Image Gen</span>
+  <h2>Image Gen은 Codex에서 시각 자산을 만든다</h2>
+  <p class="lead">Codex는 thread, CLI, IDE extension에서 이미지 생성 또는 편집을 요청할 수 있으며 <br>UI asset, banner, illustration, sprite sheet, placeholder 제작에 활용됩니다.</p>
+  <div class="content grid2">
+    <div class="diagram">
+      <div class="node-row">
+        <div class="node">코드와 화면<br>요구사항</div>
+        <div class="arrow">→</div>
+        <div class="node">이미지 생성<br>또는 편집</div>
+        <div class="arrow">→</div>
+        <div class="node">프론트엔드에<br>반영</div>
+      </div>
+      <div class="terminal">
+        <div class="terminal-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="terminal-body"><span class="prompt">$</span> $imagegen 제품 카드용 placeholder asset을 만들고 CSS에 맞춰 배치해줘</div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="strip"><strong>UI mockup</strong><span>화면의 분위기와 정보 구조를 빠르게 비교합니다.</span></div>
+      <div class="strip"><strong>Frontend 시안</strong><span>hero, card, empty state에 필요한 시각 자산을 만듭니다.</span></div>
+      <div class="strip"><strong>Game asset</strong><span>sprite, icon, placeholder art를 코드와 함께 반복합니다.</span></div>
+      <div class="strip"><strong>Concept image</strong><span>제품 방향성을 논의할 수 있는 초안을 빠르게 생성합니다.</span></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Image Workflow</span>
+  <h2>Image Gen 활용 방향</h2>
+  <p class="lead">단순히 예쁜 그림을 만드는 도구가 아니라, 개발자가 <br>코드와 시각 자산을 같은 반복 주기에서 검토하게 만드는 장치입니다.</p>
+  <div class="content grid3">
+    <div class="card blue"><h3>디자인 방향 탐색</h3><br><br><p>여러 시각 스타일을 빠르게 만들어 제품 톤을 비교합니다.</p></div>
+    <div class="card accent"><h3>UI 배경과 asset</h3><br><br><p>placeholder에서 실제 asset 후보까지 이어지는 흐름을 만듭니다.</p></div>
+    <div class="card purple"><h3>프로토타입 속도</h3><br><br><p>이미지 검색, 다운로드, 경로 정리 시간을 줄이고 구현에 바로 붙입니다.</p></div>
+    <div class="card"><h3>reference 활용</h3><br><br><p>기존 이미지를 첨부해 변형하거나 확장하는 요청을 할 수 있습니다.</p></div>
+    <div class="card"><h3>사람의 검토</h3><br><br><p>브랜드 적합성, 저작권, 접근성, 제품 맥락은 사람이 최종 판단합니다.</p></div>
+    <div class="card"><h3>대량 생성 주의</h3><br><br><p>큰 batch는 비용과 사용량 한도를 고려해 API 기반 흐름을 분리합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Copilot CLI</span>
+  <h2>Copilot CLI는 GitHub workflow와 가까운 agent</h2>
+  <p class="lead">GitHub 문서는 Copilot CLI를 터미널에서 자연어로 작업을 요청하고, <br>plan mode와 agentic mode를 선택해 실행할 수 있는 도구로 설명합니다.</p>
+  <div class="content grid2">
+    <div class="card blue"><h3>잘 맞는 환경</h3><br><br><br><br><ul class="big-list"><li>GitHub issue, branch, PR 중심 작업</li><br><li>repository 안에서 수정과 검증을 연결</li><br><li>GitHub 계정과 권한 체계가 이미 정리된 팀</li></ul></div>
+    <div class="card accent"><h3>운영 포인트</h3><br><br><br><br><ul class="big-list"><li>plan mode로 먼저 접근 방식을 확인</li><br><li>더 자율적인 실행은 작은 범위에서 사용</li><br><li>PR 리뷰와 CI 결과를 최종 검증 기준으로 유지</li></ul></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Claude Code</span>
+  <h2>Claude Code는 터미널 중심 agentic coding tool</h2>
+  <p class="lead">Anthropic의 Claude Code는 terminal에서 코드베이스를 탐색하고 <br>파일을 수정하며 명령 실행과 git workflow를 지원하는 coding agent입니다.</p>
+  <div class="content grid3">
+    <div class="card blue"><h3>코드베이스 탐색</h3><br><br><p>repository 구조, 의존성, 기존 패턴을 읽고 변경 지점을 찾습니다.</p></div>
+    <div class="card accent"><h3>파일 수정</h3><br><br><p>여러 파일에 걸친 변경을 patch 단위로 수행하고 결과를 설명합니다.</p></div>
+    <div class="card purple"><h3>명령 실행</h3><br><br><p>테스트, 린트, 빌드 결과를 읽어 다음 행동에 반영합니다.</p></div>
+    <div class="card"><h3>Git workflow</h3><br><br><p>변경 내용 확인, commit 준비, branch 흐름과 함께 사용하기 좋습니다.</p></div>
+    <div class="card"><h3>긴 작업 단위</h3><br><br><p>분석, 계획, 구현, 검증이 이어지는 작업을 한 흐름으로 처리할 수 있습니다.</p></div>
+    <div class="card"><h3>주의점</h3><br><br><p>자율성이 높을수록 권한, 승인, 검증 절차를 명확히 해야 합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Claude Extensions</span>
+  <h2>Claude Code 확장 요소</h2>
+  <p class="lead">Claude Code도 프로젝트 지침, skills, subagents, hooks, MCP, plugins를 통해 <br>terminal-first workflow를 확장합니다.</p>
+  <div class="content grid3">
+    <div class="card"><h3><code>CLAUDE.md</code></h3><br><br><p>프로젝트별 규칙, 명령, coding convention을 agent가 참고하도록 정리합니다.</p></div>
+    <div class="card"><h3>Skills</h3><br><br><p>반복 작업 절차와 참고 자료를 재사용 가능한 단위로 제공합니다.</p></div>
+    <div class="card"><h3>Subagents</h3><br><br><p>탐색, 구현, 리뷰처럼 역할을 나눠 긴 작업을 분리할 수 있습니다.</p></div>
+    <div class="card"><h3>Hooks</h3><br><br><p>tool 사용 전후나 종료 지점에 검증과 정책 적용을 붙입니다.</p></div>
+    <div class="card"><h3>MCP</h3><br><br><p>외부 도구, 서비스, 데이터 소스를 표준 방식으로 연결합니다.</p></div>
+    <div class="card"><h3>Plugins</h3><br><br><p>여러 확장 요소를 배포 가능한 패키지로 묶는 방향입니다.</p></div>
+  </div>
+</section>
+<section class="slide wide">
+  <span class="kicker">Comparison</span>
+  <h2>Codex CLI, Copilot CLI, Claude Code 비교</h2>
+  <p class="lead">세 도구는 우열보다 사용 위치와 workflow 적합성이 다릅니다. <br>팀의 저장소 운영 방식과 검증 체계가 선택 기준입니다.</p>
+  <div class="content">
+    <table class="matrix">
+      <thead><tr><th>도구</th><th>사용 위치</th><th>강점</th><th>적합한 상황</th><th>주의점</th></tr></thead>
+      <tbody>
+        <tr><td>Codex CLI</td><td>터미널, Codex app, IDE extension과 연결</td><td>OpenAI ecosystem, plugins, skills, hooks, MCP, Image Gen과의 연결성</td><td>코드와 시각 자산, 문서, 앱 작업을 하나의 agent workflow로 묶을 때</td><td>plugin과 hook 권한 범위를 명확히 해야 함</td></tr>
+        <tr><td>Copilot CLI</td><td>터미널과 GitHub workflow</td><td>issue, branch, pull request, repository 흐름과 자연스럽게 맞음</td><td>GitHub 중심 팀이 terminal agent를 도입할 때</td><td>계획 확인과 PR 검증을 운영 기준으로 삼아야 함</td></tr>
+        <tr><td>Claude Code</td><td>터미널 중심 coding agent</td><td>긴 agent 작업, hooks, subagents, MCP 기반 workflow에 강점</td><td>terminal-first 개발자와 복잡한 repository 탐색 작업</td><td>자율 실행 범위와 승인 정책을 좁게 관리해야 함</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Selection</span>
+  <h2>도구 선택 기준</h2>
+  <p class="lead">가장 좋은 도구를 하나로 고르는 질문보다, <br>지금 팀의 workflow에서 어디에 agent를 넣을지 정하는 질문이 더 중요합니다.</p>
+  <div class="content grid2">
+    <div class="card blue"><h3>GitHub 중심이면 Copilot CLI</h3><br><br><br><p>issue, branch, PR, CI가 일상 운영의 중심이면 GitHub 연결성이 큰 장점입니다.</p></div>
+    <div class="card accent"><h3>Codex ecosystem이면 Codex</h3><br><br><p>Codex App, plugin, skill, hook, MCP, Image Gen을 함께 쓰려는 팀에 적합합니다.</p></div>
+    <div class="card purple"><h3>긴 터미널 작업이면 Claude Code</h3><br><br><p>terminal-first 환경에서 subagents와 hooks를 적극적으로 설계할 때 강점이 있습니다.</p></div>
+    <div class="card"><h3>시각 자산까지 다루면 Image Gen</h3><br><br><p>프론트엔드, 게임, 문서, 제품 콘셉트처럼 코드와 이미지가 함께 반복되는 작업에 유용합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Operation</span>
+  <h2>CLI 코딩 운영 전략</h2>
+  <p class="lead">agent를 잘 쓰는 팀은 agent가 한 일을 믿는 팀이 아니라, <br>agent가 한 일을 확인하는 경로를 설계한 팀입니다.</p>
+  <div class="content">
+    <div class="stack">
+      <div class="strip"><strong>바로 수정 금지</strong><span>먼저 계획, 변경 대상, 검증 방법을 말하게 합니다.</span></div>
+      <div class="strip"><strong>작업 범위 명확화</strong><span>어떤 파일을 고칠지, 어떤 파일은 건드리지 않을지 분명히 합니다.</span></div>
+      <div class="strip"><strong>격리된 변경</strong><span>branch 또는 worktree에서 작업해 기존 변경과 섞이지 않게 합니다.</span></div>
+      <div class="strip"><strong>테스트 명령 명시</strong><span>agent가 어떤 명령으로 성공 여부를 판단해야 하는지 알려줍니다.</span></div>
+      <div class="strip"><strong>변경 요약 요구</strong><span>diff 핵심, 실행한 검증, 남은 리스크를 마지막에 정리하게 합니다.</span></div>
+      <div class="strip"><strong>불필요한 권한 차단</strong><span>외부 네트워크, 배포, 삭제, credential 접근은 기본적으로 닫아둡니다.</span></div>
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Security</span>
+  <h2>보안 주의사항</h2>
+  <p class="lead">CLI agent 보안은 prompt 보안, 파일 접근 제어, 외부 도구 권한, 실행 명령 승인으로 나누어 봐야 합니다.</p>
+  <div class="content grid3">
+    <div class="card warn"><h3>API key 입력 금지</h3><br><br><p>prompt, 로그, issue 설명에 secret을 그대로 넣지 않습니다.</p></div>
+    <div class="card warn"><h3><code>.env</code> 파일 주의</h3><br><br><p>환경 파일은 읽기 대상에서 제외하고 예시 파일만 공유합니다.</p></div>
+    <div class="card warn"><h3>고객 데이터 금지</h3><br><br><p>개인정보나 계약 데이터는 익명화 없이 agent context에 넣지 않습니다.</p></div>
+    <div class="card warn"><h3>MCP 서버 출처 확인</h3><br><br><p>공식 또는 내부 검증된 서버만 연결하고 권한 범위를 제한합니다.</p></div>
+    <div class="card warn"><h3>자동 배포 명령 주의</h3><br><br><p>배포, 인프라 변경, database migration은 수동 승인 경로를 둡니다.</p></div>
+    <div class="card warn"><h3>파일 삭제 명령 주의</h3><br><br><p>대량 삭제, 이동, 포맷 명령은 diff와 대상 경로를 먼저 확인합니다.</p></div>
+  </div>
+</section>
+<section class="slide">
+  <span class="kicker">Conclusion</span>
+  <h2>결론</h2>
+  <p class="lead">CLI 코딩의 생산성은 agent가 명령을 실행한다는 사실보다, 그 실행을 계획과 검증 안에 묶을 때 생깁니다.</p>
+  <div class="content grid2">
+    <div class="card accent"><h3>CLI 코딩</h3><br><br><br><p>터미널에서 agent에게 repository 작업을 위임하는 방식입니다.</p></div>
+    <div class="card blue"><h3>Codex 확장</h3><br><br><p>plugin, skill, hook, MCP, Image Gen으로 개발 workflow 전체를 확장합니다.</p></div>
+    <div class="card purple"><h3>도구 비교</h3><br><br><p>Copilot CLI, Claude Code, Codex CLI는 목적과 강점이 다릅니다.</p></div>
+    <div class="card"><h3>운영 핵심</h3><br><br><p>도구 선택보다 계획, 검증, 권한 관리가 지속 가능한 사용법을 결정합니다.</p></div>
+  </div>
+</section>
+<section class="slide title-slide">
+  <span class="kicker">Closing</span>
+  <h2>CLI 기반 AI 코딩의 핵심</h2>
+  <div class="quote">
+    <p>AI가 명령을 실행할 수 있다는 점이 아니라, 그 실행을 사람이 통제하고 검증할 수 있는 workflow를 만드는 것이다.</p>
+  </div>
+  <div class="badge-row">
+    <span class="mini">Plan</span>
+    <span class="mini">Scope</span>
+    <span class="mini">Permission</span>
+    <span class="mini">Diff</span>
+    <span class="mini">Test</span>
+    <span class="mini">Review</span>
+  </div>
+</section>
+</main>
+<div class="hud" aria-label="slide controls">
+  <button id="prev" type="button" aria-label="이전 슬라이드">‹</button>
+  <span id="counter">1 / 30</span>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <button id="next" type="button" aria-label="다음 슬라이드">›</button>
+</div>
+<script>
+const slides = Array.from(document.querySelectorAll(".slide"));
+const counter = document.getElementById("counter");
+const progressBar = document.getElementById("progressBar");
+const prevButton = document.getElementById("prev");
+const nextButton = document.getElementById("next");
+let current = 0;
+function showSlide(index) {
+  current = Math.max(0, Math.min(slides.length - 1, index));
+  slides.forEach((slide, slideIndex) => {
+    slide.classList.toggle("active", slideIndex === current);
+  });
+  counter.textContent = `${current + 1} / ${slides.length}`;
+  progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+  location.hash = `slide-${current + 1}`;
+}
+function nextSlide() {
+  showSlide(current + 1);
+}
+function prevSlide() {
+  showSlide(current - 1);
+}
+prevButton.addEventListener("click", prevSlide);
+nextButton.addEventListener("click", nextSlide);
+document.addEventListener("keydown", event => {
+  if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " " || event.key === "Enter") {
+    event.preventDefault();
+    nextSlide();
+  }
+  if (event.key === "ArrowLeft" || event.key === "PageUp" || event.key === "Backspace") {
+    event.preventDefault();
+    prevSlide();
+  }
+  if (event.key === "Home") {
+    event.preventDefault();
+    showSlide(0);
+  }
+  if (event.key === "End") {
+    event.preventDefault();
+    showSlide(slides.length - 1);
+  }
+});
+const match = location.hash.match(/slide-(\d+)/);
+if (match) {
+  showSlide(Number(match[1]) - 1);
+} else {
+  showSlide(0);
+}
+</script>
+</body>
+</html>
