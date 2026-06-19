@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITeng Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="products-data.js"></script>
+    <style>
+        body { word-break: keep-all; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        .section-card {
+            border-radius: 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 16px 40px -24px rgba(15, 23, 42, 0.35);
+        }
+        .dark .section-card { background: rgba(30, 41, 59, 0.92); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 transition-colors duration-300 dark:bg-darkBg dark:text-slate-100">
+    <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/85 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-darkBg/85">
+        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+            <a href="../index.html#product-lineup" class="flex items-center space-x-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-tr from-blue-600 to-sky-400 shadow-md">
+                    <i class="fa-solid fa-microchip text-lg text-white"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-black tracking-wider text-slate-900 dark:text-white">TITeng</span>
+                    <span class="block -mt-1 text-xs font-bold text-primary-600 dark:text-sky-400">PRODUCT</span>
+                </div>
+            </a>
+
+            <nav class="hidden min-w-0 flex-1 items-center space-x-2 text-xs text-slate-400 dark:text-slate-500 sm:flex">
+                <a href="../index.html#product-lineup" class="whitespace-nowrap transition hover:text-primary-600 dark:hover:text-sky-400">제품 라인업</a>
+                <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                <span id="breadcrumb-title" class="truncate font-medium text-slate-600 dark:text-slate-300"></span>
+            </nav>
+
+            <div class="flex shrink-0 items-center space-x-3">
+                <a href="../index.html#product-lineup" class="hidden items-center space-x-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:border-primary-300 hover:text-primary-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-sky-700 dark:hover:text-sky-400 sm:inline-flex">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>목록으로</span>
+                </a>
+                <button onclick="toggleDarkMode()" class="rounded-lg bg-slate-100 p-2 transition hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" aria-label="테마 변경">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg text-slate-600 dark:text-yellow-400"></i>
+                </button>
+                <a href="http://www.titeng.co.kr/main/main.php" target="_blank" rel="noopener noreferrer" class="hidden items-center space-x-2 rounded-full bg-primary-600 px-4 py-2 text-xs font-bold text-white shadow-lg transition-all hover:bg-primary-700 hover:shadow-primary-600/20 md:inline-flex">
+                    <span>공식 홈페이지</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div id="not-found" class="hidden py-24 text-center">
+            <i class="fa-solid fa-box-open mb-6 text-6xl text-slate-300 dark:text-slate-700"></i>
+            <p class="mb-4 font-medium text-slate-500 dark:text-slate-400">요청하신 제품을 찾을 수 없습니다.</p>
+            <a href="../index.html#product-lineup" class="text-sm font-bold text-primary-600 hover:underline">제품 라인업으로 돌아가기</a>
+        </div>
+
+        <article id="product-container" class="hidden"></article>
+    </main>
+
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center space-x-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-white shadow-2xl dark:border-slate-200 dark:bg-white dark:text-slate-900">
+        <i id="toast-icon" class="fa-solid fa-circle-info text-lg text-sky-400 dark:text-primary-600"></i>
+        <span id="toast-msg">알림 메시지</span>
+    </div>
+
+    <script>
+        (function initTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') document.documentElement.classList.add('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-yellow-400 text-lg';
+            }
+        })();
+
+        function toggleDarkMode() {
+            const docEl = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (docEl.classList.contains('dark')) {
+                docEl.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                icon.className = 'fa-solid fa-moon text-slate-600 text-lg';
+                showToast('라이트 모드로 전환되었습니다.', 'info');
+            } else {
+                docEl.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                icon.className = 'fa-solid fa-sun text-yellow-400 text-lg';
+                showToast('다크 모드로 전환되었습니다.', 'sun');
+            }
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+        const product = productPages.find((item) => item.id === productId);
+
+        if (!product) {
+            document.getElementById('not-found').classList.remove('hidden');
+        } else {
+            document.title = `${product.title} | TITeng Product`;
+            document.getElementById('breadcrumb-title').innerText = product.title;
+
+            const container = document.getElementById('product-container');
+            container.innerHTML = product.content;
+            container.classList.remove('hidden');
+
+        }
+
+        let toastTimeout = null;
+        function showToast(msg, iconName = 'circle-info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            let faIcon = 'fa-circle-info text-sky-400';
+            if (iconName === 'sun') faIcon = 'fa-sun text-amber-400';
+
+            toastIcon.className = `fa-solid ${faIcon} text-lg`;
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

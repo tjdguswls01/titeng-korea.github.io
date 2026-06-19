@@ -319,30 +319,48 @@ git revert &lt;commit-hash&gt;</code></pre>
     },
     {
         id: 19,
-        title: "Git 핵심 명령어 10가지: 실무 흐름으로 정리한 슬라이드",
+        title: "Git 명령어 20가지: 명령어에서 AI 프롬프트로",
         category: "report",
         categoryKo: "기술 리포트",
         badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
         author: "성현진 엔지니어 (개발 생산성)",
         date: "2026.06.19",
-        readTime: "Git 실무 가이드",
-        summary: "git status, diff, add, commit, branch, switch, pull, push, log, restore를 실무 흐름 중심으로 정리한 발표용 슬라이드 포스트입니다.",
-        tags: ["Git", "CLI", "Workflow", "Slides", "VersionControl"],
+        readTime: "AI Git 프롬프트 가이드",
+        summary: "git status부터 cherry-pick까지 20개 Git 명령어를 기존 CLI 사용법과 AI 에이전트 프롬프트 작성법으로 나란히 비교한 발표용 슬라이드입니다.",
+        tags: ["Git", "AI", "Prompt", "CLI", "Slides"],
         content: `
             <h3>포스트 소개</h3>
-            <p>이 글은 Git을 처음 접하거나 실무에서 기본 흐름을 다시 정리하고 싶은 분들을 위해, 핵심 명령어를 작업 순서대로 묶어 설명한 슬라이드입니다. 상태 확인, 변경 검토, 커밋, 브랜치 분리, 원격 반영까지 한 번에 볼 수 있습니다.</p>
+            <p>이 슬라이드는 Git 명령어를 단순히 외우는 자료가 아니라, AI 에이전트를 쓰기 전에는 명령어를 어떻게 직접 실행했고 지금은 같은 작업을 어떤 프롬프트로 요청해야 하는지 비교합니다. 핵심은 명령어를 없애는 것이 아니라 목표, 범위, 안전 조건, 검증 기준을 더 정확히 전달하는 것입니다.</p>
 
-            <h3>포함된 주제</h3>
+            <h3>Before / Now 관점</h3>
             <ul>
-                <li><strong>git status</strong>: 현재 상태와 변경 파일 확인</li>
-                <li><strong>git diff</strong>: 커밋 전 변경 검토</li>
-                <li><strong>git add / git commit</strong>: 변경을 기록으로 저장</li>
-                <li><strong>git branch / git switch</strong>: 작업 흐름 분리</li>
-                <li><strong>git pull / git push</strong>: 원격 저장소 동기화</li>
-                <li><strong>git log / git restore</strong>: 이력 확인과 안전한 복구</li>
+                <li><strong>Before</strong>: 명령어와 옵션을 직접 조합하고 출력 결과를 사람이 읽은 뒤 다음 명령을 결정했습니다.</li>
+                <li><strong>Now</strong>: AI 에이전트에게 목표와 제약을 말하고, 에이전트가 실행한 명령과 diff, 테스트 결과를 사람이 검토합니다.</li>
+                <li><strong>좋은 프롬프트</strong>: 어떤 작업을 할지, 어떤 파일을 건드려도 되는지, 위험하면 어디서 멈출지를 포함합니다.</li>
+                <li><strong>마지막 책임</strong>: commit, push, reset 같은 변경 작업은 에이전트 결과를 확인한 뒤 승인하는 흐름이 안전합니다.</li>
             </ul>
 
-            <a href="../git-commands-slides.html" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <h3>다루는 Git 명령어 20가지</h3>
+            <ul>
+                <li><strong>상태와 변경 검토</strong>: <code>git status</code>, <code>git diff</code></li>
+                <li><strong>커밋 구성</strong>: <code>git add</code>, <code>git commit</code></li>
+                <li><strong>브랜치 작업</strong>: <code>git branch</code>, <code>git switch</code>, <code>git checkout</code></li>
+                <li><strong>원격 동기화</strong>: <code>git fetch</code>, <code>git pull</code>, <code>git push</code></li>
+                <li><strong>기록 확인과 복구</strong>: <code>git log</code>, <code>git restore</code>, <code>git reset</code></li>
+                <li><strong>통합과 이력 정리</strong>: <code>git merge</code>, <code>git rebase</code>, <code>git cherry-pick</code></li>
+                <li><strong>작업 보관과 저장소 관리</strong>: <code>git stash</code>, <code>git remote</code>, <code>git clone</code>, <code>git tag</code></li>
+            </ul>
+
+            <h3>프롬프트 예시</h3>
+            <ul>
+                <li><strong>status</strong>: 현재 저장소 상태를 확인하고 수정/추가/삭제/추적 제외 파일을 표로 요약해줘.</li>
+                <li><strong>diff</strong>: 아직 커밋하지 않은 변경을 의도된 변경, 위험한 변경, 확인 질문으로 나눠 요약해줘.</li>
+                <li><strong>add</strong>: 이번 커밋 목적과 관련된 변경만 stage하고, 제외한 파일과 이유를 알려줘.</li>
+                <li><strong>pull</strong>: 원격 변경을 반영하되 충돌이 나면 자동 커밋하지 말고 충돌 파일과 해결 방향을 먼저 보고해줘.</li>
+                <li><strong>reset</strong>: soft, mixed, hard 차이를 설명하고 작업 손실 가능성이 있으면 실행 전 멈춰줘.</li>
+            </ul>
+
+            <a href="../topic2/git-commands-slides.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git 명령어 20가지: 명령어에서 프롬프트로</title>
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --panel: #fbfcfe;
+      --ink: #111827;
+      --muted: #5b6675;
+      --line: #d7dee8;
+      --blue: #1f6feb;
+      --blue-dark: #174ea6;
+      --green: #12815a;
+      --orange: #c45f1f;
+      --red: #cf3f45;
+      --mono: "Cascadia Mono", "D2Coding", Consolas, monospace;
+      --font: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --scale: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      word-break: keep-all;
+      letter-spacing: 0;
+      overflow: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .deck-shell {
+      width: calc(1920px * var(--scale));
+      height: calc(1080px * var(--scale));
+      position: relative;
+    }
+
+    .topbar {
+      position: fixed;
+      z-index: 30;
+      top: 18px;
+      left: 50%;
+      width: calc(1920px * var(--scale));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      pointer-events: none;
+    }
+
+    .brand,
+    .nav {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand {
+      padding: 10px 14px;
+      border: 1px solid rgba(21, 21, 21, 0.08);
+      border-radius: 8px;
+      background: rgba(251, 252, 254, 0.9);
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.08);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 18px;
+    }
+
+    .counter {
+      min-width: 88px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(251, 252, 254, 0.92);
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.08);
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .nav button {
+      width: 54px;
+      height: 48px;
+      border: 1px solid rgba(21, 21, 21, 0.12);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .progress {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 40;
+      width: 100%;
+      height: 8px;
+      background: rgba(17, 24, 39, 0.08);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--blue);
+      transition: width 180ms ease;
+    }
+
+    .stage {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: 0 24px 70px rgba(17, 24, 39, 0.16);
+      transform: scale(var(--scale));
+      transform-origin: top left;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 96px 108px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(31, 111, 235, 0.055) 1px, transparent 1px),
+        linear-gradient(rgba(31, 111, 235, 0.055) 1px, transparent 1px),
+        var(--panel);
+      background-size: 64px 64px;
+    }
+
+    .slide.active {
+      display: grid;
+    }
+
+    .slide::after {
+      content: attr(data-no);
+      position: absolute;
+      right: 48px;
+      bottom: 36px;
+      color: #9aa6b4;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .slide::before {
+      content: "AI를 활용한 사용 프롬프트";
+      position: absolute;
+      left: 108px;
+      bottom: 24px;
+      color: #9aa7b5;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+
+    .dark,
+    .soft {
+      background:
+        linear-gradient(90deg, rgba(31, 111, 235, 0.055) 1px, transparent 1px),
+        linear-gradient(rgba(31, 111, 235, 0.055) 1px, transparent 1px),
+        var(--panel);
+      background-size: 64px 64px;
+    }
+
+    .center {
+      place-items: center;
+      text-align: center;
+    }
+
+    .stack {
+      align-content: center;
+      gap: 30px;
+    }
+
+    .split {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 58px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 9px 17px;
+      border: 1px solid rgba(22, 104, 220, 0.24);
+      border-radius: 99px;
+      background: rgba(31, 111, 235, 0.08);
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .dark .eyebrow {
+      border-color: rgba(22, 104, 220, 0.24);
+      background: rgba(31, 111, 235, 0.08);
+      color: var(--blue);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 1380px;
+      font-size: 104px;
+      line-height: 1.04;
+      font-weight: 900;
+    }
+
+    h2 {
+      max-width: 1280px;
+      font-size: 68px;
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    h3 {
+      font-size: 36px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .lead {
+      max-width: 1520px;
+      color: var(--muted);
+      font-size: 31px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .dark .lead {
+      color: var(--muted);
+    }
+
+    .accent {
+      color: var(--blue);
+    }
+
+    .dark .accent {
+      color: var(--blue);
+    }
+
+    .terminal {
+      overflow: hidden;
+      border: 1px solid rgba(21, 21, 21, 0.12);
+      border-radius: 8px;
+      background: #141414;
+      box-shadow: 0 24px 50px rgba(21, 21, 21, 0.22);
+    }
+
+    .terminal-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 52px;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: #202020;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff5f56;
+    }
+
+    .dot:nth-child(2) {
+      background: #ffbd2e;
+    }
+
+    .dot:nth-child(3) {
+      background: #27c93f;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .code {
+      padding: 34px 38px 40px;
+      color: #f7f7f7;
+      font-family: var(--mono);
+      font-size: 34px;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+
+    .comment {
+      color: #8aa0b6;
+    }
+
+    .ok {
+      color: #6ee7a8;
+    }
+
+    .warn {
+      color: #ffc46b;
+    }
+
+    .bad {
+      color: #ff8585;
+    }
+
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .command-card {
+      min-height: 96px;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.06);
+    }
+
+    .command-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .command-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .step {
+      min-height: 212px;
+      padding: 28px 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.07);
+    }
+
+    .step b {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 18px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 10px;
+      font-family: var(--mono);
+      font-size: 24px;
+      line-height: 1.28;
+      font-weight: 900;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.38;
+      font-weight: 700;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .note {
+      min-height: 190px;
+      padding: 28px 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(251, 252, 254, 0.94);
+    }
+
+    .note b {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .note span {
+      color: var(--muted);
+      font-size: 24px;
+      line-height: 1.42;
+      font-weight: 700;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .compare-card {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 560px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(251, 252, 254, 0.96);
+      box-shadow: 0 20px 44px rgba(17, 24, 39, 0.1);
+    }
+
+    .compare-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .compare-head b {
+      color: var(--ink);
+      font-size: 27px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .compare-head span {
+      padding: 7px 11px;
+      border-radius: 99px;
+      background: rgba(22, 104, 220, 0.1);
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .before .compare-head span {
+      background: rgba(214, 106, 31, 0.12);
+      color: var(--orange);
+    }
+
+    .compare pre,
+    .prompt-text {
+      padding: 28px 30px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 25px;
+      line-height: 1.48;
+      font-weight: 800;
+    }
+
+    .prompt-text {
+      font-family: var(--font);
+      font-size: 28px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .verify {
+      min-height: 92px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--line);
+      background: rgba(22, 104, 220, 0.06);
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .dark .compare-card {
+      border-color: var(--line);
+      background: rgba(251, 252, 254, 0.96);
+    }
+
+    .dark .compare-head,
+    .dark .verify {
+      border-color: var(--line);
+    }
+
+    .dark .compare-head b,
+    .dark .compare pre,
+    .dark .prompt-text {
+      color: var(--ink);
+    }
+
+    .dark .verify {
+      background: rgba(31, 111, 235, 0.06);
+      color: var(--muted);
+    }
+
+    .map {
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      min-height: 650px;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 24px 50px rgba(21, 21, 21, 0.12);
+    }
+
+    .map-row {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .map-label,
+    .map-desc {
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .map-label {
+      display: grid;
+      place-items: center start;
+      color: var(--blue-dark);
+      font-family: var(--mono);
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .map-desc {
+      color: var(--muted);
+      font-size: 23px;
+      line-height: 1.38;
+      font-weight: 700;
+    }
+
+    .mini-graph {
+      position: relative;
+      height: 560px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.08);
+      background-size: 58px 58px;
+    }
+
+    .branch-line {
+      position: absolute;
+      height: 9px;
+      border-radius: 99px;
+      background: #77b7ff;
+      transform-origin: left center;
+    }
+
+    .branch-line.green {
+      background: #76e4a6;
+    }
+
+    .commit-dot {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border: 6px solid #fff;
+      border-radius: 50%;
+      background: #77b7ff;
+      box-shadow: 0 0 0 8px rgba(119, 183, 255, 0.16);
+    }
+
+    .commit-dot.green {
+      background: #76e4a6;
+      box-shadow: 0 0 0 8px rgba(118, 228, 166, 0.16);
+    }
+
+    .graph-label {
+      position: absolute;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><span class="brand-mark">git</span> 명령어에서 프롬프트로</div>
+    <div class="nav">
+      <button id="prevBtn" aria-label="이전 슬라이드">&lt;</button>
+      <div id="counter" class="counter">1 / 1</div>
+      <button id="nextBtn" aria-label="다음 슬라이드">&gt;</button>
+    </div>
+  </div>
+
+  <div class="deck-shell">
+    <main class="stage">
+      <section class="slide center" data-no="01">
+        <div class="stack">
+          <span class="eyebrow">Git Command Prompt Guide</span>
+          <h1>Git 명령어 20가지<br><span class="accent">명령어에서 프롬프트로</span></h1>
+          <p class="lead">예전에는 옵션과 순서를 직접 외워 실행했습니다. 이제는 목표, 범위, 안전 조건, 검증 기준을 AI 에이전트에게 전달하고 결과를 확인합니다.</p>
+        </div>
+      </section>
+
+      <section class="slide stack" data-no="02">
+        <span class="eyebrow">사용 방식의 변화</span>
+        <h2>명령어를 없애는 것이 아니라<br>작업 의도를 더 정확히 전달하는 방식입니다.</h2>
+        <div class="note-grid">
+          <div class="note"><b>Before</b><span>명령어와 옵션을 직접 조합하고, 출력 결과를 읽은 뒤 다음 명령을 사람이 결정했습니다.</span></div>
+          <div class="note"><b>Now</b><span>AI 에이전트에게 목표와 제약을 말하고, 에이전트가 실행한 명령과 diff, 테스트 결과를 사람이 검토합니다.</span></div>
+          <div class="note"><b>좋은 프롬프트</b><span>무엇을 하려는지, 어떤 파일을 건드려도 되는지, 위험하면 어디서 멈출지를 포함합니다.</span></div>
+          <div class="note"><b>마지막 책임</b><span>커밋, push, reset 같은 변경 작업은 에이전트 결과를 확인한 뒤 승인하는 흐름이 안전합니다.</span></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="03">
+        <div class="stack">
+          <span class="eyebrow">01. 상태 확인</span>
+          <h2><span class="accent">git status</span><br>지금 저장소가 어떤 상태인지 볼 때</h2>
+          <p class="lead">AI 에이전트를 쓸 때도 첫 단계는 상태 확인입니다. 단순 출력보다 위험 파일과 다음 행동까지 요약하게 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git status
+git status -sb</pre><div class="verify">수정, 삭제, untracked 파일을 직접 읽고 다음 명령을 판단했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">현재 저장소 상태를 확인하고, 수정/추가/삭제/추적 제외 파일을 표로 요약해줘. 커밋에 포함하면 안 될 파일이 있으면 표시해줘.</div><div class="verify">확인: 에이전트가 실행한 명령과 untracked 파일 목록을 검토합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="04">
+        <div class="stack">
+          <span class="eyebrow">02. 변경 검토</span>
+          <h2><span class="accent">git diff</span><br>커밋 전 변경 내용을 확인할 때</h2>
+          <p class="lead">diff는 AI 작업 결과를 검증하는 핵심입니다. 의도된 변경과 위험한 변경을 나눠 설명하게 하면 검토 속도가 빨라집니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git diff
+git diff --staged
+git diff src/app.js</pre><div class="verify">추가/삭제 라인을 직접 훑으며 실수나 보안 정보를 찾았습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">아직 커밋하지 않은 변경을 검토해줘. 의도된 변경, 위험한 변경, 확인 질문으로 나눠 요약하고 테스트나 설정 삭제가 있으면 강조해줘.</div><div class="verify">확인: 삭제된 코드, 설정 파일, 테스트 변경을 직접 다시 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="05">
+        <div class="stack">
+          <span class="eyebrow">03. 변경 선택</span>
+          <h2><span class="accent">git add</span><br>이번 커밋에 넣을 <br>파일을 고를 때</h2>
+          <p class="lead">이제는 “무엇을 stage할지”보다 “이번 커밋의 목적이 무엇인지”를 먼저 알려주는 편이 좋습니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git add src/app.js
+git add .
+git add -p</pre><div class="verify">파일 단위 또는 hunk 단위로 직접 stage했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">이번 커밋 목적은 로그인 오류 문구 수정이야. 관련 변경만 stage하고, 제외한 파일이 있으면 파일명과 제외 이유를 알려줘.</div><div class="verify">확인: `git diff --staged`로 stage된 범위를 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="06">
+        <div class="stack">
+          <span class="eyebrow">04. 커밋 작성</span>
+          <h2><span class="accent">git commit</span><br>변경을 설명 가능한 기록으로 남길 때</h2>
+          <p class="lead">커밋 메시지는 변경의 의도를 남기는 문서입니다. 에이전트에게 diff 기반 메시지를 만들게 하되 최종 문구는 확인합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git commit -m "fix: 로그인 실패 메시지 표시"
+git commit</pre><div class="verify">직접 메시지를 작성하고 커밋했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">staged 변경을 읽고 Conventional Commit 형식으로 한국어 커밋 메시지 3개를 추천해줘. 가장 적절한 하나를 선택해 커밋해줘.</div><div class="verify">확인: 커밋 전 staged diff와 메시지가 같은 의도인지 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="07">
+        <div class="stack">
+          <span class="eyebrow">05. 브랜치 확인</span>
+          <h2><span class="accent">git branch</span><br>작업 위치와 브랜치 목록을 볼 때</h2>
+          <p class="lead">브랜치 명령은 현재 위치를 확인하는 용도에서, 작업 전략을 점검하는 프롬프트로 확장됩니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git branch
+git branch -a
+git branch --show-current</pre><div class="verify">현재 브랜치와 로컬/원격 브랜치를 직접 확인했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">현재 브랜치와 로컬/원격 브랜치 목록을 확인하고, 지금 작업에 새 브랜치가 필요한지 제안해줘.</div><div class="verify">확인: 에이전트가 제안한 기준 브랜치가 올바른지 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="08">
+        <div class="stack">
+          <span class="eyebrow">06. 브랜치 이동</span>
+          <h2><span class="accent">git switch</span><br>작업 브랜치로 이동하거나 새로 만들 때</h2>
+          <p class="lead">이동 전 미커밋 변경이 있으면 작업을 잃을 수 있습니다. 프롬프트에 멈춤 조건을 넣습니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git switch main
+git switch -c feature/login-message</pre><div class="verify">직접 브랜치를 만들고 이동했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">main 최신 상태에서 feature/login-message 브랜치를 만들고 이동해줘. 이동 전 미커밋 변경이 있으면 멈추고 먼저 알려줘.</div><div class="verify">확인: 현재 브랜치명과 기준 브랜치를 다시 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="09">
+        <div class="stack">
+          <span class="eyebrow">07. 이전 상태 참조</span>
+          <h2><span class="accent">git checkout</span><br>특정 커밋이나 파일 상태를 볼 때</h2>
+          <p class="lead">checkout은 강력하지만 실수하기 쉽습니다. 현재 작업을 보존한다는 조건을 명확히 줍니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git checkout main
+git checkout 3f4a9c2 -- src/app.js</pre><div class="verify">브랜치 이동과 파일 복구를 같은 명령으로 처리했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">이전 커밋의 파일 내용을 확인해야 해. 현재 작업을 보존하면서 src/app.js만 특정 커밋 기준으로 비교하거나 복구하는 안전한 방법을 실행해줘.</div><div class="verify">확인: 작업 트리가 덮어써지지 않았는지 `git status`로 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="10">
+        <div class="stack">
+          <span class="eyebrow">08. 원격 정보 가져오기</span>
+          <h2><span class="accent">git fetch</span><br>원격 최신 상태만 <br>가져올 때</h2>
+          <p class="lead">fetch는 로컬 작업을 바꾸지 않고 원격 정보를 갱신합니다. 에이전트에게 뒤처진 정도까지 요약하게 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git fetch
+git fetch --prune
+git branch -vv</pre><div class="verify">원격 정보를 받은 뒤 브랜치별 ahead/behind를 직접 봤습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">원격 저장소 최신 브랜치와 태그 정보를 가져오고, 내 로컬 브랜치가 원격보다 앞서거나 뒤처졌는지 요약해줘.</div><div class="verify">확인: 로컬 파일 변경이 발생하지 않았는지 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="11">
+        <div class="stack">
+          <span class="eyebrow">09. 원격 변경 반영</span>
+          <h2><span class="accent">git pull</span><br>원격 변경을 현재 브랜치에 가져올 때</h2>
+          <p class="lead">pull은 fetch와 merge 또는 rebase를 함께 수행합니다. 충돌이 나면 자동 해결보다 보고를 먼저 요구합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git pull
+git pull --rebase</pre><div class="verify">원격 변경을 받고 충돌이 나면 직접 해결했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">현재 브랜치에 원격 변경을 반영해줘. 충돌이 나면 자동 커밋하지 말고 충돌 파일과 해결 방향을 먼저 보고해줘.</div><div class="verify">확인: pull 방식이 merge인지 rebase인지 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="12">
+        <div class="stack">
+          <span class="eyebrow">10. 원격 업로드</span>
+          <h2><span class="accent">git push</span><br>내 커밋을 <br>원격 저장소에 올릴 때</h2>
+          <p class="lead">push 전에는 브랜치명, 커밋 범위, 원격 주소를 확인해야 합니다. 처음 올릴 때는 upstream 설정도 필요합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git push
+git push -u origin feature/login-message</pre><div class="verify">직접 원격 브랜치에 업로드했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">현재 브랜치를 origin에 올려줘. upstream이 없으면 설정하고, 푸시 전 마지막 커밋과 브랜치명을 확인해줘.</div><div class="verify">확인: 원격에 올릴 브랜치와 커밋 수를 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="13">
+        <div class="stack">
+          <span class="eyebrow">11. 기록 확인</span>
+          <h2><span class="accent">git log</span><br>커밋 히스토리를 읽을 때</h2>
+          <p class="lead">히스토리는 단순 목록보다 맥락이 중요합니다. 에이전트에게 변경 흐름과 의심 커밋을 요약하게 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git log
+git log --oneline --graph --decorate --all</pre><div class="verify">커밋 그래프를 보고 문제 커밋을 직접 추적했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">최근 커밋 히스토리를 기능 단위로 요약하고, 이번 문제와 관련 있을 만한 커밋 후보를 근거와 함께 찾아줘.</div><div class="verify">확인: 제안된 커밋의 diff와 날짜를 직접 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="14">
+        <div class="stack">
+          <span class="eyebrow">12. 변경 되돌리기</span>
+          <h2><span class="accent">git restore</span><br>커밋 전 변경을 <br>파일 단위로 버릴 때</h2>
+          <p class="lead">restore는 작업 내용을 삭제할 수 있습니다. 에이전트에게 먼저 diff를 확인하고 판단 근거를 말하게 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git restore src/app.js
+git restore --staged src/app.js</pre><div class="verify">파일 변경을 직접 되돌리거나 stage에서 내렸습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">커밋하지 않은 변경 중 src/app.js만 되돌리고 싶어. 먼저 diff를 보여주고, 되돌려도 되는지 판단 근거를 알려줘.</div><div class="verify">확인: 되돌리기 전 필요한 변경이 남아 있지 않은지 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="15">
+        <div class="stack">
+          <span class="eyebrow">13. 브랜치 병합</span>
+          <h2><span class="accent">git merge</span><br>다른 브랜치의 변경을 합칠 때</h2>
+          <p class="lead">merge 전에는 두 브랜치의 차이와 충돌 가능성을 확인합니다. 에이전트에게 병합 전 점검을 맡깁니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git switch main
+git merge feature/login-message</pre><div class="verify">대상 브랜치로 이동해 직접 병합했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">feature/login-message를 현재 브랜치에 병합해줘. 병합 전 두 브랜치 차이와 충돌 가능성이 높은 파일을 요약해줘.</div><div class="verify">확인: 병합 커밋이 필요한 상황인지 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="16">
+        <div class="stack">
+          <span class="eyebrow">14. 기록 재정렬</span>
+          <h2><span class="accent">git rebase</span><br>내 브랜치를 최신 기준 위로 올릴 때</h2>
+          <p class="lead">rebase는 히스토리를 다시 쓰는 작업입니다. 충돌 단계마다 멈추고 설명하게 하는 프롬프트가 안전합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git fetch
+git rebase origin/main
+git rebase --continue</pre><div class="verify">충돌을 직접 해결하며 rebase를 진행했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">내 feature 브랜치를 최신 main 위로 rebase해줘. 충돌이 나면 단계별로 멈추고 해결 내용과 테스트 필요 지점을 알려줘.</div><div class="verify">확인: 이미 공유한 브랜치라면 force push 여부를 신중히 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="17">
+        <div class="stack">
+          <span class="eyebrow">15. 임시 저장</span>
+          <h2><span class="accent">git stash</span><br>작업 중 변경을 <br>잠시 치워둘 때</h2>
+          <p class="lead">stash는 편하지만 잊기 쉽습니다. 무엇을 저장했고 언제 다시 적용할지 설명하게 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git stash push -m "wip: login"
+git stash list
+git stash pop</pre><div class="verify">작업을 임시 저장하고 나중에 직접 복원했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">지금 작업을 임시 저장하고 main으로 이동해야 해. 추적되지 않은 파일 포함 여부를 확인해서 안전하게 stash해줘.</div><div class="verify">확인: stash 메시지와 포함 파일 목록을 확인합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="18">
+        <div class="stack">
+          <span class="eyebrow">16. 커밋 되돌림</span>
+          <h2><span class="accent">git reset</span><br>커밋이나 stage 상태를 뒤로 돌릴 때</h2>
+          <p class="lead">reset은 작업 손실 가능성이 큽니다. 실행보다 설명과 안전한 선택지가 먼저입니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git reset HEAD~1
+git reset --soft HEAD~1
+git reset --hard HEAD~1</pre><div class="verify">목표에 따라 soft, mixed, hard를 직접 선택했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">마지막 커밋을 되돌리는 방법을 soft, mixed, hard 차이로 설명하고 내 목표에 맞는 가장 안전한 reset만 실행해줘. 작업 손실 가능성이 있으면 멈춰줘.</div><div class="verify">확인: hard reset은 백업 또는 명시 승인 전 실행하지 않습니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="19">
+        <div class="stack">
+          <span class="eyebrow">17. 원격 저장소 관리</span>
+          <h2><span class="accent">git remote</span><br>연결된 원격 저장소를 확인할 때</h2>
+          <p class="lead">remote는 협업 대상과 권한을 결정합니다. URL 변경은 영향이 크므로 점검과 제안을 분리합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git remote -v
+git remote add origin URL
+git remote set-url origin URL</pre><div class="verify">원격 이름과 URL을 직접 관리했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">연결된 원격 저장소를 확인하고 origin URL이 올바른지 점검해줘. 필요하면 SSH/HTTPS 변경 명령을 제안해줘.</div><div class="verify">확인: 실제 URL 변경은 권한과 저장소명을 확인한 뒤 진행합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="20">
+        <div class="stack">
+          <span class="eyebrow">18. 저장소 복제</span>
+          <h2><span class="accent">git clone</span><br>새 환경에 저장소를 가져올 때</h2>
+          <p class="lead">clone 이후에는 실행 방법, 의존성, 브랜치 기준을 확인해야 합니다. 에이전트에게 초기 점검까지 맡깁니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git clone git@github.com:org/repo.git
+cd repo</pre><div class="verify">복제 후 README를 직접 읽고 환경을 맞췄습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">이 저장소를 새 폴더에 복제하고 실행 방법을 확인해줘. README 기준으로 필요한 초기 설정과 확인 명령도 요약해줘.</div><div class="verify">확인: 복제 위치와 원격 URL이 의도한 저장소인지 봅니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="21">
+        <div class="stack">
+          <span class="eyebrow">19. 버전 태그</span>
+          <h2><span class="accent">git tag</span><br>릴리스 지점을 표시할 때</h2>
+          <p class="lead">태그는 배포 기준점입니다. 생성 전 변경 요약과 대상 커밋을 확인하는 프롬프트가 필요합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git tag v1.2.0
+git tag -a v1.2.0 -m "release: v1.2.0"
+git push origin v1.2.0</pre><div class="verify">태그를 만들고 원격에 직접 올렸습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">이번 릴리스에 v1.2.0 태그를 만들 준비가 됐는지 확인하고, 변경 요약과 태그 생성/푸시 절차를 진행해줘.</div><div class="verify">확인: 태그 대상 커밋과 버전 번호가 맞는지 검토합니다.</div></div>
+        </div>
+      </section>
+
+      <section class="slide split" data-no="22">
+        <div class="stack">
+          <span class="eyebrow">20. 특정 커밋 적용</span>
+          <h2><span class="accent">git cherry-pick</span><br>필요한 커밋만 가져올 때</h2>
+          <p class="lead">cherry-pick은 특정 변경만 옮길 때 유용하지만 충돌과 중복 적용을 조심해야 합니다.</p>
+        </div>
+        <div class="compare">
+          <div class="compare-card before"><div class="compare-head"><b>기존 사용</b><span>command</span></div><pre>git cherry-pick 3f4a9c2
+git cherry-pick --abort</pre><div class="verify">커밋 해시를 직접 골라 현재 브랜치에 적용했습니다.</div></div>
+          <div class="compare-card after"><div class="compare-head"><b>AI 프롬프트</b><span>prompt</span></div><div class="prompt-text">hotfix 브랜치의 특정 커밋만 현재 브랜치에 적용해줘. 적용 전 변경 파일을 확인하고 충돌 시 멈춰서 보고해줘.</div><div class="verify">확인: 이미 포함된 변경인지, 테스트가 필요한 범위가 무엇인지 봅니다.</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="progress"><span id="progressBar"></span></div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const counter = document.getElementById("counter");
+    const progressBar = document.getElementById("progressBar");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let current = 0;
+
+    function fitDeck() {
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      document.documentElement.style.setProperty("--scale", String(scale));
+    }
+
+    function showSlide(index) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      history.replaceState(null, "", `#slide-${current + 1}`);
+    }
+
+    function next() {
+      showSlide(current + 1);
+    }
+
+    function prev() {
+      showSlide(current - 1);
+    }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        next();
+      }
+      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) {
+        event.preventDefault();
+        prev();
+      }
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    window.addEventListener("resize", fitDeck);
+    window.addEventListener("orientationchange", fitDeck);
+
+    const hashMatch = location.hash.match(/slide-(\d+)/);
+    fitDeck();
+    showSlide(hashMatch ? Number(hashMatch[1]) - 1 : 0);
+  </script>
+</body>
+</html>
