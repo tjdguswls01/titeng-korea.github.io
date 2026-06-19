@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Local environment files
+.env
+.env.*
+
+# Build or cache outputs
+node_modules/
+__pycache__/
+titeng-korea.github.io.code-workspace
