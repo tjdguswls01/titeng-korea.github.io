@@ -316,5 +316,36 @@ git revert &lt;commit-hash&gt;</code></pre>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
         `
+    },
+    {
+        id: 19,
+        title: "Git 핵심 명령어 10가지: 실무 흐름으로 정리한 슬라이드",
+        category: "report",
+        categoryKo: "기술 리포트",
+        badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
+        author: "성현진 엔지니어 (개발 생산성)",
+        date: "2026.06.19",
+        readTime: "Git 실무 가이드",
+        summary: "git status, diff, add, commit, branch, switch, pull, push, log, restore를 실무 흐름 중심으로 정리한 발표용 슬라이드 포스트입니다.",
+        tags: ["Git", "CLI", "Workflow", "Slides", "VersionControl"],
+        content: `
+            <h3>포스트 소개</h3>
+            <p>이 글은 Git을 처음 접하거나 실무에서 기본 흐름을 다시 정리하고 싶은 분들을 위해, 핵심 명령어를 작업 순서대로 묶어 설명한 슬라이드입니다. 상태 확인, 변경 검토, 커밋, 브랜치 분리, 원격 반영까지 한 번에 볼 수 있습니다.</p>
+
+            <h3>포함된 주제</h3>
+            <ul>
+                <li><strong>git status</strong>: 현재 상태와 변경 파일 확인</li>
+                <li><strong>git diff</strong>: 커밋 전 변경 검토</li>
+                <li><strong>git add / git commit</strong>: 변경을 기록으로 저장</li>
+                <li><strong>git branch / git switch</strong>: 작업 흐름 분리</li>
+                <li><strong>git pull / git push</strong>: 원격 저장소 동기화</li>
+                <li><strong>git log / git restore</strong>: 이력 확인과 안전한 복구</li>
+            </ul>
+
+            <a href="../git-commands-slides.html" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+                <span>슬라이드 열기</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+        `
     }
 ];
