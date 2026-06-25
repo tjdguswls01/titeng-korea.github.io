@@ -150,7 +150,7 @@ tpayClient.enableNfcSensor(activity) { tagState ->
         category: "report",
         categoryKo: "기술 리포트",
         badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
-        author: "성현진 엔지니어 (개발 생산성)",
+        author: "성현진 엔지니어 (모듈개발팀)",
         date: "2026.06.18",
         readTime: "읽는 시간 10분",
         summary: "AI가 만든 코드 변경을 Git diff, stage, commit, branch, PR 흐름으로 검토하고 설명하는 Git 실무 리포트입니다. VSCode Source Control 기준의 작업 루틴을 한 번에 정리했습니다.",
@@ -232,7 +232,7 @@ git revert &lt;commit-hash&gt;</code></pre>
         category: "report",
         categoryKo: "기술 리포트",
         badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
-        author: "성현진 엔지니어 (개발 생산성)",
+        author: "성현진 엔지니어 (모듈개발팀)",
         date: "2026.06.18",
         readTime: "읽는 시간 10분",
         summary: "Google Antigravity IDE의 Agent Manager, Artifacts, 브라우저 검증 기능과 실무 사용 흐름을 살펴보고, 최신 VS Code의 에이전트 기능과 차이 및 도구 선택 기준을 정리합니다.",
@@ -292,7 +292,7 @@ git revert &lt;commit-hash&gt;</code></pre>
         category: "report",
         categoryKo: "기술 리포트",
         badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
-        author: "성현진 엔지니어 (개발 생산성)",
+        author: "성현진 엔지니어 (모듈개발팀)",
         date: "2026.06.18",
         readTime: "읽는 시간 20분",
         summary: "Codex Plugins, Skills, Hooks, MCP, Image Gen을 중심으로 CLI 기반 AI 코딩 workflow와 Copilot CLI, Claude Code, Codex CLI의 선택 기준을 정리한 기술 리포트입니다.",
@@ -338,7 +338,7 @@ git revert &lt;commit-hash&gt;</code></pre>
         category: "security",
         categoryKo: "보안 및 인증 규격",
         badgeClass: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900",
-        author: "정대구 연구원 (금융보안기술 파트)",
+        author: "성현진 연구원 (모듈개발팀)",
         date: "2026.06.25",
         readTime: "읽는 시간 20분",
         summary: "Visa Kernel 3(qVSDC) 비접촉 거래의 전체 흐름을 처음부터 끝까지 분석합니다. TTQ, CTQ, GPO, fDDA, Outcome 개념과 실제 펌웨어 코드(EMV_PROC.C, NFC_Control.c)의 연결점을 함께 살펴봅니다.",
@@ -396,12 +396,102 @@ bool EmvTranProc(BYTE Cmd_code, BYTE *pCmd, UINT nCmdlen, BYTE *pRsp, UINT *nRsp
         `
     },
     {
+        id: 21,
+        title: "Mastercard Kernel 2: EMV Contactless Book C-2 거래 흐름 완전 분석",
+        category: "security",
+        categoryKo: "보안 및 인증 규격",
+        badgeClass: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900",
+        author: "성현진 연구원 (모듈개발팀)",
+        date: "2026.06.25",
+        readTime: "읽는 시간 20분",
+        summary: "Mastercard Kernel 2(M/Chip Advance) 비접촉 거래의 전체 흐름을 처음부터 끝까지 분석합니다. PDOL, GPO, AIP/AFL, ODA, AC 요청·판정, CVM 처리, Outcome 결정 개념과 실제 펌웨어 코드의 연결점을 함께 살펴봅니다.",
+        tags: ["Mastercard", "Kernel2", "MChip", "EMV", "Contactless", "PDOL", "AC", "CDA"],
+        content: `
+            <h3>Mastercard Kernel 2란</h3>
+            <p>Kernel 2는 EMVCo Book C-2에 정의된 Mastercard 비접촉 거래의 L2 로직입니다. M/Chip Advance 및 PayPass 기반 카드와의 거래에서 리더기(단말기)가 카드 응답을 해석하고 승인·거절·온라인 요청 여부를 결정하는 핵심 엔진 역할을 합니다. Visa Kernel 3(qVSDC)와 비교하면 AC 요청 구조, CVM 처리, Outcome 결정 방식이 다르므로 별도의 커널 구현이 필요합니다.</p>
+
+            <h3>거래 흐름 전체 개요</h3>
+            <p>Kernel 2 거래는 크게 다음 단계로 구성됩니다.</p>
+            <ol>
+                <li><strong>Entry Point → Kernel 2 선택</strong>: 리더가 카드 AID를 읽고 Mastercard AID(<code>A0 00 00 00 04 10 10</code>)를 확인한 뒤 Kernel 2를 활성화합니다.</li>
+                <li><strong>PDOL 처리 및 GPO</strong>: 카드가 요구하는 단말 데이터를 PDOL로 수집해 <code>GET PROCESSING OPTIONS</code>(GPO) 커맨드를 전송합니다.</li>
+                <li><strong>AIP / AFL 수신</strong>: GPO 응답에서 AIP(지원 기능 플래그)와 AFL(읽을 파일 목록)을 파싱합니다.</li>
+                <li><strong>레코드 읽기(READ RECORD)</strong>: AFL에 명시된 모든 레코드를 순서대로 읽어 카드 데이터를 수집합니다.</li>
+                <li><strong>ODA(오프라인 데이터 인증)</strong>: AIP에 따라 SDA, DDA, CDA 중 하나를 수행합니다.</li>
+                <li><strong>Processing Restrictions / CVM 처리</strong>: 거래 금액과 카드 CVM 목록을 비교해 서명·PIN·No CVM 중 CVM을 결정합니다.</li>
+                <li><strong>Terminal Risk Management(TRM)</strong>: 연속 오프라인 카운터, 랜덤 온라인 샘플링, 속도 점검 등을 수행합니다.</li>
+                <li><strong>Terminal Action Analysis(TAA)</strong>: IAC/TAC와 TVR를 AND 연산하여 ARQC·TC·AAC 중 요청할 AC 유형을 결정합니다.</li>
+                <li><strong>AC 요청 (GENERATE AC)</strong>: 1st GENERATE AC로 카드에 AC를 요청하고, 카드가 ARQC 또는 TC를 반환합니다.</li>
+                <li><strong>온라인 처리 (옵션)</strong>: ARQC 수신 시 호스트에 인가 요청을 보내고 응답(ARPC)으로 2nd GENERATE AC를 처리합니다.</li>
+                <li><strong>Outcome 결정</strong>: Approved / Declined / Online Request / Try Again / End Application 중 최종 결과를 확정합니다.</li>
+            </ol>
+
+            <h3>PDOL과 GPO 처리</h3>
+            <p>PDOL(Processing Options Data Object List)은 카드가 GPO 수행 전에 단말로부터 받고 싶은 TLV 데이터 목록입니다. 단말은 PDOL에 명시된 각 태그의 값을 채워 커맨드 데이터로 전송합니다.</p>
+            <pre class="bg-slate-950 p-4 rounded-lg text-slate-300 font-mono text-xs"><code>// GET PROCESSING OPTIONS APDU 구성 예시
+// PDOL 태그: 9F66(TTQ,4B) 9F02(금액,6B) 9F03(기타금액,6B) 9F1A(국가코드,2B) 95(TVR,5B) 5F2A(통화코드,2B) 9A(거래일,3B) 9C(거래유형,1B) 9F37(랜덤수,4B)
+--> 80 A8 00 00 [Lc] 83 [len] [PDOL data...] 00
+
+// GPO 응답 (AIP + AFL 포함)
+&lt;-- 77 xx 82 02 [AIP] 94 xx [AFL] ... 90 00</code></pre>
+
+            <h3>AIP(Application Interchange Profile) 주요 비트</h3>
+            <p>AIP는 2바이트 플래그로 카드가 지원하는 기능을 알립니다. Kernel 2에서 핵심적으로 확인하는 비트는 다음과 같습니다.</p>
+            <div class="my-6 p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border-l-4 border-emerald-400">
+                <strong>AIP 주요 플래그 (Byte 1)</strong><br>
+                - Bit 8: CDA 지원 여부<br>
+                - Bit 7: RFU<br>
+                - Bit 6: Issuer Authentication 지원<br>
+                - Bit 5: 온라인 PIN 지원<br>
+                - Bit 4: SDA 지원<br>
+                - Bit 3: DDA 지원<br>
+                - Bit 2: Cardholder Verification 지원<br>
+                - Bit 1: RFU
+            </div>
+
+            <h3>ODA: CDA(Combined Data Authentication)</h3>
+            <p>CDA는 ODA 방식 중 보안 강도가 가장 높으며, 1st GENERATE AC 응답에 서명 데이터를 포함시켜 AC와 인증을 동시에 검증합니다. AIP의 CDA 비트가 설정된 경우 단말은 GENERATE AC 커맨드에 CDA 요청 비트를 함께 전달합니다. 검증 실패 시 TVR의 해당 비트가 세트되어 TAA 결과에 영향을 줍니다.</p>
+
+            <h3>TAA: Terminal Action Analysis</h3>
+            <p>TAA는 IAC(Issuer Action Code)와 TAC(Terminal Action Code)를 TVR과 AND 연산하여 온라인·거절·승인 여부를 결정합니다. 단말은 IAC-Default, IAC-Denial, IAC-Online / TAC-Default, TAC-Denial, TAC-Online 6개 값을 순서대로 검사합니다.</p>
+            <pre class="bg-slate-950 p-4 rounded-lg text-slate-300 font-mono text-xs"><code>// TAA 의사 코드
+if ((TVR &amp; IAC_Denial) || (TVR &amp; TAC_Denial))  → AAC (거절)
+if ((TVR &amp; IAC_Online) || (TVR &amp; TAC_Online))  → ARQC (온라인 요청)
+else                                            → TC (오프라인 승인)</code></pre>
+
+            <h3>GENERATE AC 요청과 AC 유형</h3>
+            <p>1st GENERATE AC 커맨드의 첫 바이트(Reference Control Parameter)에서 상위 2비트로 요청 AC 유형을 지정합니다.</p>
+            <div class="my-6 p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border-l-4 border-emerald-400">
+                <strong>Reference Control Parameter 상위 2비트</strong><br>
+                - <code>00</code>: AAC 요청 (거절)<br>
+                - <code>01</code>: TC 요청 (오프라인 승인)<br>
+                - <code>10</code>: ARQC 요청 (온라인 인가)<br>
+                - <code>11</code>: RFU
+            </div>
+            <p>카드는 요청된 AC 유형을 그대로 따를 수 있고, 보안 판단에 따라 단계를 낮출 수도 있습니다(예: TC 요청 → AAC 반환). 응답의 Cryptogram Information Data(CID) 태그로 실제 AC 유형을 확인합니다.</p>
+
+            <h3>펌웨어 연결점</h3>
+            <p>실제 구현에서는 Kernel 2 로직이 상태 머신(State Machine) 형태로 각 단계를 순서대로 처리합니다. 핵심 파일 구조는 다음과 같습니다.</p>
+            <ul>
+                <li><strong>MC_KERNEL.C</strong>: Kernel 2 메인 상태 머신. <code>McFuncSelectAID</code>, <code>McFuncGPO</code>, <code>McFuncReadRecord</code>, <code>McFuncGenAC</code>가 순서대로 이어집니다.</li>
+                <li><strong>MC_ODA.C</strong>: SDA/DDA/CDA 서명 검증 로직과 공개키 인증서 체인 처리입니다.</li>
+                <li><strong>MC_CVM.C</strong>: CVM 목록 파싱 및 단말 CVM 능력과의 매칭 처리입니다.</li>
+                <li><strong>EMV_TAA.C</strong>: IAC/TAC 기반 터미널 액션 분석으로 AC 유형 결정을 담당합니다.</li>
+            </ul>
+
+            <a href="https://canva.link/w0ga26p9qg4qs3k" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+                <span>슬라이드 열기</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+        `
+    },
+    {
         id: 19,
         title: "Git 명령어 20가지: 명령어에서 AI 프롬프트로",
         category: "report",
         categoryKo: "기술 리포트",
         badgeClass: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200 dark:border-sky-900",
-        author: "성현진 엔지니어 (개발 생산성)",
+        author: "성현진 엔지니어 (모듈개발팀)",
         date: "2026.06.19",
         readTime: "읽는 시간 8분",
         summary: "git status부터 cherry-pick까지 20개 Git 명령어를 기존 CLI 사용법과 AI 에이전트 프롬프트 작성법으로 나란히 비교한 발표용 슬라이드입니다.",
