@@ -333,6 +333,69 @@ git revert &lt;commit-hash&gt;</code></pre>
         `
     },
     {
+        id: 20,
+        title: "Visa Kernel 3: EMV Contactless Book C-3 거래 흐름 완전 분석",
+        category: "security",
+        categoryKo: "보안 및 인증 규격",
+        badgeClass: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900",
+        author: "정대구 연구원 (금융보안기술 파트)",
+        date: "2026.06.25",
+        readTime: "읽는 시간 20분",
+        summary: "Visa Kernel 3(qVSDC) 비접촉 거래의 전체 흐름을 처음부터 끝까지 분석합니다. TTQ, CTQ, GPO, fDDA, Outcome 개념과 실제 펌웨어 코드(EMV_PROC.C, NFC_Control.c)의 연결점을 함께 살펴봅니다.",
+        tags: ["Visa", "Kernel3", "qVSDC", "EMV", "Contactless", "TTQ", "CTQ", "fDDA"],
+        content: `
+            <h3>Visa Kernel 3란</h3>
+            <p>Kernel 3는 Visa contactless 거래에서 리더가 카드 응답을 해석하고 다음 동작을 결정하는 L2 로직입니다. qVSDC 처리와 EMV contactless 요구사항을 함께 담고 있으며, 카드 응답을 해석해 거래의 다음 단계를 정하는 핵심 엔진입니다.</p>
+
+            <h3>거래 흐름 전체 구조</h3>
+            <p>Kernel 3의 거래 흐름은 다섯 단계로 이어집니다.</p>
+            <ol>
+                <li><strong>입력 수집</strong>: 금액, 통화, 거래일, 거래형태, Unpredictable Number를 정확히 준비합니다. 9F02, 5F2A, 9C, 9A, 9F37 같은 초기값은 카드 판정의 재료가 되므로 단순 설정이 아니라 거래 의미를 담는 값입니다.</li>
+                <li><strong>앱 선택</strong>: PPSE로 후보 AID를 수집하고, SELECT AID 후 FCI와 PDOL을 받아 거래용 입력 구조를 결정합니다.</li>
+                <li><strong>데이터 읽기</strong>: GPO 요청으로 AIP와 AFL을 받은 뒤, AFL 범위에 따라 READ RECORD를 수행합니다.</li>
+                <li><strong>검증 단계</strong>: Processing Restrictions, fDDA(빠른 동적 인증), CVM 판정을 거칩니다. TTQ(리더 선언)와 CTQ(카드 요구)의 교집합이 실제 거래 경로를 결정합니다.</li>
+                <li><strong>Outcome 생성</strong>: Approved, Declined, Online Request, Try Another Interface, End Application 중 하나로 거래가 마무리됩니다.</li>
+            </ol>
+
+            <h3>TTQ와 CTQ의 역할</h3>
+            <p><strong>TTQ(Terminal Transaction Qualifiers)</strong>는 리더가 어떤 기능을 지원하는지 카드에 선언하는 4바이트 값입니다. <strong>CTQ(Card Transaction Qualifiers)</strong>는 카드가 요구하는 처리 조건을 담습니다. TTQ가 리더의 능력 선언이라면, CTQ는 카드의 요구입니다. 실제 거래 경로는 두 값이 만나는 지점에서 결정됩니다.</p>
+
+            <pre class="bg-slate-950 p-4 rounded-lg text-slate-300 font-mono text-xs"><code>// TTQ와 CTQ 교차 판정 (EMV_PROC.C)
+if(TTQandCTQ() == 0x10) dll_err = ERR_DECLINED;
+
+if(check_9F10() == 0x10) {
+    if((stTerminal.tag_9F66[1] & 0x40) &amp;&amp; (check_CTQ() == 0)) {
+        dll_err = ERR_DECLINED;
+    }
+}</code></pre>
+
+            <h3>GPO: 거래의 분기점</h3>
+            <p>GPO(Get Processing Options)는 Kernel 3의 핵심 분기점입니다. PDOL로 정의된 입력을 채워 카드에 전달하면, 카드는 AIP와 AFL을 응답합니다. SW1 SW2가 6984·6985·6986이면 각각 Try Another Interface, Select Next, Try Again 분기가 발생합니다.</p>
+
+            <h3>코드 연결: 핵심 파일 구조</h3>
+            <ul>
+                <li><strong>main.c</strong>: 전체 초기화와 명령 분배의 시작점입니다.</li>
+                <li><strong>interface.c</strong>: 호스트 프레임을 해석하고 <code>EmvTranProc()</code>와 <code>SetTerminalConfig()</code>를 호출하는 관문입니다.</li>
+                <li><strong>NFC_Control.c</strong>: PPSE, SELECT AID, GPO, READ RECORD를 실제로 전송하는 NFC 처리 중심 파일입니다.</li>
+                <li><strong>EMV_PROC.C</strong>: 거래 상태 전이와 판정 로직의 본체입니다. <code>EmvFuncSelectPSE</code>, <code>EmvFuncSelectAID</code>, <code>EmvFuncProcTran</code>, <code>EmvFuncEndTran</code>이 순서대로 이어집니다.</li>
+            </ul>
+
+            <pre class="bg-slate-950 p-4 rounded-lg text-slate-300 font-mono text-xs"><code>// EMV_PROC.C 상태 머신 핵심
+bool EmvTranProc(BYTE Cmd_code, BYTE *pCmd, UINT nCmdlen, BYTE *pRsp, UINT *nRsplen) {
+    switch(Cmd_code) {
+        case AP_RF_PSE_FILE_SEL:      EmvFuncSelectPSE(...); break;
+        case AP_STARTTRANSACTION:     EmvFuncSelectAID(...); break;
+        case AP_RF_TRAN_END:          EmvFuncEndTran(...);   break;
+    }
+}</code></pre>
+
+            <a href="../kernel/visa.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+                <span>슬라이드 열기</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+        `
+    },
+    {
         id: 19,
         title: "Git 명령어 20가지: 명령어에서 AI 프롬프트로",
         category: "report",
