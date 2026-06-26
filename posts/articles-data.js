@@ -1,4 +1,4 @@
-// 기술 포스트 데이터 (index.html 과 posts/article.html 에서 공동 참조)
+﻿// 기술 포스트 데이터 (index.html 과 posts/article.html 에서 공동 참조)
 const techArticles = [
     {
         id: 5,
@@ -220,7 +220,7 @@ git revert &lt;commit-hash&gt;</code></pre>
                 <li>되돌릴 가능성이 있는 작업일수록 브랜치와 작은 커밋 단위가 중요합니다.</li>
             </ul>
 
-            <a href="../topic2/topic2.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <a href="./ai-coding/github.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
@@ -280,7 +280,7 @@ git revert &lt;commit-hash&gt;</code></pre>
             <h3>결론</h3>
             <p>에이전트 중심 개발에서 중요한 능력은 코드를 더 빨리 생성하는 것이 아니라, 작업을 작게 분해하고 최소 권한을 설정하며 에이전트가 남긴 증거를 검토하는 능력입니다. 도구의 우열보다 팀의 저장소, 보안 정책, 리뷰 방식에 맞는 기본 작업 흐름을 선택해야 합니다.</p>
 
-            <a href="../topic3/topic3.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <a href="./ai-coding/antigravity.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
@@ -326,7 +326,7 @@ git revert &lt;commit-hash&gt;</code></pre>
                 <li>도구 선택보다 중요한 것은 계획, 검증, 권한 관리가 포함된 운영 workflow입니다.</li>
             </ul>
 
-            <a href="../topic4/topic4.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <a href="./ai-coding/cli.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
@@ -389,7 +389,7 @@ bool EmvTranProc(BYTE Cmd_code, BYTE *pCmd, UINT nCmdlen, BYTE *pRsp, UINT *nRsp
     }
 }</code></pre>
 
-            <a href="../kernel/visa.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <a href="./kernel/visa.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
@@ -749,7 +749,7 @@ else                                            → TC (오프라인 승인)</co
                 <li><strong>reset</strong>: soft, mixed, hard 차이를 설명하고 작업 손실 가능성이 있으면 실행 전 멈춰줘.</li>
             </ul>
 
-            <a href="../topic2/git-commands-slides.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
+            <a href="./ai-coding/git-commands.html" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-black text-white transition hover:bg-primary-700">
                 <span>슬라이드 열기</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
